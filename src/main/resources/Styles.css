@@ -1,0 +1,184 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap')
+
+
+.small-buttons {
+    -fx-background-color: #DDE2FE; 
+    -fx-background-radius: 107px; 
+    -fx-background-insets: 0; 
+    -fx-alignment: center; 
+    -fx-min-width: 125px;
+    -fx-min-height: 45px;
+     -fx-max-width: 125px;
+    -fx-max-height: 45px;
+    -fx-text-fill: black; 
+    -fx-font-size: 20px; 
+    -fx-font-family: "Poppins";
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 2);
+    -fx-cursor: hand;
+}
+.small-buttons:pressed {
+    -fx-background-color: rgba(141, 159, 251, 0.5); 
+}
+
+.big-buttons {
+    -fx-background-color: #DDE2FE; 
+    -fx-background-radius: 107px; 
+    -fx-background-insets: 0; 
+    -fx-alignment: center; 
+    -fx-min-width: 300px;
+    -fx-min-height: 70px;
+    -fx-max-width:375px;
+    -fx-min-width:90px;
+    -fx-text-fill: black; 
+    -fx-font-size: 28px; 
+    -fx-font-family: "Poppins";
+    -fx-font-weight: 500; 
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );
+    -fx-cursor: hand;
+}
+.big-buttons:pressed {
+    -fx-background-color: rgba(141, 159, 251, 0.5); 
+
+}
+
+.title {
+    -fx-text-fill: black; 
+    -fx-font-size: 50px; 
+    -fx-font-family: "Poppins";
+    -fx-font-weight: 700; 
+   
+}
+
+.app-description {
+    -fx-text-fill: black; 
+    -fx-font-size: 28px; 
+    -fx-font-family: "Poppins";
+    -fx-font-style: italic;
+    -fx-font-weight: 100; 
+   
+    -fx-padding: 0 0 60 0;
+}
+
+.bottom-rectangle {
+    -fx-bottom: 0;
+    -fx-width: 100%;
+    -fx-height: 100px;
+    -fx-background-color: #DDE2FE;
+    -fx-fill: #DDE2FE;
+}
+
+.big-label { 
+    -fx-text-fill: black;
+    -fx-font-size: 35px; 
+    -fx-font-family: "Poppins";
+    -fx-font-style: italic;
+     
+}
+
+
+
+.medium-label {
+    -fx-text-fill: black; 
+    -fx-font-size: 28px; 
+    -fx-font-family: "Poppins";
+    -fx-font-style: italic;
+    -fx-font-weight: 100; 
+
+}
+
+.small-label {
+    -fx-text-fill: black; 
+    -fx-font-size: 20px; 
+    -fx-font-family: "Poppins";
+    -fx-font-weight: 100; 
+  
+}
+
+
+.warning-label {
+    -fx-text-fill: #FA3E3E; 
+    -fx-font-size: 20px; 
+    -fx-font-family: "Poppins";
+    -fx-font-weight: 400; 
+        
+}
+
+.success-label {
+    -fx-text-fill: #1CBA02; 
+    -fx-font-size: 20px; 
+    -fx-font-family: "Poppins";
+    -fx-font-weight: 100; 
+    
+}
+
+.text-fields {
+    -fx-background-color: rgba(255, 252, 253, 0);
+    -fx-border-radius: 15.29px;
+    -fx-border-color: #8E9FFC;
+    -fx-border-width: 2.48px;
+    -fx-text-fill: black;
+    -fx-font-size: 20px;
+    -fx-font-family: "Poppins";
+    -fx-font-weight: 100;
+ 
+    -fx-min-width: 450px;
+    -fx-min-height: 60px;
+    -fx-max-width: 450px;
+    -fx-max-height: 60px;
+}
+
+.big-text-fields {
+    -fx-background-color: rgba(255, 252, 253, 0);
+    -fx-border-radius: 15.29px;
+    -fx-border-color: #8E9FFC;
+    -fx-border-width: 2.48px;
+    -fx-text-fill: black;
+    -fx-font-size: 20px;
+    -fx-font-family: "Poppins";
+    -fx-font-weight: 100;
+
+    -fx-min-width: 500px;
+    -fx-min-height: 70px;
+    -fx-max-width: 500px;
+    -fx-max-height: 70px;
+}
+
+.combo-boxes {
+    -fx-background-color: rgba(255, 252, 253, 0);
+    -fx-border-radius: 15.29px;
+    -fx-border-color: #8E9FFC;
+    -fx-border-width: 2.48px;
+    -fx-text-fill: black;
+    -fx-font-size: 20px;
+    -fx-font-family: "Poppins";
+    -fx-font-weight: 100;
+   
+    -fx-min-width: 450px;
+    -fx-min-height: 60px;
+    -fx-max-width: 450px;
+    -fx-max-height: 60px;
+}
+
+.big-combo-boxes {
+    -fx-background-color: rgba(255, 252, 253, 0);
+    -fx-border-radius: 15.29px;
+    -fx-border-color: #8E9FFC;
+    -fx-border-width: 2.48px;
+    -fx-text-fill: black;
+    -fx-font-size: 20px;
+    -fx-font-family: "Poppins";
+    -fx-font-weight: 100;
+    
+    -fx-min-width: 500px;
+    -fx-min-height: 70px;
+}
+.report-text{
+    -fx-background-color: white;
+    -fx-border-color: #8E9FFC;
+    -fx-border-width: 2.48px;
+    -fx-text-fill: black; 
+    -fx-font-size: 20px; 
+    -fx-font-family: "Poppins";
+    -fx-font-weight: 100;       
+}

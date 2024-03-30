@@ -1,0 +1,60 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<modelVersion>4.0.0</modelVersion>
+<groupId>Software3506</groupId>
+<artifactId>TCRS</artifactId>
+<version>0.0.1-SNAPSHOT</version>
+<name>Traffic Watch</name>
+
+  <properties>
+    <javafx.version>22</javafx.version>
+    <maven.compiler.source>16</maven.compiler.source>
+    <maven.compiler.target>16</maven.compiler.target>
+  </properties>
+  
+    <!-- Add the dependencies section -->
+  <dependencies>
+    <!-- H2 Database -->
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+	<version>2.2.224</version> <!-- You can adjust the version number if needed -->
+      
+   </dependency>
+    <!-- Add other dependencies here if needed -->
+   
+   <!-- JavaFX dependency --> 
+   <dependency>
+    <groupId>org.openjfx</groupId>
+    <artifactId>javafx-controls</artifactId>
+    <version>${javafx.version}</version>
+  </dependency>
+  
+  <dependency>
+	  <groupId>org.openjfx</groupId>
+	  <artifactId>javafx-fxml</artifactId>
+	  <version>${javafx.version}</version>
+  </dependency>
+  </dependencies>
+  
+  <build>
+    <plugins>
+      <!-- JavaFX Maven Plugin -->
+      <plugin>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-maven-plugin</artifactId>
+        <version>0.0.8</version>
+        <configuration>
+          <mainClass>org.example.Javafx</mainClass>
+        </configuration>
+      </plugin>
+      
+      <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <version>3.2.0</version>
+        </plugin>
+    </plugins>
+  </build>
+  
+
+</project>

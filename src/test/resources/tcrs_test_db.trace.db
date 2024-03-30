@@ -1,0 +1,93 @@
+2024-03-29 11:42:20.186588-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "DRIVERS" not found; SQL statement:
+SELECT * FROM TCRS.DRIVERS WHERE LICENSENUMBER='A12345678912345' [42102-224]
+2024-03-29 14:23:49.708723-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "DRIVINGCITATIONSMUN" not found; SQL statement:
+SELECT * FROM TCRS.DRIVINGCITATIONSMUN WHERE CITATIONID='1' [42102-224]
+2024-03-29 14:26:27.342634-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "DRIVINGCITATIONSMUN" not found; SQL statement:
+SELECT * FROM TCRS.DRIVINGCITATIONSMUN WHERE CITATIONID='1' [42102-224]
+2024-03-29 14:27:11.265992-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "DRIVINGCITATIONSMUNICIPLE" not found; SQL statement:
+SELECT * FROM TCRS.DRIVINGCITATIONSMUNICIPLE WHERE CITATIONID='1' [42102-224]
+2024-03-29 14:28:28.559633-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "DRIVINGCITATIONSMUNICIPLE" not found; SQL statement:
+SELECT * FROM TCRS.DRIVINGCITATIONSMUNICIPLE WHERE CITATIONID='1' [42102-224]
+2024-03-29 14:29:10.163091-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "DRIVINGCITATIONSMUNICIPLE" not found; SQL statement:
+SELECT * FROM TCRS.DRIVINGCITATIONSMUNICIPLE WHERE CITATIONID='1' [42102-224]
+2024-03-29 14:31:07.098724-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "VEHICLEINFO" already exists; SQL statement:
+       
+CREATE CACHED TABLE "TCRS"."VEHICLEINFO"(
+    "VIN" VARCHAR_IGNORECASE(25) NOT NULL,
+    "LICENSEPLATE" VARCHAR_IGNORECASE(255),
+    "MAKE" VARCHAR_IGNORECASE(255),
+    "MODEL" VARCHAR_IGNORECASE(255),
+    "CARYEAR" INTEGER,
+    "REGISTEREDSTATUS" VARCHAR_IGNORECASE(255)
+) [42101-224]
+2024-03-29 14:31:59.603259-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Schema "TCRSTCRS" not found; SQL statement:
+DROP TABLE TCRSTCRS.VEHICLEINFO DRIVERINFO [90079-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:644)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.command.Parser.getSchema(Parser.java:944)
+	at org.h2.command.Parser.getSchema(Parser.java:950)
+	at org.h2.command.Parser.parseDrop(Parser.java:2114)
+	at org.h2.command.Parser.parsePrepared(Parser.java:679)
+	at org.h2.command.Parser.parse(Parser.java:592)
+	at org.h2.command.Parser.parse(Parser.java:564)
+	at org.h2.command.Parser.prepareCommand(Parser.java:483)
+	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:639)
+	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:559)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1166)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:245)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:231)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1345)
+	at org.h2.server.web.WebApp.query(WebApp.java:1143)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1109)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1096)
+	at org.h2.server.web.WebThread.process(WebThread.java:190)
+	at org.h2.server.web.WebThread.run(WebThread.java:103)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2024-03-29 14:32:47.485017-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Column "DRIVERIDCITATIONP" not found [42122-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:514)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.jdbc.JdbcResultSet.getColumnIndex(JdbcResultSet.java:3492)
+	at org.h2.jdbc.JdbcResultSet.getString(JdbcResultSet.java:301)
+	at CRUD.DriverCitation.logData(DriverCitation.java:443)
+	at CRUD.DriverCitation.findCitation(DriverCitation.java:500)
+	at CRUD.DriverCitation.findCitation(DriverCitation.java:407)
+	at databaseManagement.Test_Database.main(Test_Database.java:19)
+2024-03-29 15:20:34.167044-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "DRIVER_WARRANTS" not found; SQL statement:
+SELECT * FROM DRIVER_WARRANTS WHERE WARRANT_ID = 1 [42102-224]
+2024-03-29 15:21:58.621324-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Column "WARRANT_ID" not found; SQL statement:
+SELECT * FROM TCRS.DRIVERWARRANTSMUNICIPLE WHERE WARRANT_ID = 1 [42122-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:514)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.expression.ExpressionColumn.getColumnException(ExpressionColumn.java:244)
+	at org.h2.expression.ExpressionColumn.optimizeOther(ExpressionColumn.java:226)
+	at org.h2.expression.ExpressionColumn.optimize(ExpressionColumn.java:213)
+	at org.h2.expression.condition.Comparison.optimize(Comparison.java:147)
+	at org.h2.expression.Expression.optimizeCondition(Expression.java:148)
+	at org.h2.command.query.Select.prepareExpressions(Select.java:1177)
+	at org.h2.command.query.Query.prepare(Query.java:218)
+	at org.h2.command.Parser.prepareCommand(Parser.java:489)
+	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:639)
+	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:559)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1166)
+	at org.h2.jdbc.JdbcStatement.executeQuery(JdbcStatement.java:94)
+	at databaseManagement.DatabaseManager.executeQuery(DatabaseManager.java:70)
+	at CRUD.DriverWarrants.findDriverWarrant(DriverWarrants.java:182)
+	at CRUD.DriverWarrants.findDriverWarrant(DriverWarrants.java:200)
+	at databaseManagement.Test_Database.main(Test_Database.java:19)
