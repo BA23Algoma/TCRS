@@ -4,7 +4,7 @@ import java.sql.*;
 
 public class DatabaseManager {
 	
-    private static final String URL = "jdbc:h2:/Resources/tcrs_db"; // Database URL
+    private static final String URL = "jdbc:h2:./src/main/resources/tcrs_db"; // Database URL
     private static final String USER = "tcrs"; // Database user name
     private static final String PASSWORD = ""; // Database password
     public Connection connection;

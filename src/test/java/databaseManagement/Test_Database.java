@@ -9,10 +9,9 @@ public class Test_Database {
         // Connect to the database
             
 		DatabaseManager connection = new DatabaseManager();
-		InputDataValidation validate = new InputDataValidation();
 		RecordValidation valid = new RecordValidation(connection);
 		
-		connection.connectToTestDatabase();
+		connection.connectToDatabase();
 		
 		Vehicle driver = new Vehicle(connection);
 		
