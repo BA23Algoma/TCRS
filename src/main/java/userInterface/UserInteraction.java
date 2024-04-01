@@ -10,7 +10,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-
+import java.io.IOException;
 
 import CRUD.*;
 
@@ -39,7 +39,12 @@ public class UserInteraction extends SceneNavigation {
         
 		this.primaryStage = primaryStage;
         
-		databaseManager.connectToDatabase();
+		try {
+			databaseManager.connectToDatabase();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
        
      }
