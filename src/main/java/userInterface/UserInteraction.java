@@ -18,45 +18,61 @@ import CRUD.*;
 
 public class UserInteraction extends SceneNavigation {
 	
-	private final Stage primaryStage;
-	
-	DatabaseManager databaseManager = new DatabaseManager();
-      
-        		
-    InputValidation dataValidator = new InputValidation();
-    RecordValidation recordValidator = new RecordValidation(databaseManager); 
-        Vehicle vehicle = new Vehicle(databaseManager);
-        Driver driver = new Driver(databaseManager);
-        Officer officer = new Officer(databaseManager);
-        Account account = new Account(databaseManager);
-        VehicleCitation vehicleCitation = new VehicleCitation(databaseManager);
-        DriverCitation driverCitation = new DriverCitation(databaseManager);
-        DriverWarrants driverWarrant = new DriverWarrants(databaseManager);
-        VehicleWarrant vehicleWarrant = new VehicleWarrant(databaseManager);
-        TrafficSchool trafficSchool = new TrafficSchool(databaseManager);
-	
-        public UserInteraction(Stage primaryStage) {
-        
-		this.primaryStage = primaryStage;
-        
-		try {
-			databaseManager.connectToDatabase();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-       
-     }
+	 private  Stage primaryStage;
+	 private  DatabaseManager databaseManager;
+	    
+	    private  InputValidation dataValidator;
+	    private  RecordValidation recordValidator;
+	    private  Vehicle vehicle;
+	    private  Driver driver;
+	    private  Officer officer;
+	    private  Account account;
+	    private  VehicleCitation vehicleCitation;
+	    private  DriverCitation driverCitation;
+	    private  DriverWarrants driverWarrant;
+	    private  VehicleWarrant vehicleWarrant;
+	    private  TrafficSchool trafficSchool;
+	    private  Report report;
+
+	    public UserInteraction(Stage primaryStage) {
+	        this.primaryStage = primaryStage;
+	        this.databaseManager = new DatabaseManager();
+	        
+	        this.dataValidator = new InputValidation();
+	        this.recordValidator = new RecordValidation(databaseManager); 
+	        this.vehicle = new Vehicle(databaseManager);
+	        this.driver = new Driver(databaseManager);
+	        this.officer = new Officer(databaseManager);
+	        this.account = new Account(databaseManager);
+	        this.vehicleCitation = new VehicleCitation(databaseManager);
+	        this.driverCitation = new DriverCitation(databaseManager);
+	        this.driverWarrant = new DriverWarrants(databaseManager);
+	        this.vehicleWarrant = new VehicleWarrant(databaseManager);
+	        this.trafficSchool = new TrafficSchool(databaseManager);
+	        
+	        try {
+	            databaseManager.connectToDatabase();
+	        } catch (IOException e) {
+	            // Handle the IOException
+	            e.printStackTrace(); // Or log the exception
+	        }
+	        
+	        
+	    }
+
+	    // Method to disconnect from the database
+	    public void disconnectFromDatabase() {
+	        if (databaseManager != null) {
+	            databaseManager.disconnectFromDatabase();;
+	        }
+	    }
 	//***Assigning actions to buttons***
 	
 	public void setButtonActions()  {
 		
 		//Buttons for basic functions
 		 btClear.setOnAction(event -> clearFields(primaryStage.getScene().getRoot()));
-		 btExit.setOnAction(event->{
-			 exit();
-			 sceneStack.clear();});
+		 btExit.setOnAction(event-> Platform.exit());
 		 btBack.setOnAction(event -> navigateBack());	 
 		 btLogout.setOnAction(event -> {
 			 primaryStage.setScene(createLoginScene());
@@ -120,12 +136,7 @@ public class UserInteraction extends SceneNavigation {
 		 btTrafficSchool.setOnAction(event -> primaryStage.setScene(createOptionScene("Enter/Edit/Delete Traffic School Record")));
 		 btOfficers.setOnAction(event -> primaryStage.setScene(createOptionScene("Enter/Edit/Delete Officer Record")));
 
-		 //Submit button
-		 	//Submit button functioning to enter info into database
-		 	
-		 	
-		 //Delete
-		 //Search
+	
 		 
 		 // Buttons to navigate report section
 		 
@@ -136,10 +147,10 @@ public class UserInteraction extends SceneNavigation {
 
 	
 		
-		 //btSearch to find a record for either editing or deleting 
+		 //Delete button
 		 
 		 btDelete.setOnAction(event -> {
-			    resetVisualComponentSettings();
+			    
 			    CreateScene currentScene = sceneStack.peek();
 
 			    switch (currentScene.parameter2) {
@@ -170,12 +181,15 @@ public class UserInteraction extends SceneNavigation {
 			        case "Traffic School":
 			            deleteTrafficSchool();
 			            break;
-			    }
+			    } 
+			    
+			    reverseAutofill();
 			});
 
+		//Search button to edit record
 		btSearch.setOnAction(event-> {
 				
-			    resetVisualComponentSettings();
+				resetInputPages();
 			    CreateScene currentScene = sceneStack.peek();
 
 			    if (currentScene.parameter2.equals("Edit")) {
@@ -208,6 +222,7 @@ public class UserInteraction extends SceneNavigation {
 			                searchBadgeOfficerEdit();
 			                break;
 			        }
+			    //Search button to delete record
 			    } else if (currentScene.parameter2.equals("Delete")) {
 			        switch (currentScene.parameter1) {
 			            case "Enter License Driver":
@@ -238,6 +253,7 @@ public class UserInteraction extends SceneNavigation {
 			                searchBadgeOfficerDelete();
 			                break;
 			        }
+			    //Search button to generate report
 			    } else if (currentScene.parameter2.equals("Report")) {
 			        
 			    	switch (currentScene.parameter1) {
@@ -252,12 +268,13 @@ public class UserInteraction extends SceneNavigation {
 		                break;
 		           
 		        }
-		    }
+		    } 
+			   
 			});
-
+			//Submit button to enter new record
 			btSubmit.setOnAction(event -> {
 				
-			    resetVisualComponentSettings();
+				resetInputPages();
 			    CreateScene currentScene = sceneStack.peek();
 
 			    if (currentScene.parameter1.equals("Enter")) {
@@ -290,6 +307,7 @@ public class UserInteraction extends SceneNavigation {
 			                submitEnterTrafficSchool();
 			                break;
 			        }
+			    //Submit button to edit record
 			    } else if (currentScene.parameter1.equals("View/Edit")) {
 			        switch (currentScene.parameter2) {
 			            case ("Vehicle Info"):
@@ -320,7 +338,7 @@ public class UserInteraction extends SceneNavigation {
 			                submitEditTrafficSchool();
 			                break;
 			        }
-			    }
+			    } 
 			});
 
 	
@@ -522,6 +540,7 @@ public void submitEditVehicle() {
 		        }
 		    } else {
 		        System.out.println("Empty fields test failed");
+		        
 		        showEmptyFieldsMessage();
 		    }
 		}
@@ -654,7 +673,7 @@ public void submitEditOfficer() {
 		                }
 		            }
 		            // Call the method to insert the vehicle
-		            account.editAccount(accountID, agency, first, last, username, password);
+		            account.editAccount(accountID, username, password, first, last, agency);
 		            clearFields(currentPane);
 		            showSuccessMessage();
 		        } else {
@@ -919,9 +938,16 @@ public void submitEditOfficer() {
 			                    }
 			                }
 			            }
-			            // Call the method to insert the vehicle
-			            //trafficSchool.editEnrollment (citationID, session1Date, session2Date, session3Date, session4Date, 
-			            //session1Attendance, session2Attendance, session3Attendance, session4Attendance);
+			        
+			            trafficSchool.setSession1Attendance(session1Attendance);
+			            trafficSchool.setSession1Date(session1Date);
+			            trafficSchool.setSession2Attendance(session2Attendance);
+			            trafficSchool.setSession2Date(session2Date);
+			            trafficSchool.setSession3Attendance(session3Attendance);
+			            trafficSchool.setSession3Date(session3Date);
+			            trafficSchool.setSession4Attendance(session4Attendance);
+			            trafficSchool.setSession4Date(session4Date);
+			            trafficSchool.editEnrollment(citationID, trafficSchool);
 			            clearFields(currentPane);
 			            showSuccessMessage();
 			            
@@ -1424,10 +1450,10 @@ public void submitEnterVehicleWarrant() {
 		            }
 		        }
 		        
-		        if (recordValidator.checkVehicleRecordExistence(license)) {
-		        	createDataScene("View/Edit","Vehicle Info");
-		        	driver = driver.findDriver(license);
+		        if (recordValidator.checkVehicleRecordExistence(license)) {		    	
 		        	
+		        	primaryStage.setScene(createReportScene());
+		        	//taReport.setText(report.generateDriverReport({}, {license,}, license));
 		        	//handle
 		        } else {
 		        	System.out.println("No record found");
@@ -1476,7 +1502,7 @@ public void searchLicenseDriverEdit() {
 		        }
 		        
 		        if (recordValidator.checkDriverRecordExistence(license)) {
-		        	createDataScene("View/Edit","Driver Info");
+		        	primaryStage.setScene(createDataScene("View/Edit","Driver Info"));
 		        	driver = driver.findDriver(license);
 		        	autoFillDriver(driver);
 		        } else {
@@ -1512,7 +1538,7 @@ public void searchVinVehicleEdit() {
 	        }
 	        
 	        if (recordValidator.checkVehicleRecordExistence(vin)) {
-	        	createDataScene("View/Edit","Vehicle Info");
+	        	primaryStage.setScene(createDataScene("View/Edit","Vehicle Info"));
 	        	vehicle = vehicle.findVehicle(vin);
 	        	autoFillVehicle(vehicle);
 	        } else {
@@ -1548,7 +1574,7 @@ public void searchBadgeOfficerEdit() {
 	        }
 	        
 	        if (recordValidator.checkOfficerRecordExistence(badge)) {
-	        	createDataScene("View/Edit","Officer Info");
+	        	primaryStage.setScene(createDataScene("View/Edit","Officer Info"));
 	        	officer = officer.findOfficer(badge);
 	        	autoFillVehicle(vehicle);
 	        } else {
@@ -1579,27 +1605,31 @@ public void searchAccountIDAccountEdit() {
 	                TextField textField = (TextField) node;
 	                if (textField == tfEnterAcc) {	                    
 	                    accountID = textField.getText();
+	                  
 	                }
 	            }
 	        }
 	        
 	        if (recordValidator.checkAccountRecordExistence(accountID)) {
-	        	createDataScene("View/Edit","Account Info");
+	        	primaryStage.setScene(createDataScene("View/Edit","Account Info"));
 	        	account = account.findAccount(accountID);
 	        	autoFillAccount(account);
+	        	  
 	        } else {
 	        	System.out.println("No record found");
 	        	showNoRecordMessage();
+	        	
 	        }
 	        
 	    } else {
 	        System.out.println("Field format test failed");
 	        showWrongFormatMessage();
+	       
 	    }
 	    
 	} else {
 	    System.out.println("Empty fields test failed");
-	    showEmptyFieldsMessage();
+	    showEmptyFieldsMessage();	    
 	}
 }
 public void searchCitIDDriverCitationEdit() {
@@ -1620,7 +1650,7 @@ public void searchCitIDDriverCitationEdit() {
 	        }
 	        
 	        if (recordValidator.checkDriCitRecordExistence(citationID)){
-	        	createDataScene("View/Edit","Driver Citation Info");
+	        	primaryStage.setScene(createDataScene("View/Edit","Driver Citation Info"));
 	        	driverCitation = driverCitation.findCitation(citationID);
 	        	autoFillDriverCitation(driverCitation);
 	        } else {
@@ -1656,7 +1686,7 @@ public void searchCitIDVehicleCitationEdit() {
 	        }
 	        
 	        if (recordValidator.checkVehCitRecordExistence(citationID)){
-	        	createDataScene("View/Edit","Vehicle Citation Info");
+	        	primaryStage.setScene(createDataScene("View/Edit","Vehicle Citation Info"));
 	        	vehicleCitation = vehicleCitation.findCitation(citationID);
 	        	autoFillVehicleCitation(vehicleCitation);
 	        } else {
@@ -1692,7 +1722,7 @@ public void searchWarIDVehicleWarrantEdit() {
 	        }
 	        
 	        if (recordValidator.checkDriWarrRecordExistence(warrantID)){
-	        	createDataScene("View/Edit","Vehicle Warrant Info");
+	        	primaryStage.setScene(createDataScene("View/Edit","Vehicle Warrant Info"));
 	        	vehicleWarrant = vehicleWarrant.findVehicleWarrant(warrantID);
 	        	autoFillVehicleWarrant(vehicleWarrant);
 	        } else {
@@ -1728,7 +1758,7 @@ public void searchWarIDDriverWarrantEdit() {
 	        }
 	        
 	        if (recordValidator.checkVehWarrRecordExistence(warrantID)){
-	        	createDataScene("View/Edit","Driver Warrant Info");
+	        	primaryStage.setScene(createDataScene("View/Edit","Driver Warrant Info"));
 	        	driverWarrant = driverWarrant.findDriverWarrant(warrantID);
 	        	autoFillDriverWarrant(driverWarrant);
 	        } else {
@@ -1766,7 +1796,7 @@ public void searchCitIDTrafficSchoolEdit() {
 	        }
 	        
 	        if (recordValidator.checkTrafficSchoolRecordExistence(Integer.toString(citationID))){
-	        	createDataScene("View/Edit","Traffic School Info");
+	        	primaryStage.setScene(createDataScene("View/Edit","Traffic School Info"));
 	        	trafficSchool = trafficSchool.findEnrollment(citationID);
 	        	autoFillTrafficSchool(trafficSchool);
 	        } else {
@@ -1808,7 +1838,7 @@ public void searchLicenseDriverDelete() {
 	        }
 	        
 	        if (recordValidator.checkDriverRecordExistence(license)) {
-	        	createDataScene("Delete","Driver Info");
+	        	primaryStage.setScene(createDataScene("Delete","Driver Info"));
 	        	driver = driver.findDriver(license);
 	        	autoFillDriver(driver);
 	        } else {
@@ -1844,7 +1874,7 @@ if (dataValidator.emptyFieldsTest(currentPane)) {
         }
         
         if (recordValidator.checkVehicleRecordExistence(vin)) {
-        	createDataScene("Delete","Vehicle Info");
+        	primaryStage.setScene(createDataScene("Delete","Vehicle Info"));
         	vehicle = vehicle.findVehicle(vin);
         	autoFillVehicle(vehicle);
         } else {
@@ -1881,7 +1911,7 @@ if (dataValidator.emptyFieldsTest(currentPane)) {
         }
         
         if (recordValidator.checkOfficerRecordExistence(badge)) {
-        	createDataScene("Delete","Officer Info");
+        	primaryStage.setScene(createDataScene("Delete","Officer Info"));
         	officer = officer.findOfficer(badge);
         	autoFillVehicle(vehicle);
         } else {
@@ -1917,7 +1947,7 @@ if (dataValidator.emptyFieldsTest(currentPane)) {
         }
         
         if (recordValidator.checkAccountRecordExistence(accountID)) {
-        	createDataScene("Delete","Account Info");
+        	primaryStage.setScene(createDataScene("Delete","Account Info"));
         	account = account.findAccount(accountID);
         	autoFillAccount(account);
         } else {
@@ -1953,7 +1983,7 @@ if (dataValidator.emptyFieldsTest(currentPane)) {
         }
         
         if (recordValidator.checkDriCitRecordExistence(citationID)){
-        	createDataScene("Delete","Driver Citation Info");
+        	primaryStage.setScene(createDataScene("Delete","Driver Citation Info"));
         	driverCitation = driverCitation.findCitation(citationID);
         	autoFillDriverCitation(driverCitation);
         } else {
@@ -1989,7 +2019,7 @@ if (dataValidator.emptyFieldsTest(currentPane)) {
         }
         
         if (recordValidator.checkVehCitRecordExistence(citationID)){
-        	createDataScene("Delete","Vehicle Citation Info");
+        	primaryStage.setScene(createDataScene("Delete","Vehicle Citation Info"));
         	vehicleCitation = vehicleCitation.findCitation(citationID);
         	autoFillVehicleCitation(vehicleCitation);
         } else {
@@ -2025,7 +2055,7 @@ if (dataValidator.emptyFieldsTest(currentPane)) {
         }
         
         if (recordValidator.checkDriWarrRecordExistence(warrantID)){
-        	createDataScene("Delete","Vehicle Warrant Info");
+        	primaryStage.setScene(createDataScene("Delete","Vehicle Warrant Info"));
         	vehicleWarrant = vehicleWarrant.findVehicleWarrant(warrantID);
         	autoFillVehicleWarrant(vehicleWarrant);
         } else {
@@ -2061,7 +2091,7 @@ if (dataValidator.emptyFieldsTest(currentPane)) {
         }
         
         if (recordValidator.checkVehWarrRecordExistence(warrantID)){
-        	createDataScene("Delete","Driver Warrant Info");
+        	primaryStage.setScene(createDataScene("Delete","Driver Warrant Info"));
         	driverWarrant = driverWarrant.findDriverWarrant(warrantID);
         	autoFillDriverWarrant(driverWarrant);
         } else {
@@ -2098,7 +2128,7 @@ public void searchCitIDTrafficSchoolDelete() {
 	        }
 	        
 	        if (recordValidator.checkTrafficSchoolRecordExistence(Integer.toString(citationID))){
-	        	createDataScene("Delete","Traffic School Info");
+	        	primaryStage.setScene(createDataScene("Delete","Traffic School Info"));
 	        	trafficSchool = trafficSchool.findEnrollment(citationID);
 	        	autoFillTrafficSchool(trafficSchool);
 	        } else {
@@ -2117,6 +2147,25 @@ public void searchCitIDTrafficSchoolDelete() {
 	}
 	
 }
+
+//Search button for generating report
+
+public void searchLicenseDriverReport() {
+	
+}
+
+public void searchVinVehicleReport() {
+	
+}
+
+public void searchLicenseDatesDrivingRecord() {
+	
+}
+//Generate outstanding warrants reports
+public void generateOutstandingWarrantsReport() {
+	
+}
+
 //***AutoFilling data fields for viewing/editing/deleting
 
 public void autoFillDriver(Driver driver) {
@@ -2207,7 +2256,7 @@ public void autoFillAccount(Account account) {
             for (Node node : FieldsVBox.getChildren()) {
                 if (node instanceof TextField) {
                     TextField textField = (TextField) node;
-                    if (textField == tfUsername) {
+                    if (textField==tfUsername) {
                         textField.setText(account.getUsername());
                     } else if (textField == tfPassword) {
                     	 textField.setText(account.getPassword());
@@ -2433,21 +2482,14 @@ public void clearFields (Node rootNode) {
 	
            
             
-    
-    public void exit() {
-    
-    	Platform.exit();
-    	databaseManager.disconnectFromDatabase();
-    }
- 
+
     public void login() {
-        DatabaseManager manager = new DatabaseManager();
-        
-            
-            RecordValidation validator = new RecordValidation(manager);
+       
+              
+            RecordValidation validator = new RecordValidation(databaseManager);
 
-            boolean validLogin = validator.checkLoginInfo(tfUsername.getText(), pfPassword.getText(), cbAgencyLogin.getValue());
-
+            boolean validLogin = validator.checkLoginInfo(tfUsernameLogin.getText(), pfPassword.getText(),cbAgencyLogin.getValue());
+           
             if (validLogin && "Provincial".equals(cbAgencyLogin.getValue()))
                 primaryStage.setScene(createOptionScene("Manage/Report Provincial"));
             else if (validLogin && "Municipal".equals(cbAgencyLogin.getValue()))
