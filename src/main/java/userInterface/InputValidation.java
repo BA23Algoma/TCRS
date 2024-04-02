@@ -557,16 +557,17 @@ public Boolean emptyFieldsTest(Node rootNode) {
     for (Node node : FieldsVBox.getChildren()) {
         if (node instanceof TextField ) {
         	TextField textField = (TextField) node;
-        	 if (textField.getText().trim().isEmpty()) {
+        	 if (textField.getText().trim().isEmpty() && textField.isEditable()) {
         		textField.setStyle("-fx-border-color:#FA3E3E;");
         		
         		emptyTestPassed=false;
+        	
         	 }
         }
         
         if (node instanceof ComboBox ) {
         	ComboBox<?> comboBox = (ComboBox<?>) node;
-        	if(comboBox.getSelectionModel().isEmpty()){
+        	if(comboBox.getSelectionModel().isEmpty() && !comboBox.isDisabled()){
         		comboBox.setStyle("-fx-border-color:#FA3E3E;");
         	
         		emptyTestPassed=false;
