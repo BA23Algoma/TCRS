@@ -192,6 +192,7 @@ public class VisualDesign {
     TextField tfBadge = new TextField();
     TextField tfUsername = new TextField();
     TextField tfPassword = new TextField(); 
+    TextField tfUsernameLogin = new TextField();
     
 //Password Field
     
@@ -239,6 +240,10 @@ public class VisualDesign {
 //***Assigning styles to components***
     
 	public void styleVisualComponents () {	
+		
+	//Setting report text to non-editable and wrap on
+				taReport.setWrapText(true);
+				taReport.setEditable(false);
 		
 	//Adding warning icon to warning messages
 		
@@ -351,7 +356,9 @@ public class VisualDesign {
         	for (TextField textField : textFields) {
         	    textField.getStyleClass().add("text-fields"); // Add style class
         	}
-        	
+        
+        tfUsernameLogin.getStyleClass().add("big-text-fields");
+        tfUsernameLogin.setPromptText("Username");
         pfPassword.getStyleClass().add("big-text-fields");
         pfPassword.setPromptText("Password"); 
         
@@ -377,52 +384,89 @@ public class VisualDesign {
     //Styling bottom rectangle 
         
         bottomRectangle.getStyleClass().add("bottom-rectangle");
+        
+        
+      
     
 	}
 	
-//***Setting default settings for visual components***
-	
-	public void resetVisualComponentSettings() {
+	public void reverseAutofill() {
 		
-		//Setting report text to non-editable and wrap on
-		taReport.setWrapText(true);
-		taReport.setEditable(false);
-		
-		//Making text fields for auto-generated fields non-editable
-		
-		TextField[] NotToBeEditedTextFields={tfCitID,tfWarID,tfAccID};
-		
-		for (TextField textField: NotToBeEditedTextFields) {
-			textField.setEditable(false);
-		}
+		 TextField[] textFields = {
+	        	    tfStartDate, tfEndDate, tfEnterCitID, tfEnterWarID, tfEnterAcc,
+	        	    tfVin, tfPlate, tfMake, tfModel, tfYear, tfLic, tfFirst, tfLast,
+	        	    tfPoints, tfDate, tfReason, tfOutstanding, tfCitID, tfWarID, tfAccID,
+	        	    tfFine, tfIssuingOff, tfSess1, tfSess2, tfSess3, tfSess4, tfBadge,
+	        	    tfUsername, tfPassword
+	        	};
 
-        //Hiding feedback labels
+	        	for (TextField textField : textFields) {
+	        	    textField.clear(); 
+	        	}
+	       
+	 
+	     
+	        List<ComboBox<String>> stringComboBoxes = Arrays.asList(
+	        	    cbAgency, cbRegStat, cbLicStat, cbOutstanding, cbReasonDriv, cbReasonDrivVeh,
+	        	    cbReasonVeh, cbPaid, cbReportable, cbSessAtt1, cbSessAtt2,
+	        	    cbSessAtt3, cbSessAtt4
+	        	);
+
+	        	for (ComboBox<String> comboBox : stringComboBoxes) {
+	        	    comboBox.setValue(null); 
+	        	}
+	        taReport.clear();
+	        	
+	}
+	
+	public void resetInputPages() {
+ //Hiding feedback labels
 		
         Label[] feedbackLabels = {lbLoginError, lbEmptyFields, lbWrongFormat, lbNoRecord, lbSuccessText};
         
         for (Label feedbackLabel : feedbackLabels) {
             feedbackLabel.setVisible(false);
         }
-        //Reversing autoFill set text on fields and combo boxes
-        TextField[] textFieldsFilled = { 
-			    tfStartDate, tfEndDate, tfEnterCitID, tfEnterWarID, tfEnterAcc, tfVin, tfPlate, tfMake, tfModel, 
-			    tfYear, tfLic, tfFirst, tfLast, tfPoints, tfDate, tfReason, tfOutstanding, tfCitID, tfWarID, 
-			    tfAccID, tfFine, tfIssuingOff, tfSess1, tfSess2, tfSess3, tfSess4, tfBadge, tfUsername, tfPassword, pfPassword
-			};
+        
+        TextField[] textFields = {
+        	    tfStartDate, tfEndDate, tfEnterCitID, tfEnterWarID, tfEnterAcc,
+        	    tfVin, tfPlate, tfMake, tfModel, tfYear, tfLic, tfFirst, tfLast,
+        	    tfPoints, tfDate, tfReason, tfOutstanding, tfCitID, tfWarID, tfAccID,
+        	    tfFine, tfIssuingOff, tfSess1, tfSess2, tfSess3, tfSess4, tfBadge,
+        	    tfUsername, tfPassword
+        	};
 
-			for (TextField textField : textFieldsFilled) {
-			    textField.setText(""); 
-			   
-			}
-		ComboBox<?>[] comboBoxesFilled = { 
-				    cbAgency, cbRegStat, cbLicStat, cbOutstanding, cbReasonDriv, cbReasonVeh, 
-				    cbPaid, cbReportable, cbSessAtt1, cbSessAtt2, cbSessAtt3, cbSessAtt4 
-				};
+        	for (TextField textField : textFields) {
+        	    textField.setStyle("-fx-border-color:#8E9FFC;"); 
+        	}
+        	
+        	 List<ComboBox<String>> stringComboBoxes = Arrays.asList(
+             	    cbAgency, cbRegStat, cbLicStat, cbOutstanding, cbReasonDriv, cbReasonDrivVeh,
+             	    cbReasonVeh, cbPaid, cbReportable, cbSessAtt1, cbSessAtt2,
+             	    cbSessAtt3, cbSessAtt4
+             	);
 
-				for (ComboBox<?> comboBox : comboBoxesFilled) {
-				    comboBox.setValue(null); 
-				}
-     //Reversing setFieldsUneditable
+             	for (ComboBox<String> comboBox : stringComboBoxes) {
+             		comboBox.setStyle("-fx-border-color:#8E9FFC;");
+             	}
+        
+	}
+	
+	
+	
+	public void setAllFieldsEditable() {
+		
+		
+		
+			
+		
+		 Label[] feedbackLabels = {lbLoginError, lbEmptyFields, lbWrongFormat, lbNoRecord, lbSuccessText};
+	        
+	        for (Label feedbackLabel : feedbackLabels) {
+	            feedbackLabel.setVisible(false);
+	        }
+       
+		//Reversing setFieldsUneditable
         
         //Text Fields
         
@@ -434,6 +478,7 @@ public class VisualDesign {
 
 			for (TextField textField : textFieldsMadeUneditable) {
 			    textField.setEditable(true); 
+			    textField.setStyle("-fx-opacity: 1;");
 			   
 			}
 
@@ -447,10 +492,11 @@ public class VisualDesign {
 			for (ComboBox<?> comboBox : comboBoxesMadeUneditable) {
 			    comboBox.setDisable(false); 
 			}
+			
         
 	}
 	
-	//***Setting fields as non-editable for delete pages***
+	//***Setting fields as non-editable for edit pages
 	public void setPrimaryKeyFieldsUneditable () {
 			TextField[] textFields = { 
 			    tfVin, tfLic, tfCitID, tfWarID, tfAccID, tfBadge
@@ -458,9 +504,11 @@ public class VisualDesign {
 
 			for (TextField textField : textFields) {
 			    textField.setEditable(false); 
+			    textField.setStyle("-fx-opacity: 0.5;");
 			   
 			}
 	}
+	//***Setting fields as non-editable for delete pages***
 	public void setAllFieldsUneditable () {
 		
 			//Text fields
@@ -473,6 +521,7 @@ public class VisualDesign {
 
 			for (TextField textField : textFields) {
 			    textField.setEditable(false); 
+			    textField.setStyle("-fx-opacity: 0.5;");
 			   
 			}
 
