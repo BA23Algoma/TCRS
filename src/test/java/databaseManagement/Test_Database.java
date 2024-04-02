@@ -20,11 +20,11 @@ public class Test_Database {
 			e.printStackTrace();
 		}
 		
-		Vehicle driver = new Vehicle(connection);
+		Account driver = new Account(connection);
 		
-		driver = driver.findVehicle("927840315QXPOWRUE");
+		valid.checkLoginInfo("gamjoun", "239349660", "Admin");
 		
-		System.out.println(driver.toString());
+		//System.out.println(driver.toString());
 		
         connection.disconnectFromDatabase();
            
