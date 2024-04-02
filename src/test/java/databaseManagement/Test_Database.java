@@ -24,7 +24,9 @@ public class Test_Database {
 		
 		valid.checkLoginInfo("gamjoun", "239349660", "Admin");
 		
-		//System.out.println(driver.toString());
+		int latest = driver.insertAccount("Admin", "Banki", "Adewale", "algomaStudent", "ThunderBird");
+		
+		System.out.println("Latest Id is :" + latest);
 		
         connection.disconnectFromDatabase();
            

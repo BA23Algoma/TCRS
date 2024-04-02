@@ -95,8 +95,9 @@ public class Account {
 	
 	
 	// Create and insert account into database given parameters
-	public void insertAccount(String agency, String first, String last, String username, String password) {
+	public int insertAccount(String agency, String first, String last, String username, String password) {
 				
+		
 		username = username.toLowerCase();
 		
 		
@@ -106,9 +107,11 @@ public class Account {
 	    		last, agency);
 	    
 	    // Pass prepared statement to databaseManager for execution
-	    databaseManager.executeUpdate(sql);
+	    int generatedId = databaseManager.executeInsertReturnId(sql);
 	    
-	    System.out.println("Account added to the database!");
+	    return generatedId;
+	    
+	    
 	}
 
 	

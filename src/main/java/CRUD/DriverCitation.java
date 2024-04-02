@@ -167,32 +167,32 @@ public class DriverCitation {
 
 
 	
-	public void insertDriverCitation (String license, String officer, String dateIssued, String reason,  String fine, String Paid, String reportable) {		
+	public int insertDriverCitation (String license, String officer, String dateIssued, String reason,  String fine, String Paid, String reportable) {		
 				
 		if(!isNumber(officer)) {
 			System.out.println("Invaild badge number account!");
-			return;
+			return -1;
 		}
 		else if(!isNumber(fine)) {
 			System.out.println("Invaild fine amount!");
-			return;
+			return -1;
 		}
 		
 		// Validate correct formats of input data
 		 if (!validBadgeNumber(officer)) {
 			 System.out.println("Officer badge number not in the system!");
-			 return;
+			 return -1;
 		 }
 		
 		// Validate if license is in system
 		 if (!validLicenseNumber(license)) {
 			 System.out.println("Licenser not in the system!");
-			 return;
+			 return -1;
 		 }
 		 
 		 if (fineAmount < 0) {
 			 System.out.println("Invalid fine amount");
-			 return;
+			 return -1;
 		 }
 		 
 		// Create SQL query string
@@ -201,8 +201,8 @@ public class DriverCitation {
 	    		+ "VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s' )", officer, license, 
 				reason, dateIssued, fine, Paid, reportable);
 	    
-	    // Pass prepared statement to databaseManager for execution
-	    databaseManager.executeUpdate(sql);
+	 // Generate new entry and return Id statement
+	    int generatedId = databaseManager.executeInsertReturnId(sql);
 	    
 	    System.out.println("Citaion added to the municipal database!");
 	    
@@ -211,17 +211,16 @@ public class DriverCitation {
 	    if (reportable.equalsIgnoreCase("Yes")) {
 	    	
 	    	// Create query
-	    	String sqlProv = String.format("INSERT INTO TCRS.DRIVINGCITATIONSPROV (ISSUINGOFFICERIDP , DRIVERIDCITATIONP , "
-		    		+ "CITATIONREASON ,  CITATIONDATE , FINEAMOUNT, PAYMENTSTATUS )"
-		    		+ "VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s' )", officer, license, 
+	    	String sqlProv = String.format("INSERT INTO TCRS.DRIVINGCITATIONSPROV "
+		    		+ "VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )", generatedId, officer, license, 
 					reason, dateIssued, fine, Paid);
 	    	
-	    	// Insert into provincial database
-	    	databaseManager.executeUpdate(sql);
-	    	
-		    System.out.println("Citation was also added to the provincial database!");
+	    	// Execute query
+			databaseManager.executeUpdate(sqlProv);
 
 	    }
+	    
+	    return generatedId;
 		
 	}
 	
