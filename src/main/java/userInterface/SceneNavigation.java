@@ -17,8 +17,11 @@ import javafx.stage.Screen;
 public class SceneNavigation extends VisualDesign {
 
 
-	Stack<CreateScene> sceneStack = new Stack<>();
+	protected Stack<CreateScene> sceneStack = new Stack<>();
 	
+	public Stack<CreateScene> getSceneStack() {
+        return sceneStack;
+    }
 	
 	class CreateScene {
 			
@@ -45,16 +48,15 @@ public class SceneNavigation extends VisualDesign {
 	public Scene createLoginScene() {
 	
 	styleVisualComponents();
-	resetVisualComponentSettings();
-	
-	tfUsername.getStyleClass().remove("text-fields");
-	tfUsername.getStyleClass().add("big-text-fields");
-    tfUsername.setPromptText("Username");
+	pfPassword.clear();
+	tfUsernameLogin.clear();
+	cbAgencyLogin.setValue(null);
   
-	VBox loginTop = new VBox (lbTrafficWatch, lbAppDescription, cbAgencyLogin, tfUsername, pfPassword);	
+	VBox loginTop = new VBox (lbTrafficWatch, lbAppDescription, cbAgencyLogin, tfUsernameLogin, pfPassword);	
 	loginTop.setAlignment(Pos.CENTER);
 	loginTop.setSpacing(30);
 	loginTop.setPadding(new Insets(50));
+	
 	
 	VBox loginBottom = new VBox (btLogin, lbLoginError);
 	loginBottom.setAlignment(Pos.CENTER);
@@ -86,7 +88,7 @@ public class SceneNavigation extends VisualDesign {
 	public Scene createOptionScene(String centerContent) {
 	
 	styleVisualComponents();
-	resetVisualComponentSettings();
+	setAllFieldsEditable();
 	
 	HBox backLogoutHBox = new HBox(btBack, btLogout);
 	backLogoutHBox.setSpacing(40);
@@ -244,7 +246,8 @@ public class SceneNavigation extends VisualDesign {
 	
 	
 	styleVisualComponents();
-	resetVisualComponentSettings();
+	setAllFieldsEditable();
+	reverseAutofill();
 	
 	HBox backLogoutHBox = new HBox(btBack, btLogout);
 	backLogoutHBox.setSpacing(40);
@@ -373,12 +376,14 @@ public class SceneNavigation extends VisualDesign {
 	 Scene scene = new Scene (pane,bounds.getWidth(), bounds.getHeight());
 	 scene.getStylesheets().add(getClass().getResource("/Resources/Styles.css").toExternalForm());
 	    sceneStack.push(new CreateScene("CreateSearchScene", centerContent, toEditOrDelete));
+	    
 	    return scene;
 	}
 	public Scene createDataScene(String prompt, String fields) {
 	
 	styleVisualComponents();
-	resetVisualComponentSettings();
+	setAllFieldsEditable();
+	reverseAutofill();
 	
 	HBox backLogoutHBox = new HBox(btBack, btLogout);
 	backLogoutHBox.setSpacing(40);
@@ -414,6 +419,7 @@ public class SceneNavigation extends VisualDesign {
 			promptVBox = new VBox(lbEnter);
 			promptVBox.setPadding(new Insets(0,0,0,50));
 			bottomHBox = submitClearFeedbackHBox;
+			setPrimaryKeyFieldsUneditable();
 			break;
 		case("View/Edit"):
 			setPrimaryKeyFieldsUneditable();
@@ -574,8 +580,10 @@ public class SceneNavigation extends VisualDesign {
 }
 
 	public Scene createReportScene() {
+		
+	reverseAutofill();
 	styleVisualComponents();
-	resetVisualComponentSettings();
+	setAllFieldsEditable();
 	Screen screen = Screen.getPrimary();
     Rectangle2D bounds = screen.getVisualBounds(); 
 	HBox backLogoutHBox = new HBox(btBack, btLogout);
