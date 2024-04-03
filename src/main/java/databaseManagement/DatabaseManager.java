@@ -141,7 +141,7 @@ public class DatabaseManager {
 	    }
 	        
 	        if (generatedId != -1) {
-	            System.out.println("Account added to the database! Generated ID: " + generatedId);
+	            System.out.println("Entry added to the database! Generated ID: " + generatedId);
 	        }
 	    
 	        return generatedId;

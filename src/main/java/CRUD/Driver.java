@@ -123,7 +123,7 @@ public class Driver {
                 driver.licenseNumber, driver.licensePlate, driver.firstName,
                 driver.lastName, driver.licenseStatus, driver.demeritPoints);
 
-     // Pass prepared statement to databaseManager for execution
+        // Pass prepared statement to databaseManager for execution
 	    databaseManager.executeUpdate(sql);
 	    
 	    System.out.println("Driver added to the database!");

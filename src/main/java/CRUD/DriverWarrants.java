@@ -106,7 +106,7 @@ public class DriverWarrants {
 
  	// ******** Class Methods *********
  	
-    public void insertDriverWarrant(String licenseNumber, String dateIssued, String warrantReason,
+    public int insertDriverWarrant(String licenseNumber, String dateIssued, String warrantReason,
             String outstanding) {
 
        
@@ -115,9 +115,13 @@ public class DriverWarrants {
                 "INSERT INTO TCRS.DRIVERWARRANTSMUNICIPLE (DRIVERIDWARRANTM, WARRANTDATE, REASON, OUTSTANDING) VALUES ('%s', '%s', '%s', %b)",
                 licenseNumber, dateIssued, warrantReason, outstanding);
 
-        databaseManager.executeUpdate(sql);
-
-        System.out.println("Driver warrant added to the database!");
+        // Generate new entry and return Id statement
+	    int generatedId = databaseManager.executeInsertReturnId(sql);
+	    
+	    System.out.println("Driver warrant added to the database!");
+	    
+	    return generatedId;
+	    
     }
     
     

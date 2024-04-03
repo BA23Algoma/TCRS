@@ -1,0 +1,129 @@
+2024-04-02 19:39:48.561460-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Function "PARSE_DATE" not found; SQL statement:
+SELECT * FROM TCRS.DRIVINGCITATIONSMUNICIPLE WHERE LICENSENUMBER='A12345678912345' AND REPORTABLE='Yes' AND PARSE_DATE(CITATIONDATE, 'yyyy-MM-dd') BETWEEN PARSE_DATE('2010-01-01', 'yyyy-MM-dd') AND PARSE_DATE('2020-01-01', 'yyyy-MM-dd') [90022-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:644)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.command.Parser.readFunction(Parser.java:3786)
+	at org.h2.command.Parser.readTermWithIdentifier(Parser.java:5148)
+	at org.h2.command.Parser.readTerm(Parser.java:4834)
+	at org.h2.command.Parser.readFactor(Parser.java:3337)
+	at org.h2.command.Parser.readSum(Parser.java:3324)
+	at org.h2.command.Parser.readConcat(Parser.java:3289)
+	at org.h2.command.Parser.readCondition(Parser.java:3079)
+	at org.h2.command.Parser.readAnd(Parser.java:3027)
+	at org.h2.command.Parser.readExpressionWithGlobalConditions(Parser.java:2991)
+	at org.h2.command.Parser.parseSelect(Parser.java:2827)
+	at org.h2.command.Parser.parseQueryPrimary(Parser.java:2708)
+	at org.h2.command.Parser.parseQueryTerm(Parser.java:2564)
+	at org.h2.command.Parser.parseQueryExpressionBody(Parser.java:2543)
+	at org.h2.command.Parser.parseQueryExpressionBodyAndEndOfQuery(Parser.java:2536)
+	at org.h2.command.Parser.parseQueryExpression(Parser.java:2529)
+	at org.h2.command.Parser.parseQuery(Parser.java:2498)
+	at org.h2.command.Parser.parsePrepared(Parser.java:627)
+	at org.h2.command.Parser.parse(Parser.java:592)
+	at org.h2.command.Parser.parse(Parser.java:564)
+	at org.h2.command.Parser.prepareCommand(Parser.java:483)
+	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:639)
+	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:559)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1166)
+	at org.h2.jdbc.JdbcStatement.executeQuery(JdbcStatement.java:94)
+	at databaseManagement.DatabaseManager.executeQuery(DatabaseManager.java:88)
+	at CRUD.Report.generateDrivingRecord(Report.java:47)
+	at databaseManagement.Test_Database.main(Test_Database.java:31)
+2024-04-02 21:35:40.404717-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Function "DATE" not found; SQL statement:
+SELECT * FROM TCRS.DRIVINGCITATIONSMUNICIPLE WHERE LICENSENUMBER='A12345678912345' AND REPORTABLE='Yes' AND DATE(CITATIONDATE) BETWEEN DATE('2010-01-01') AND DATE('2020-01-01') [90022-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:644)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.command.Parser.readFunction(Parser.java:3786)
+	at org.h2.command.Parser.readTermWithIdentifier(Parser.java:5148)
+	at org.h2.command.Parser.readTerm(Parser.java:4834)
+	at org.h2.command.Parser.readFactor(Parser.java:3337)
+	at org.h2.command.Parser.readSum(Parser.java:3324)
+	at org.h2.command.Parser.readConcat(Parser.java:3289)
+	at org.h2.command.Parser.readCondition(Parser.java:3079)
+	at org.h2.command.Parser.readAnd(Parser.java:3027)
+	at org.h2.command.Parser.readExpressionWithGlobalConditions(Parser.java:2991)
+	at org.h2.command.Parser.parseSelect(Parser.java:2827)
+	at org.h2.command.Parser.parseQueryPrimary(Parser.java:2708)
+	at org.h2.command.Parser.parseQueryTerm(Parser.java:2564)
+	at org.h2.command.Parser.parseQueryExpressionBody(Parser.java:2543)
+	at org.h2.command.Parser.parseQueryExpressionBodyAndEndOfQuery(Parser.java:2536)
+	at org.h2.command.Parser.parseQueryExpression(Parser.java:2529)
+	at org.h2.command.Parser.parseQuery(Parser.java:2498)
+	at org.h2.command.Parser.parsePrepared(Parser.java:627)
+	at org.h2.command.Parser.parse(Parser.java:592)
+	at org.h2.command.Parser.parse(Parser.java:564)
+	at org.h2.command.Parser.prepareCommand(Parser.java:483)
+	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:639)
+	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:559)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1166)
+	at org.h2.jdbc.JdbcStatement.executeQuery(JdbcStatement.java:94)
+	at databaseManagement.DatabaseManager.executeQuery(DatabaseManager.java:88)
+	at CRUD.Report.generateDrivingRecord(Report.java:47)
+	at databaseManagement.Test_Database.main(Test_Database.java:31)
+2024-04-02 21:36:48.013761-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM TCRS.DRIVINGCITATIONSMUNICIPLE WHERE LICENSENUMBER='A12345678912345' AND REPORTABLE='Yes' AND PARSEDATETIME(CITATIONDATE[*]) BETWEEN PARSEDATETIME('2010-01-01') AND PARSEDATETIME('2020-01-01')"; expected "(, ., [, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, ,"; SQL statement:
+SELECT * FROM TCRS.DRIVINGCITATIONSMUNICIPLE WHERE LICENSENUMBER='A12345678912345' AND REPORTABLE='Yes' AND PARSEDATETIME(CITATIONDATE) BETWEEN PARSEDATETIME('2010-01-01') AND PARSEDATETIME('2020-01-01') [42001-224]
+2024-04-02 21:37:46.434743-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Column "LICENSENUMBER" not found; SQL statement:
+SELECT * FROM TCRS.DRIVINGCITATIONSMUNICIPLE WHERE LICENSENUMBER='A12345678912345' AND REPORTABLE='Yes' AND PARSEDATETIME(CITATIONDATE, 'yyyy-MM-dd') BETWEEN PARSEDATETIME('2010-01-01', 'yyyy-MM-dd') AND PARSEDATETIME('2020-01-01', 'yyyy-MM-dd') [42122-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:514)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.expression.ExpressionColumn.getColumnException(ExpressionColumn.java:244)
+	at org.h2.expression.ExpressionColumn.optimizeOther(ExpressionColumn.java:226)
+	at org.h2.expression.ExpressionColumn.optimize(ExpressionColumn.java:213)
+	at org.h2.expression.condition.Comparison.optimize(Comparison.java:147)
+	at org.h2.expression.condition.ConditionAndOr.optimize(ConditionAndOr.java:136)
+	at org.h2.expression.condition.ConditionAndOr.optimize(ConditionAndOr.java:136)
+	at org.h2.expression.Expression.optimizeCondition(Expression.java:148)
+	at org.h2.command.query.Select.prepareExpressions(Select.java:1177)
+	at org.h2.command.query.Query.prepare(Query.java:218)
+	at org.h2.command.Parser.prepareCommand(Parser.java:489)
+	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:639)
+	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:559)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1166)
+	at org.h2.jdbc.JdbcStatement.executeQuery(JdbcStatement.java:94)
+	at databaseManagement.DatabaseManager.executeQuery(DatabaseManager.java:88)
+	at CRUD.Report.generateDrivingRecord(Report.java:47)
+	at databaseManagement.Test_Database.main(Test_Database.java:31)
+2024-04-02 21:40:14.221738-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Column "Citation ID" not found [42122-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:514)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.jdbc.JdbcResultSet.getColumnIndex(JdbcResultSet.java:3492)
+	at org.h2.jdbc.JdbcResultSet.getString(JdbcResultSet.java:301)
+	at CRUD.Report.logData(Report.java:108)
+	at CRUD.Report.generateDrivingRecord(Report.java:52)
+	at databaseManagement.Test_Database.main(Test_Database.java:31)
+2024-04-02 21:40:36.339139-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Column "ISSUEINGOFFICER" not found [42122-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:514)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.jdbc.JdbcResultSet.getColumnIndex(JdbcResultSet.java:3492)
+	at org.h2.jdbc.JdbcResultSet.getString(JdbcResultSet.java:301)
+	at CRUD.Report.logData(Report.java:108)
+	at CRUD.Report.generateDrivingRecord(Report.java:52)
+	at databaseManagement.Test_Database.main(Test_Database.java:31)
+2024-04-02 22:41:40.191473-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM TCRS.DRIVINGCITATIONSMUNICIPLE WHERE [*]"; expected "INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"; SQL statement:
+SELECT * FROM TCRS.DRIVINGCITATIONSMUNICIPLE WHERE  [42001-224]
+2024-04-02 22:41:40.196133-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM TCRS.VEHICLECITATIONSMUNICIPLE WHERE [*]"; expected "INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"; SQL statement:
+SELECT * FROM TCRS.VEHICLECITATIONSMUNICIPLE WHERE  [42001-224]
+2024-04-02 22:43:51.271687-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM TCRS.DRIVINGCITATIONSMUNICIPLE WHERE [*]"; expected "INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"; SQL statement:
+SELECT * FROM TCRS.DRIVINGCITATIONSMUNICIPLE WHERE  [42001-224]
+2024-04-02 22:43:51.274880-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM TCRS.VEHICLECITATIONSMUNICIPLE WHERE [*]"; expected "INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"; SQL statement:
+SELECT * FROM TCRS.VEHICLECITATIONSMUNICIPLE WHERE  [42001-224]

@@ -13,8 +13,9 @@ public class Report {
         this.databaseManager = databaseManager;
     } 
 
-    public String generateVehicleReport(String[] tables, String[] fields, String vin) {
-        String sqlQuery = String.format("SELECT * FROM %s WHERE VIN='%s'", tables[0], vin);
+    public String generateVehicleReport(String vin) {
+    	String[] fields = {"VIN", "LICENSEPLATE","MAKE","MODEL", "CARYEAR","REGISTEREDSTATUS"};
+        String sqlQuery = String.format("SELECT * FROM TCRS.VEHICLEINFO WHERE VIN='%s'", vin);
         ResultSet result = databaseManager.executeQuery(sqlQuery);
         if (nullCheck(result)) {
             System.out.println("Vehicle not found in the system!");
@@ -23,8 +24,9 @@ public class Report {
         return logData(result, fields);
     }
 
-    public String generateDriverReport(String[] tables, String[] fields, String license) {
-        String sqlQuery = String.format("SELECT * FROM %s WHERE LICENSENUMBER='%s'", tables[0], license);
+    public String generateDriverReport(String license) {
+    	String[] fields = {"FIRSTNAME", "LASTNAME","LICENSENUMBER","LICENSEPLATE", "LICENSESTATUS","DEMERITPOINTS"};
+        String sqlQuery = String.format("SELECT * FROM TCRS.DRIVERINFO WHERE LICENSENUMBER='%s'", license);
         ResultSet result = databaseManager.executeQuery(sqlQuery);
         if (nullCheck(result)) {
             System.out.println("Driver not found in the system!");
@@ -33,55 +35,129 @@ public class Report {
         return logData(result, fields);
     }
 
-    public String generateDrivingRecord(String[] tables, String[] fields, String license,
-            String startDate, String endDate) {
-        String sqlQuery = String.format("SELECT * FROM %s WHERE LICENSENUMBER='%s' AND DATE BETWEEN '%s' AND '%s'",
-                tables[0], license, startDate, endDate);
+    public String generateDrivingRecord(String license, String startDate, String endDate) {
+    	
+    	String[] fields = {"CITATIONID", "ISSUEINGOFFICERIDM", "DRIVERIDCITATIONM", "CITATIONREASON", 
+    			"CITATIONDATE", "FINEAMOUNT", "PAYMENTSTATUS", "REPORTABLE"};
+        
+        String sqlQuery = String.format("SELECT * FROM TCRS.DRIVINGCITATIONSMUNICIPLE WHERE DRIVERIDCITATIONM='%s' AND REPORTABLE='Yes' "
+        		+ "AND PARSEDATETIME(CITATIONDATE, 'yyyy-MM-dd') BETWEEN PARSEDATETIME('%s', 'yyyy-MM-dd') AND PARSEDATETIME('%s', 'yyyy-MM-dd')",
+        		license, startDate, endDate);
+        
         ResultSet result = databaseManager.executeQuery(sqlQuery);
         if (nullCheck(result)) {
             System.out.println("No driving records found for the given period!");
             return null;
         }
-        return logData(result, fields);
+        return generateDriverReport(license) + "\n" + logData(result, fields);
     }
 
-    public String generateCitationSummary(String[] tables, String[] fields,
-            Optional<String> licenseNumber,
-            Optional<String> licensePlate,
-            Optional<Integer> officeBadge,
-            Optional<String> startDate,
-            Optional<String> endDate,
-            Optional<String> reason,
-            Optional<String> paid) {
-        String sqlQuery = "SELECT * FROM " + tables[0] + " WHERE ";
-        if (licenseNumber.isPresent()) {
-            sqlQuery += "LICENSENUMBER='" + licenseNumber.get();
+    public String generateCitationSummary(
+            Optional<String> tfIssuingOff,
+            Optional<String> tfStartDate,
+            Optional<Integer> tfEndDate,
+            Optional<String> cbReasonDrivVeh,
+            Optional<String> cbPaid) {
+    	
+    	String[] fieldDriver= {"CITATIONID", "ISSUEINGOFFICERIDM", "DRIVERIDCITATIONM", "CITATIONREASON",
+    	        "CITATIONDATE", "FINEAMOUNT", "PAYMENTSTATUS", "REPORTABLE"};
+    	String[] fieldVehicle= {"CITATIONID", "ISSUEINGOFFICERIDM", "VINCITATIONM", "CITATIONREASON",
+    		    "CITATIONDATE", "FINEAMOUNT", "PAYMENTSTATUS"};
+    	
+        String sqlQueryDriver = String.format("SELECT * FROM TCRS.DRIVINGCITATIONSMUNICIPLE");
+        String sqlQueryVehicle = String.format("SELECT * FROM TCRS.VEHICLECITATIONSMUNICIPLE");
+
+        Boolean initial = true; // check whether or not to use AND in sql string
+
+        // Issuing officer present
+        if (tfIssuingOff.isPresent()) {
+        	sqlQueryDriver += "ISSUEINGOFFICERIDM='" + tfIssuingOff.get();
+        	sqlQueryVehicle += "ISSUEINGOFFICERIDM='" + tfIssuingOff.get();
+        	initial = false;
+        }
+        
+        // Date present
+        if (tfStartDate.isPresent() && tfEndDate.isPresent()) { // Start and end date
+        	sqlQueryDriver += initialCondition(sqlQueryDriver, initial);
+    		sqlQueryVehicle += initialCondition(sqlQueryVehicle, initial);
+    		initial = false;
+    		
+        	sqlQueryDriver += String.format(" PARSEDATETIME(CITATIONDATE, 'yyyy-MM-dd') BETWEEN PARSEDATETIME('%s', 'yyyy-MM-dd') AND PARSEDATETIME('%s', 'yyyy-MM-dd')", tfStartDate.get(), tfEndDate.get());
+        	sqlQueryVehicle += String.format(" PARSEDATETIME(CITATIONDATE, 'yyyy-MM-dd') BETWEEN PARSEDATETIME('%s', 'yyyy-MM-dd') AND PARSEDATETIME('%s', 'yyyy-MM-dd')", tfStartDate.get(), tfEndDate.get());
+        }
+        else if (tfStartDate.isPresent()) { // Only start date
+        		sqlQueryDriver += initialCondition(sqlQueryDriver, initial);
+        		sqlQueryVehicle += initialCondition(sqlQueryVehicle, initial);
+        		initial = false;
+     
+         	sqlQueryDriver += String.format(" PARSEDATETIME(CITATIONDATE, 'yyyy-MM-dd') >= PARSEDATETIME('%s', 'yyyy-MM-dd')", tfStartDate.get());
+        	sqlQueryVehicle += String.format(" PARSEDATETIME(CITATIONDATE, 'yyyy-MM-dd') >= PARSEDATETIME('%s', 'yyyy-MM-dd')", tfStartDate.get());
+       
+        }
+        else if (tfEndDate.isPresent()) { // Only end date
+        	sqlQueryDriver += initialCondition(sqlQueryDriver, initial);
+    		sqlQueryVehicle += initialCondition(sqlQueryVehicle, initial);
+    		initial = false;
+    		
+         	sqlQueryDriver += String.format(" PARSEDATETIME(CITATIONDATE, 'yyyy-MM-dd') <= PARSEDATETIME('%s', 'yyyy-MM-dd')", tfEndDate.get());
+        	sqlQueryVehicle += String.format(" PARSEDATETIME(CITATIONDATE, 'yyyy-MM-dd') <= PARSEDATETIME('%s', 'yyyy-MM-dd')", tfEndDate.get());
+       
+        }
+        
+        if (cbReasonDrivVeh.isPresent()) { // Reason given
+        	sqlQueryDriver += initialCondition(sqlQueryDriver, initial);
+    		sqlQueryVehicle += initialCondition(sqlQueryVehicle, initial);
+    		initial = false;
+    		
+        	sqlQueryDriver += "CITATIONREASON='" + cbReasonDrivVeh.get();
+        	sqlQueryVehicle += "CITATIONREASON='" + cbReasonDrivVeh.get();
+
+        }
+        if (cbPaid.isPresent()) { // Payment status given
+        	sqlQueryDriver += initialCondition(sqlQueryDriver, initial);
+    		sqlQueryVehicle += initialCondition(sqlQueryVehicle, initial);
+    		initial = false;
+    		
+        	sqlQueryDriver += "PAYMENTSTATUS='" + cbPaid.get();
+        	sqlQueryVehicle += "PAYMENTSTATUS='" + cbPaid.get();
+
         }
 
-        sqlQuery = sqlQuery.substring(0, sqlQuery.length() - 5);
-        ResultSet result = databaseManager.executeQuery(sqlQuery);
         
-        return logData(result, fields);
+        ResultSet resultDriver = databaseManager.executeQuery(sqlQueryDriver);
+        ResultSet resultVehicle = databaseManager.executeQuery(sqlQueryVehicle);
+                
+        return "Driving Citations\n" + logData(resultDriver, fieldDriver) + "\nVehicle Citations\n" + logData(resultVehicle, fieldVehicle);
     }
 
-    public String generateOutstandingWarrants(String[] tables, String[] fields) {
-        String sqlQuery = String.format("SELECT * FROM %s WHERE OUTSTANDING=TRUE", tables[0]);
-        ResultSet result = databaseManager.executeQuery(sqlQuery);
-        if (nullCheck(result)) {
+    public String generateOutstandingWarrants() {
+    	
+    	String[] fieldDriver= {"WARRANTID", "DRIVERIDWARRANTM", "REASON", "WARRANTDATE", "OUTSTANDING"};
+    	String[] fieldVehicle= {"WARRANTIDVM", "VINWARRANTM", "REASON", "WARRANTDATE", "OUTSTANDING"};
+    	
+        String sqlQueryDriver = String.format("SELECT * FROM TCRS.DRIVERWARRANTSMUNICIPLE WHERE OUTSTANDING='Yes'");
+        String sqlQueryVehicle = String.format("SELECT * FROM TCRS.VEHICLEWARRANTSMUNICIPLE WHERE OUTSTANDING='Yes'");
+
+        
+        ResultSet resultDriver = databaseManager.executeQuery(sqlQueryDriver);
+        ResultSet resultVehicle = databaseManager.executeQuery(sqlQueryVehicle);
+        
+        if (nullCheck(resultDriver) && nullCheck(resultVehicle)) {
             System.out.println("No outstanding warrants found!");
             return null;
         }
-        return logData(result, fields);
+        return "Outstanding Driving Warrant\n" + logData(resultDriver, fieldDriver) + "\nOutstanding Vehicle Warrants\n" + logData(resultVehicle, fieldVehicle);
     }
 
     // helper methods
     private String logData(ResultSet result, String[] fields) {
-    	String report = null;
+    	String report = "";
         try {
             while (result.next()) {
                 for (String field : fields) {
                 	report = report + (field + ": " + result.getString(field)) + " ";
                 }
+                report = report + "\n";
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -107,5 +183,16 @@ public class Report {
             return true;
         }
         return false;
+    }
+    
+    private String initialCondition(String sqlQuery, Boolean initial) {
+    	if (initial) {
+        	sqlQuery += " WHERE ";
+    	}
+    	else {
+    		sqlQuery += " AND ";
+
+    	}
+    	return sqlQuery;
     }
 }

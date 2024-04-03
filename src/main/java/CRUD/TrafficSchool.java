@@ -57,6 +57,38 @@ public class TrafficSchool {
     public String getSession4Attendance() {
         return session4Attendance;
     }
+    
+    public void setSession1Date(String session1Date) {
+        this.session1Date = session1Date;;
+    }
+
+    public void setSession2Date(String session2Date) {
+        this.session2Date = session2Date;
+    }
+
+    public void setSession3Date(String session3Date) {
+        this.session3Date = session3Date;
+    }
+
+    public void setSession4Date(String session4Date) {
+        this.session4Date = session4Date;
+    }
+
+    public void setSession1Attendance(String session1Attendance) {
+        this.session1Attendance = session1Attendance;
+    }
+
+    public void setSession2Attendance(String session2Attendance) {
+        this.session2Attendance = session2Attendance;
+    }
+
+    public void setSession3Attendance(String session3Attendance) {
+        this.session3Attendance = session3Attendance;
+    }
+
+    public void setSession4Attendance(String session4Attendance) {
+        this.session4Attendance =  session4Attendance;
+    }
 
     public void insertEnrollment(TrafficSchool trafficSchool) {
         insertEnrollment(trafficSchool.citationID, trafficSchool.session1Date, trafficSchool.session2Date,

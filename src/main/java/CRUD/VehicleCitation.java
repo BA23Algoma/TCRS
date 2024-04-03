@@ -141,27 +141,27 @@ public class VehicleCitation {
 		//********** Database Methods **********//
 
 	
-	public void insertVehicleCitation (String vin, String officer, String dateIssued, String reason,  String fine, String Paid) {		
+	public int insertVehicleCitation (String vin, String officer, String dateIssued, String reason,  String fine, String Paid) {		
 		
 		if(!isNumber(officer)) {
 			System.out.println("Invaild badge number account!");
-			return;
+			return -1;
 		}
 		else if(!isNumber(fine)) {
 			System.out.println("Invaild fine amount!");
-			return;
+			return -1;
 		}
 		
 		// Validate format and if officer is in the system
 		 if (!validBadgeNumber(officer)) {
 			 System.out.println("Officer badge number not in the system!");
-			 return;
+			 return -1;
 		 }
 		 
 		// Validate VIN number
 		 if (!valiadteVin(vin)) {
 			 System.out.println("Vin not in the system!");
-			 return;
+			 return -1;
 		 }
 		 
 		// Create SQL query string
@@ -170,10 +170,12 @@ public class VehicleCitation {
 	    		+ "VALUES ('%s', '%s', '%s', '%s', '%s', '%s')", officer, vin, 
 				reason, dateIssued, fine, Paid);
 	    
-	    // Pass prepared statement to databaseManager for execution
-	    databaseManager.executeUpdate(sql);
+	 // Generate new entry and return Id statement
+	    int generatedId = databaseManager.executeInsertReturnId(sql);
 	    
 	    System.out.println("Vehcile citation added to the database!");
+	    
+	    return generatedId;
 		
 	}
 	

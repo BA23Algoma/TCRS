@@ -96,7 +96,7 @@ public class VehicleWarrant {
  		
  		//******** Database Methods ***********
 
-    public void insertVehicleWarrant(String vin, String dateIssued, String warrantReason, String outstanding) {
+    public int insertVehicleWarrant(String vin, String dateIssued, String warrantReason, String outstanding) {
 
      
         String sql = String.format(
@@ -104,8 +104,15 @@ public class VehicleWarrant {
                 vin, dateIssued, warrantReason, outstanding);
 
         databaseManager.executeUpdate(sql);
-
-        System.out.println("Vehicle warrant added to the database!");
+        
+        // Generate new entry and return Id statement
+	    int generatedId = databaseManager.executeInsertReturnId(sql);
+	    
+	    System.out.println("Vehicle warrant added to the database!");
+	    
+	    return generatedId;
+	    
+        
     }
 
     public void editVehicleWarrant(String warrantID, String vin, String dateIssued, String warrantReason, String outstanding) {

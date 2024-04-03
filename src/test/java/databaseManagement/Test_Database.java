@@ -24,9 +24,12 @@ public class Test_Database {
 		
 		valid.checkLoginInfo("gamjoun", "239349660", "Admin");
 		
-		int latest = driver.insertAccount("Admin", "Banki", "Adewale", "algomaStudent", "ThunderBird");
+		//int latest = driver.insertAccount("Admin", "Banki", "Adewale", "algomaStudent", "ThunderBird");
 		
-		System.out.println("Latest Id is :" + latest);
+		Report report = new Report(connection);
+		
+		String warrantcheck = report.generateCitationSummary(java.util.Optional.empty(), java.util.Optional.empty(), java.util.Optional.empty(), java.util.Optional.empty(), java.util.Optional.empty());
+		System.out.println(warrantcheck);
 		
         connection.disconnectFromDatabase();
            

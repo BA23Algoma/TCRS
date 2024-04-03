@@ -106,7 +106,7 @@ public class Account {
 	    		+ "VALUES ('%s', '%s', '%s', '%s', '%s')", username, password, first, 
 	    		last, agency);
 	    
-	    // Pass prepared statement to databaseManager for execution
+	    // Generate new entry and return Id statement
 	    int generatedId = databaseManager.executeInsertReturnId(sql);
 	    
 	    return generatedId;
