@@ -19,6 +19,9 @@ public class InputValidation extends SceneNavigation {
 	
 	private Pattern p = Pattern.compile("[^a-z0-9]", Pattern.CASE_INSENSITIVE);
 	
+	public InputValidation() {
+	}
+	
 
 	public boolean validateVIN(String vin) {
 		
@@ -305,9 +308,9 @@ public class InputValidation extends SceneNavigation {
 	private boolean dateFormat(String date) {
 		
 		char seperator = '-';
-		String monthString = date.substring(0,2);
-		String dayString = date.substring(3,5);
-		String yearString = date.substring(6);
+		String yearString = date.substring(0,4);
+		String dayString = date.substring(6,7);
+		String monthString = date.substring(9);
 		
 		int month = Integer.valueOf(monthString);
 		int day = Integer.valueOf(dayString);
@@ -332,14 +335,15 @@ public class InputValidation extends SceneNavigation {
 	
 		
 		return Character.isDigit(date.charAt(0)) &&
-        Character.isDigit(date.charAt(1)) &&
-        Objects.equals(date.charAt(2), seperator) &&
-        Character.isDigit(date.charAt(3)) &&
-        Character.isDigit(date.charAt(4)) &&
-        Objects.equals(date.charAt(5), seperator) &&
-        Character.isDigit(date.charAt(6)) &&
-        Character.isDigit(date.charAt(7)) &&
-        Character.isDigit(date.charAt(8));
+		        Character.isDigit(date.charAt(1)) &&
+		        Character.isDigit(date.charAt(2)) &&
+		        Character.isDigit(date.charAt(3)) &&
+		        Objects.equals(date.charAt(4), seperator) &&
+		        Character.isDigit(date.charAt(5)) &&
+		        Character.isDigit(date.charAt(6)) &&
+		        Objects.equals(date.charAt(7), seperator) &&
+		        Character.isDigit(date.charAt(8)) &&
+		        Character.isDigit(date.charAt(9));
 		
 	}
 	
