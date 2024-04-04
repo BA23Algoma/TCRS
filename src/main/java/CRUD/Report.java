@@ -2,6 +2,8 @@ package CRUD;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import databaseManagement.*;
 
@@ -38,7 +40,7 @@ public class Report {
     public String generateDrivingRecord(String license, String startDate, String endDate) {
     	
     	String[] fields = {"CITATIONID", "ISSUEINGOFFICERIDM", "DRIVERIDCITATIONM", "CITATIONREASON", 
-    			"CITATIONDATE", "FINEAMOUNT", "PAYMENTSTATUS", "REPORTABLE"};
+    			"CITATIONDATE", "FINEAMOUNT", "PAYMENTSTATUS"};
         
         String sqlQuery = String.format("SELECT * FROM TCRS.DRIVINGCITATIONSMUNICIPLE WHERE DRIVERIDCITATIONM='%s' AND REPORTABLE='Yes' "
         		+ "AND PARSEDATETIME(CITATIONDATE, 'yyyy-MM-dd') BETWEEN PARSEDATETIME('%s', 'yyyy-MM-dd') AND PARSEDATETIME('%s', 'yyyy-MM-dd')",
@@ -49,7 +51,7 @@ public class Report {
             System.out.println("No driving records found for the given period!");
             return null;
         }
-        return generateDriverReport(license) + "\n" + logData(result, fields);
+        return generateDriverReport(license) + "\nCitation History\n\n" + logData(result, fields);
     }
 
     public String generateCitationSummary(
@@ -132,8 +134,8 @@ public class Report {
 
     public String generateOutstandingWarrants() {
     	
-    	String[] fieldDriver= {"WARRANTID", "DRIVERIDWARRANTM", "REASON", "WARRANTDATE", "OUTSTANDING"};
-    	String[] fieldVehicle= {"WARRANTIDVM", "VINWARRANTM", "REASON", "WARRANTDATE", "OUTSTANDING"};
+    	String[] fieldDriver= {"WARRANTID", "DRIVERIDWARRANTM", "REASON", "WARRANTDATE"};
+    	String[] fieldVehicle= {"WARRANTIDVM", "VINWARRANTM", "REASON", "WARRANTDATE"};
     	
         String sqlQueryDriver = String.format("SELECT * FROM TCRS.DRIVERWARRANTSMUNICIPLE WHERE OUTSTANDING='Yes'");
         String sqlQueryVehicle = String.format("SELECT * FROM TCRS.VEHICLEWARRANTSMUNICIPLE WHERE OUTSTANDING='Yes'");
@@ -146,16 +148,56 @@ public class Report {
             System.out.println("No outstanding warrants found!");
             return null;
         }
-        return "Outstanding Driving Warrant\n" + logData(resultDriver, fieldDriver) + "\nOutstanding Vehicle Warrants\n" + logData(resultVehicle, fieldVehicle);
+        return "Outstanding Driver Warrants\n\n" + logData(resultDriver, fieldDriver) + "\nOutstanding Vehicle Warrants\n\n" + logData(resultVehicle, fieldVehicle);
     }
 
     // helper methods
     private String logData(ResultSet result, String[] fields) {
     	String report = "";
+    	 Map<String, String> columnDisplayNames = new HashMap<>();
+    	 	
+    	 	columnDisplayNames.put("CITATIONID", "Citation ID");
+    	    columnDisplayNames.put("ISSUEINGOFFICERIDM", "Issuing Officer ID");
+    	    columnDisplayNames.put("DRIVERIDCITATIONM", "License Number");
+    	    columnDisplayNames.put("CITATIONREASON", "Citation Reason");
+    	    columnDisplayNames.put("CITATIONDATE", "Citation Date");
+    	    columnDisplayNames.put("FINEAMOUNT", "Fine Amount");
+    	    columnDisplayNames.put("PAYMENTSTATUS", "Payment Status");
+    	    columnDisplayNames.put("REPORTABLE", "Reportable");
+    	    columnDisplayNames.put("FIRSTNAME", "First Name");
+    	    columnDisplayNames.put("LASTNAME", "Last Name");
+    	    columnDisplayNames.put("LICENSENUMBER", "License Number");
+    	    columnDisplayNames.put("LICENSEPLATE", "License Plate");
+    	    columnDisplayNames.put("LICENSESTATUS", "License Status");
+    	    columnDisplayNames.put("DEMERITPOINTS", "Demerit Points");
+    	    
+    	    // Vehicle related columns
+    	    columnDisplayNames.put("VIN", "VIN");
+    	    columnDisplayNames.put("MAKE", "Make");
+    	    columnDisplayNames.put("MODEL", "Model");
+    	    columnDisplayNames.put("CARYEAR", "Car Year");
+    	    columnDisplayNames.put("REGISTEREDSTATUS", "Registered Status");
+    	    
+    	    // Vehicle citation related columns
+    	    columnDisplayNames.put("VINCITATIONM", "VIN");
+    	    
+    	    // Warrant related columns
+    	    columnDisplayNames.put("WARRANTID", "Warrant ID");
+    	    columnDisplayNames.put("WARRANTIDVM", "Warrant ID");
+    	    columnDisplayNames.put("VINWARRANTM", "VIN");
+    	    columnDisplayNames.put("DRIVERIDWARRANTM", "License Number");
+    	    columnDisplayNames.put("REASON", "Reason");
+    	    columnDisplayNames.put("WARRANTDATE", "Warrant Date");
+    	    columnDisplayNames.put("OUTSTANDING", "Outstanding");
+    	    
+    	    
         try {
             while (result.next()) {
                 for (String field : fields) {
-                	report = report + (field + ": " + result.getString(field)) + " ";
+                	
+                	String displayName = columnDisplayNames.get(field);
+                   
+                    report += (displayName + ": " + result.getString(field)) + "\n";
                 }
                 report = report + "\n";
             }
