@@ -5,7 +5,7 @@ import java.sql.*;
 
 public class DatabaseManager {
 	
-    private static final String URL = "jdbc:h2:./src/main/Resources/trcs_db"; // Database URL
+    private static final String URL = "jdbc:h2:./src/main/Resources/trcs_database"; // Database URL
     private static final String USER = "tcrs"; // Database user name
     private static final String PASSWORD = ""; // Database password
     public Connection connection;
@@ -355,14 +355,14 @@ public class DatabaseManager {
     			+ "INSERT INTO \"TCRS\".\"DRIVINGCITATIONSMUNICIPLE\" ( ISSUEINGOFFICERIDM, DRIVERIDCITATIONM, CITATIONREASON, CITATIONDATE, fineAmount, paymentStatus, reportable) VALUES\r\n"
     			+ "('10001', 'A12345678912345', 'Speeding', '2014-05-06', '150', 'Paid', 'Yes'),\r\n"
     			+ "('10001', 'B23456789023456', 'DUI', '2002-09-15', '400', 'Unpaid', 'Yes'),\r\n"
-    			+ "('10002', 'C34567890134567', 'Moving Vehicle Code Violation', '2019-06-29', '250', 'Paid', 'TBD'),\r\n"
+    			+ "('10002', 'C34567890134567', 'DUI', '2019-06-29', '250', 'Paid', 'TBD'),\r\n"
     			+ "('10002', 'A12345678912345', 'Speeding', '2008-08-18', '200', 'Paid', 'Yes'),\r\n"
     			+ "('10006', 'E56789012356789', 'Reckless Driving', '2013-09-15', '300', 'Unpaid', 'Yes'),\r\n"
     			+ "('10006', 'J01234567801234', 'Speeding', '2012-09-15', '200', 'Paid', 'Yes'),\r\n"
     			+ "('10002', 'G78901234578901', 'DUI', '2017-04-23', '400', 'Unpaid', 'Yes'),\r\n"
     			+ "('10007', 'H89012345689012', 'Speeding', '2002-09-15', '200', 'Paid', 'Yes'),\r\n"
     			+ "('10008', 'B23456789023456', 'Reckless Driving', '2015-07-14', '300', 'Paid', 'Yes'),\r\n"
-    			+ "('10001', 'J01234567801234', 'Moving Vehicle Code Violation', '2000-01-19', '250', 'Unpaid', 'TBD');       \r\n"
+    			+ "('10001', 'J01234567801234', 'Speeding', '2000-01-19', '250', 'Unpaid', 'TBD');       \r\n"
     			+ "CREATE CACHED TABLE \"TCRS\".\"DRIVINGCITATIONSPROV\"(\r\n"
     			+ "    \"CITATIONID\" INTEGER NOT NULL,\r\n"
     			+ "    \"ISSUEINGOFFICERIDP\" VARCHAR_IGNORECASE(10),\r\n"
@@ -410,16 +410,16 @@ public class DatabaseManager {
     			+ "ALTER TABLE \"TCRS\".\"ACCOUNTS\" ADD CONSTRAINT \"TCRS\".\"CONSTRAINT_A\" PRIMARY KEY(\"ACCOUNTID\");   \r\n"
     			+ "-- 10 +/- SELECT COUNT(*) FROM TCRS.ACCOUNTS;  \r\n"
     			+ "INSERT INTO \"TCRS\".\"ACCOUNTS\" ( username, passwordAcc, firstName, lastName, agency) VALUES\r\n"
-    			+ "('badewale', '239592830', 'Banki', 'Adewale', 'Admin'),\r\n"
-    			+ "('gamjoun', '239349660', 'Ghizlane', 'Amjoun', 'Admin'),\r\n"
-    			+ "('brajaie', '239394290', 'Ben', 'Rajaie', 'Admin'),\r\n"
-    			+ "('kuwaechi', '199677980', 'Kennedy', 'Uwaechi', 'Admin'),\r\n"
+    			+ "('badewale', '239592830', 'Banki', 'Adewale', 'Administration'),\r\n"
+    			+ "('gamjoun', '239349660', 'Ghizlane', 'Amjoun', 'Administration'),\r\n"
+    			+ "('brajaie', '239394290', 'Ben', 'Rajaie', 'Administration'),\r\n"
+    			+ "('kuwaechi', '199677980', 'Kennedy', 'Uwaechi', 'Administration'),\r\n"
     			+ "('sjohn', '10002', 'Smith', 'John', 'Provincial'),\r\n"
-    			+ "('jdavid', '10003', 'Johnson', 'David', 'Local'),\r\n"
+    			+ "('jdavid', '10003', 'Johnson', 'David', 'Municipal'),\r\n"
     			+ "('wchris', '10004', 'Williams', 'Chris', 'Provincial'),\r\n"
-    			+ "('bmike', '10005', 'Brown', 'Mike', 'Local'),\r\n"
+    			+ "('bmike', '10005', 'Brown', 'Mike', 'Municipal'),\r\n"
     			+ "('jsarah', '10006', 'Jones', 'Sarah', 'Provincial'),\r\n"
-    			+ "('grobert', '10007', 'Garcia', 'Robert', 'Local');          \r\n"
+    			+ "('grobert', '10007', 'Garcia', 'Robert', 'Municipal');          \r\n"
     			+ "ALTER TABLE \"TCRS\".\"DRIVERWARRANTSMUNICIPLE\" ADD CONSTRAINT \"TCRS\".\"CONSTRAINT_15D\" FOREIGN KEY(\"DRIVERIDWARRANTM\") REFERENCES \"TCRS\".\"DRIVERINFO\"(\"LICENSENUMBER\") NOCHECK;   \r\n"
     			+ "ALTER TABLE \"TCRS\".\"DRIVERWARRANTSPROV\" ADD CONSTRAINT \"TCRS\".\"CONSTRAINT_117\" FOREIGN KEY(\"WARRANTID\") REFERENCES \"TCRS\".\"DRIVERWARRANTSMUNICIPLE\"(\"WARRANTID\") NOCHECK;      \r\n"
     			+ "ALTER TABLE \"TCRS\".\"DRIVINGCITATIONSMUNICIPLE\" ADD CONSTRAINT \"TCRS\".\"CONSTRAINT_711\" FOREIGN KEY(\"DRIVERIDCITATIONM\") REFERENCES \"TCRS\".\"DRIVERINFO\"(\"LICENSENUMBER\") NOCHECK;\r\n"
