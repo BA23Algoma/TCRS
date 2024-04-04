@@ -109,6 +109,7 @@ public class RecordValidation {
 		
 		username = username.toLowerCase();
 		
+		
 		// Build string to search login credentials within database
 		String sqlCredentialCheck = String.format("SELECT * FROM TCRS.ACCOUNTS WHERE AGENCY = '%s' AND USERNAME = '%s' AND PASSWORDACC = '%s'", agency, username, password);
 		
@@ -118,7 +119,7 @@ public class RecordValidation {
 			// If there is no next, then the VIN is not in the database and therefore valid
 			try {
 				if(result.next()) {
-					System.out.println("Login succesfull!");
+					System.out.println("Login succesfull! ");
 					return true;
 				}
 				else {

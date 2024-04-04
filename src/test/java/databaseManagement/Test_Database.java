@@ -21,9 +21,9 @@ public class Test_Database {
 			e.printStackTrace();
 		}
 		
-		Account driver = new Account(connection);
-		
-		valid.checkLoginInfo("gamjoun", "239349660", "Admin");
+		//Account driver = new Account(connection);
+
+		valid.checkLoginInfo("gamjoun", "239349660", "Administration");
 		
 		//int latest = driver.insertAccount("Admin", "Banki", "Adewale", "algomaStudent", "ThunderBird");
 		
@@ -40,7 +40,7 @@ public class Test_Database {
 
 
 		
-		//String citationSummary = report.generateCitationSummary(badge, startDate, endDate, java.util.Optional.empty(), paid);
+		String citationSummary = report.generateCitationSummary(badge, startDate, endDate, java.util.Optional.empty(), paid);
 
 		
 		//String warrantcheck = report.generateOutstandingWarrants();
@@ -48,8 +48,9 @@ public class Test_Database {
 		String startDateDriving = ("2015-01-01");
 		String endDateDriving = ("2018-01-01");
 		
-		String dirverRecord = report.generateDrivingRecord("A12345678912345", startDateDriving, endDateDriving);
-		System.out.println(dirverRecord);
+		//String driverRecord = report.generateDrivingRecord("A12345678912345", startDateDriving, endDateDriving);
+		
+		System.out.println(citationSummary);
 		
         connection.disconnectFromDatabase();
            

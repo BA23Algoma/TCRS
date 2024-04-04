@@ -68,3 +68,9 @@ SELECT * FROM TCRS.VEHICLECITATIONSMUNICIPLE WHERE  ISSUEINGOFFICERIDM=10002 AND
 	at databaseManagement.DatabaseManager.executeQuery(DatabaseManager.java:88)
 	at CRUD.Report.generateCitationSummary(Report.java:133)
 	at databaseManagement.Test_Database.main(Test_Database.java:43)
+2024-04-04 00:47:43.890001-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-224]
+2024-04-04 00:48:02.891506-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-224]
+2024-04-04 00:48:15.837760-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: No data is available [2000-224]

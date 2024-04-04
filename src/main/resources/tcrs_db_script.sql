@@ -257,10 +257,10 @@ CREATE CACHED TABLE "TCRS"."ACCOUNTS"(
 ALTER TABLE "TCRS"."ACCOUNTS" ADD CONSTRAINT "TCRS"."CONSTRAINT_A" PRIMARY KEY("ACCOUNTID");   
 -- 10 +/- SELECT COUNT(*) FROM TCRS.ACCOUNTS;  
 INSERT INTO "TCRS"."ACCOUNTS" ( username, passwordAcc, firstName, lastName, agency) VALUES
-('badewale', '239592830', 'Banki', 'Adewale', 'Admin'),
-('gamjoun', '239349660', 'Ghizlane', 'Amjoun', 'Admin'),
-('brajaie', '239394290', 'Ben', 'Rajaie', 'Admin'),
-('kuwaechi', '199677980', 'Kennedy', 'Uwaechi', 'Admin'),
+('badewale', '239592830', 'Banki', 'Adewale', 'Administration'),
+('gamjoun', '239349660', 'Ghizlane', 'Amjoun', 'Administration'),
+('brajaie', '239394290', 'Ben', 'Rajaie', 'Administration'),
+('kuwaechi', '199677980', 'Kennedy', 'Uwaechi', 'Administration'),
 ('sjohn', '10002', 'Smith', 'John', 'Provincial'),
 ('jdavid', '10003', 'Johnson', 'David', 'Local'),
 ('wchris', '10004', 'Williams', 'Chris', 'Provincial'),

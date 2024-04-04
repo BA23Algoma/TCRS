@@ -188,7 +188,7 @@ public class TrafficSchool {
     private TrafficSchool logData(ResultSet result, TrafficSchool trafficSchool) {
         try {
             while (result.next()) {
-                trafficSchool.citationID = result.getInt("citationID");
+                trafficSchool.citationID = result.getInt("CITATIONIDTS");
                 trafficSchool.session1Date = result.getString("session1Date");
                 trafficSchool.session2Date = result.getString("session2Date");
                 trafficSchool.session3Date = result.getString("session3Date");
