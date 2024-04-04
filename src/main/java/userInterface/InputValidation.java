@@ -326,7 +326,7 @@ public class InputValidation extends SceneNavigation {
 		
 		numDays = numOfDays(month, year);
 		
-		if (day < 1 || numDays < day || year > Year.now().getValue()) {
+		if (day < 1 || numDays < day) {
 			System.out.println(invalid);
 			return false;
 		}
