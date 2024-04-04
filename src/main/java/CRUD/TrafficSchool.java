@@ -91,38 +91,21 @@ public class TrafficSchool {
     }
 
     public void insertEnrollment(TrafficSchool trafficSchool) {
-        insertEnrollment(trafficSchool.citationID, trafficSchool.session1Date, trafficSchool.session2Date,
+        insertEnrollment(String.valueOf(trafficSchool.citationID), trafficSchool.session1Date, trafficSchool.session2Date,
                 trafficSchool.session3Date, trafficSchool.session4Date, trafficSchool.session1Attendance,
                 trafficSchool.session2Attendance, trafficSchool.session3Attendance, trafficSchool.session4Attendance);
     }
 
-    public void insertEnrollment(int citationID, String session1Date, String session2Date, String session3Date,
+    public void insertEnrollment(String citationID, String session1Date, String session2Date, String session3Date,
             String session4Date, String session1Attendance, String session2Attendance, String session3Attendance,
             String session4Attendance) {
-        TrafficSchool trafficSchool = new TrafficSchool(databaseManager);
-
-        trafficSchool.citationID = citationID;
-        trafficSchool.session1Date = session1Date;
-        trafficSchool.session2Date = session2Date;
-        trafficSchool.session3Date = session3Date;
-        trafficSchool.session4Date = session4Date;
-        trafficSchool.session1Attendance = session1Attendance;
-        trafficSchool.session2Attendance = session2Attendance;
-        trafficSchool.session3Attendance = session3Attendance;
-        trafficSchool.session4Attendance = session4Attendance;
-
-        if (emptyField(trafficSchool)) {
-            return;
-        }
-
        
-
         String sql = String.format(
                 "INSERT INTO TCRS.TRAFFICSCHOOL (CITATIONIDTS, SESSION1DATE, SESSION2DATE, SESSION3DATE, SESSION4DATE, SESSION1ATTENDANCE, SESSION2ATTENDANCE, SESSION3ATTENDANCE, SESSION4ATTENDANCE) "
                         + "VALUES ('%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
-                trafficSchool.citationID, trafficSchool.session1Date, trafficSchool.session2Date,
-                trafficSchool.session3Date, trafficSchool.session4Date, trafficSchool.session1Attendance,
-                trafficSchool.session2Attendance, trafficSchool.session3Attendance, trafficSchool.session4Attendance);
+                Integer.valueOf(citationID), session1Date, session2Date,
+                session3Date, session4Date, session1Attendance,
+                session2Attendance, session3Attendance, session4Attendance);
 
         databaseManager.executeUpdate(sql);
 

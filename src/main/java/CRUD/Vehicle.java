@@ -116,7 +116,7 @@ public class Vehicle {
 
         String sql = String.format("INSERT INTO TCRS.VEHICLEINFO (VIN, LICENSEPLATE, MAKE, MODEL, CARYEAR, REGISTEREDSTATUS) "
                 + "VALUES ('%s', '%s', '%s', '%s', %d, '%s')", vin, licensePlate, make,
-                model, year, registeredStatus);
+                model, Integer.valueOf(year), registeredStatus);
 
         databaseManager.executeUpdate(sql);
 
@@ -135,7 +135,7 @@ public class Vehicle {
         
         String sqlQuery = String.format("UPDATE TCRS.VEHICLEINFO SET LICENSEPLATE = '%s', MAKE = '%s', MODEL = '%s', "
                 + "CARYEAR = %d, REGISTEREDSTATUS = '%s' WHERE VIN = '%s'", licensePlate, make,
-                model, year, registeredStatus, vin);
+                model, Integer.valueOf(year), registeredStatus, vin);
         
         databaseManager.executeUpdate(sqlQuery);
         
@@ -184,7 +184,7 @@ public class Vehicle {
                 vehicle.licensePlate = result.getString("LICENSEPLATE");
                 vehicle.make = result.getString("MAKE");
                 vehicle.model = result.getString("MODEL");
-                vehicle.year = result.getInt("CARYEAR");
+                vehicle.year = result.getInt("CARYEAR") ;
                 vehicle.registeredStatus = result.getString("REGISTEREDSTATUS");
 
                 return vehicle;
@@ -259,8 +259,8 @@ public class Vehicle {
         }
         
         String sqlQuery = String.format("UPDATE TCRS.VEHICLEINFO SET LICENSEPLATE = '%s', MAKE = '%s', MODEL = '%s', "
-                + "YEAR = %d, REGISTEREDSTATUS = '%s' WHERE VIN = '%s'", newVehicle.licensePlate, newVehicle.make,
-                newVehicle.model, newVehicle.year, newVehicle.registeredStatus, vehicle.vin);
+                + "YEAR = %d, REGISTEREDSTATUS = '%s' WHERE VIN = '%s'", newVehicle.getLicensePlate(), newVehicle.getMake(),
+                newVehicle.getModel(), Integer.valueOf(newVehicle.getYear()), newVehicle.getRegisteredStatus(), vehicle.getVin());
         databaseManager.executeUpdate(sqlQuery);
         System.out.println("Vehicle edited");
     }

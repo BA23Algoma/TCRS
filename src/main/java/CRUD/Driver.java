@@ -106,22 +106,12 @@ public class Driver {
 
     public void insertDriver(String licenseNumber, String licensePlate, String firstName, String lastName,
             String licenseStatus, String demeritPoints) {
-        Driver driver = new Driver(databaseManager);
-
-        driver.licenseNumber = licenseNumber;
-        driver.licensePlate = licensePlate;
-        driver.firstName = firstName;
-        driver.lastName = lastName;
-        driver.licenseStatus = licenseStatus;
-        driver.demeritPoints = Integer.parseInt(demeritPoints);
-
-       
 
         String sql = String.format(
                 "INSERT INTO TCRS.DRIVERINFO (LICENSENUMBER, LICENSEPLATE, FIRSTNAME, LASTNAME, LICENSESTATUS, DEMERITPOINTS) "
                         + "VALUES ('%s', '%s', '%s', '%s', '%s', %d)",
-                driver.licenseNumber, driver.licensePlate, driver.firstName,
-                driver.lastName, driver.licenseStatus, driver.demeritPoints);
+                licenseNumber, licensePlate, firstName,
+                lastName, licenseStatus, Integer.valueOf(demeritPoints));
 
         // Pass prepared statement to databaseManager for execution
 	    databaseManager.executeUpdate(sql);

@@ -108,7 +108,6 @@ public class DriverWarrants {
  	
     public int insertDriverWarrant(String licenseNumber, String dateIssued, String warrantReason,
             String outstanding) {
-
        
 
         String sql = String.format(
