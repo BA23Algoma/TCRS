@@ -1,3 +1,5 @@
 java -jar h2-2.2.224.jar
 
 cd /Users/banki/Documents/Algoma/Software\ Engineering/Project/TCRS\ Project/TCRS_Git/TCRS/TCRS/src/main/resources/h2/bin
+
+~/Documents/Algoma//Users/banki/Documents/Algoma/Prof Randy Lin/ChatDataBase/src/main/resources/chatGPT_db
