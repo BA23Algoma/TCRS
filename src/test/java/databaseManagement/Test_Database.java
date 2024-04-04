@@ -16,7 +16,10 @@ public class Test_Database {
             
 		//DatabaseManager connection = new DatabaseManager();
 		//RecordValidation valid = new RecordValidation(connection);
-				
+		//InputValidation test = new InputValidation();
+		
+		Boolean check = validateDate("2024-04-31");
+		
 		/*try {
 			connection.connectToDatabase();
 		} catch (IOException e) {
@@ -89,9 +92,10 @@ private static boolean dateFormat(String date) {
 		
 		char seperator = '-';
 		String yearString = date.substring(0,4);
-		String dayString = date.substring(6,7);
-		String monthString = date.substring(9);
-		System.out.print("yaer: "+ yearString + " month: " + dayString + " day: " + monthString);
+		String monthString = date.substring(5,7);
+		String dayString = date.substring(8);
+
+		System.out.print("yaer: "+ yearString + " month: " + monthString + " day: " + dayString );
 		
 		int month = Integer.valueOf(monthString);
 		int day = Integer.valueOf(dayString);

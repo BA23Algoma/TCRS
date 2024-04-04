@@ -309,8 +309,8 @@ public class InputValidation extends SceneNavigation {
 		
 		char seperator = '-';
 		String yearString = date.substring(0,4);
-		String dayString = date.substring(6,7);
-		String monthString = date.substring(9);
+		String monthString = date.substring(5,7);
+		String dayString = date.substring(8);
 		
 		int month = Integer.valueOf(monthString);
 		int day = Integer.valueOf(dayString);
