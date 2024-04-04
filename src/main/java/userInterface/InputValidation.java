@@ -17,8 +17,6 @@ import java.util.regex.Pattern;
 public class InputValidation extends SceneNavigation {
 
 	
-	class FormatValidation {
-
 	private Pattern p = Pattern.compile("[^a-z0-9]", Pattern.CASE_INSENSITIVE);
 	
 
@@ -180,7 +178,10 @@ public class InputValidation extends SceneNavigation {
 		
 		Double fineAmount = Double.valueOf(fine);
 		
-		return negativeNum(fineAmount);
+		if (negativeNum(fineAmount)) {
+			return false;
+		}
+		return true;
 	}
 	public boolean validateDate(String date) {
 		
@@ -392,155 +393,8 @@ private boolean negativeNum(double value) {
 	}
 
 
-}
 
-public Boolean fieldFormatTest(Node rootNode) {
-	
-	
-	FormatValidation formatValidator = new FormatValidation();
-	
-	boolean formatTestPassed=true;
-	
-	BorderPane currentPane = (BorderPane) rootNode;
-	
-	//Data Scene
-	if (currentPane.getCenter()==null) {
-		
-	HBox LabelsAndFieldsHBox = (HBox) currentPane.getRight();
-	VBox FieldsVBox = (VBox) LabelsAndFieldsHBox.getChildren().get(1);
-	
-    for (Node node : FieldsVBox.getChildren()) {
-        if (node instanceof TextField ) {
-        	TextField textField = (TextField) node;
-        	 if (textField==tfVin && !formatValidator.validateVIN(textField.getText())) {	        		
-        		textField.setStyle("-fx-border-color:#FA3E3E;");
-        		
-        		formatTestPassed=false;
-        	 }
-        	 if (textField==tfPlate && !formatValidator.validateLicensePlate(textField.getText())) {	        		
-	        	textField.setStyle("-fx-border-color:#FA3E3E;");
-	        	
-	        	formatTestPassed=false;
-        	 }
-        	 if (textField==tfMake && !formatValidator.validateMake(textField.getText())) {	        		
-		        	textField.setStyle("-fx-border-color:#FA3E3E;");
-		        	
-		        	formatTestPassed=false;
-	        	 }
-        	 if (textField==tfModel && !formatValidator.validateModel(textField.getText())) {	        		
-		        	textField.setStyle("-fx-border-color:#FA3E3E;");
-		        
-		        	formatTestPassed=false;
-	        	 }
-        	 if (textField==tfFirst && !formatValidator.validateFirstName(textField.getText())) {	        		
-		        	textField.setStyle("-fx-border-color:#FA3E3E;");
-		        	
-		        	formatTestPassed=false;
-	        	 }
-        	 if (textField==tfLast && !formatValidator.validateLastName(textField.getText())) {	        		
-		        	textField.setStyle("-fx-border-color:#FA3E3E;");
-		        	
-		        	formatTestPassed=false;
-	        	 }
-        	 if (textField==tfLic && !formatValidator.validateLicenseNumber(textField.getText())) {	        		
-		        	textField.setStyle("-fx-border-color:#FA3E3E;");
-		        	
-		        	formatTestPassed=false;
-	        	 }
-        	 if ((textField==tfStartDate||textField==tfEndDate||textField==tfSess1|| textField==tfSess2||textField==tfSess3||textField==tfSess4)&& !formatValidator.validateDate(textField.getText())) {	        		
-	        		textField.setStyle("-fx-border-color:#FA3E3E;");
-	        		
-	        		formatTestPassed=false;
-	        	 }
-        	 if (textField==tfYear && !formatValidator.validateYear(textField.getText())) {	        		
-		        	textField.setStyle("-fx-border-color:#FA3E3E;");
-		        	
-		        	formatTestPassed=false;
-	        	 }
-        	 if (textField==tfPoints && !formatValidator.validateDemeritPoints(textField.getText())) {	        		
-		        	textField.setStyle("-fx-border-color:#FA3E3E;");
-		        	
-		        	formatTestPassed=false;
-	        	 }
-        	 if (textField==tfBadge && !formatValidator.validateBadgeNumber(textField.getText())) {	        		
-		        	textField.setStyle("-fx-border-color:#FA3E3E;");
-		        	
-		        	formatTestPassed=false;
-	        	 }
-        	 if (textField==tfCitID && !formatValidator.validateCitationID(textField.getText())) {	        		
-		        	textField.setStyle("-fx-border-color:#FA3E3E;");
-		        	
-		        	formatTestPassed=false;
-	        	 }
-        	 if (textField==tfWarID && !formatValidator.validateWarrantID(textField.getText())) {	        		
-		        	textField.setStyle("-fx-border-color:#FA3E3E;");
-		        	
-		        	formatTestPassed=false;
-	        	 }
-        	 if (textField==tfFine && !formatValidator.validateFineAmount(textField.getText())) {	        		
-		        	textField.setStyle("-fx-border-color:#FA3E3E;");
-		        
-		        	formatTestPassed=false;
-	        	 }
-        	 if (textField==tfAccID && !formatValidator.validateAccountID(textField.getText())) {	        		
-		        	textField.setStyle("-fx-border-color:#FA3E3E;");
-		        	
-		        	formatTestPassed=false;
-       }
-        
-       
-       }
-    }
-   
-    //Search Scene 
-	} else {
-		
-	VBox centerContentVBox = (VBox) currentPane.getCenter();
-	
-	for (Node node : centerContentVBox.getChildren()) {
-        if (node instanceof TextField ) {
-        	TextField textField = (TextField) node;
-        	if (textField==tfLic && !formatValidator.validateLicenseNumber(textField.getText())) {	        		
-	        	textField.setStyle("-fx-border-color:#FA3E3E;");
-	      
-	        	formatTestPassed=false;
-        	 }
-        	 if (textField==tfVin && !formatValidator.validateVIN(textField.getText())) {	        		
-	        		textField.setStyle("-fx-border-color:#FA3E3E;");
-	        		
-	        		formatTestPassed=false;
-        	 }
-        	 if ((textField==tfStartDate||textField==tfEndDate) && !formatValidator.validateDate(textField.getText())) {	        		
-	        		textField.setStyle("-fx-border-color:#FA3E3E;");
-	        	
-	        		formatTestPassed=false;
-	        }
-        	 if (textField==tfBadge && !formatValidator.validateBadgeNumber(textField.getText())) {	        		
-		        	textField.setStyle("-fx-border-color:#FA3E3E;");
-		        	
-		        	formatTestPassed=false;
-	        	 }	
-        	 if (textField==tfCitID && !formatValidator.validateCitationID(textField.getText())) {	        		
-		        	textField.setStyle("-fx-border-color:#FA3E3E;");
-		        	
-		        	formatTestPassed=false;
-	        	 }
-        	 if (textField==tfWarID && !formatValidator.validateWarrantID(textField.getText())) {	        		
-		        	textField.setStyle("-fx-border-color:#FA3E3E;");
-		        	
-		        	formatTestPassed=false;
-	        	 }
-        	 if (textField==tfAccID && !formatValidator.validateAccountID(textField.getText())) {	        		
-		        	textField.setStyle("-fx-border-color:#FA3E3E;");
-		        	
-		        	formatTestPassed=false;
-        	 	}
-        	}
-        	
-    	} 
-	}
-return formatTestPassed;
-}
+
 
 public Boolean emptyFieldsTest(Node rootNode) {
 	
