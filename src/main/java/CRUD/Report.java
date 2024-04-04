@@ -57,7 +57,7 @@ public class Report {
     public String generateCitationSummary(
             Optional<String> tfIssuingOff,
             Optional<String> tfStartDate,
-            Optional<Integer> tfEndDate,
+            Optional<String> tfEndDate,
             Optional<String> cbReasonDrivVeh,
             Optional<String> cbPaid) {
     	
