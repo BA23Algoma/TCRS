@@ -1,0 +1,70 @@
+2024-04-04 00:01:40.729375-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM TCRS.DRIVINGCITATIONSMUNICIPLEISSUEINGOFFICERIDM=[*]'1005"; SQL statement:
+SELECT * FROM TCRS.DRIVINGCITATIONSMUNICIPLEISSUEINGOFFICERIDM='1005 [42000-224]
+2024-04-04 00:01:40.732254-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM TCRS.VEHICLECITATIONSMUNICIPLEISSUEINGOFFICERIDM=[*]'1005"; SQL statement:
+SELECT * FROM TCRS.VEHICLECITATIONSMUNICIPLEISSUEINGOFFICERIDM='1005 [42000-224]
+2024-04-04 00:03:38.913603-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM TCRS.DRIVINGCITATIONSMUNICIPLESELECT * FROM TCRS.DRIVINGCITATIONSMUNICIPLE WHERE  ISSUEINGOFFICERIDM=[*]'1005"; SQL statement:
+SELECT * FROM TCRS.DRIVINGCITATIONSMUNICIPLESELECT * FROM TCRS.DRIVINGCITATIONSMUNICIPLE WHERE  ISSUEINGOFFICERIDM='1005 [42000-224]
+2024-04-04 00:03:38.916549-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM TCRS.VEHICLECITATIONSMUNICIPLESELECT * FROM TCRS.VEHICLECITATIONSMUNICIPLE WHERE  ISSUEINGOFFICERIDM=[*]'1005"; SQL statement:
+SELECT * FROM TCRS.VEHICLECITATIONSMUNICIPLESELECT * FROM TCRS.VEHICLECITATIONSMUNICIPLE WHERE  ISSUEINGOFFICERIDM='1005 [42000-224]
+2024-04-04 00:04:24.275779-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM TCRS.DRIVINGCITATIONSMUNICIPLE WHERE  ISSUEINGOFFICERIDM=[*]'1005"; SQL statement:
+SELECT * FROM TCRS.DRIVINGCITATIONSMUNICIPLE WHERE  ISSUEINGOFFICERIDM='1005 [42000-224]
+2024-04-04 00:04:24.279249-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM TCRS.VEHICLECITATIONSMUNICIPLE WHERE  ISSUEINGOFFICERIDM=[*]'1005"; SQL statement:
+SELECT * FROM TCRS.VEHICLECITATIONSMUNICIPLE WHERE  ISSUEINGOFFICERIDM='1005 [42000-224]
+2024-04-04 00:12:09.209199-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM TCRS.DRIVINGCITATIONSMUNICIPLE WHERE  ISSUEINGOFFICERIDM=10002 AND  PARSEDATETIME(CITATIONDATE, 'yyyy-MM-dd') <= PARSEDATETIME('2018-01-01', 'yyyy-MM-dd') AND CITATIONREASON=Fix-It [*]Ticket AND PAYMENTSTATUS=Unpaid"; SQL statement:
+SELECT * FROM TCRS.DRIVINGCITATIONSMUNICIPLE WHERE  ISSUEINGOFFICERIDM=10002 AND  PARSEDATETIME(CITATIONDATE, 'yyyy-MM-dd') <= PARSEDATETIME('2018-01-01', 'yyyy-MM-dd') AND CITATIONREASON=Fix-It Ticket AND PAYMENTSTATUS=Unpaid [42000-224]
+2024-04-04 00:12:09.212878-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM TCRS.VEHICLECITATIONSMUNICIPLE WHERE  ISSUEINGOFFICERIDM=10002 AND  PARSEDATETIME(CITATIONDATE, 'yyyy-MM-dd') <= PARSEDATETIME('2018-01-01', 'yyyy-MM-dd') AND CITATIONREASON=Fix-It [*]Ticket AND PAYMENTSTATUS=Unpaid"; SQL statement:
+SELECT * FROM TCRS.VEHICLECITATIONSMUNICIPLE WHERE  ISSUEINGOFFICERIDM=10002 AND  PARSEDATETIME(CITATIONDATE, 'yyyy-MM-dd') <= PARSEDATETIME('2018-01-01', 'yyyy-MM-dd') AND CITATIONREASON=Fix-It Ticket AND PAYMENTSTATUS=Unpaid [42000-224]
+2024-04-04 00:13:33.555570-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Column "UNPAID" not found; SQL statement:
+SELECT * FROM TCRS.DRIVINGCITATIONSMUNICIPLE WHERE  ISSUEINGOFFICERIDM=10002 AND  PARSEDATETIME(CITATIONDATE, 'yyyy-MM-dd') <= PARSEDATETIME('2018-01-01', 'yyyy-MM-dd') AND PAYMENTSTATUS=Unpaid [42122-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:514)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.expression.ExpressionColumn.getColumnException(ExpressionColumn.java:244)
+	at org.h2.expression.ExpressionColumn.optimizeOther(ExpressionColumn.java:226)
+	at org.h2.expression.ExpressionColumn.optimize(ExpressionColumn.java:213)
+	at org.h2.expression.condition.Comparison.optimize(Comparison.java:148)
+	at org.h2.expression.condition.ConditionAndOr.optimize(ConditionAndOr.java:137)
+	at org.h2.expression.Expression.optimizeCondition(Expression.java:148)
+	at org.h2.command.query.Select.prepareExpressions(Select.java:1177)
+	at org.h2.command.query.Query.prepare(Query.java:218)
+	at org.h2.command.Parser.prepareCommand(Parser.java:489)
+	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:639)
+	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:559)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1166)
+	at org.h2.jdbc.JdbcStatement.executeQuery(JdbcStatement.java:94)
+	at databaseManagement.DatabaseManager.executeQuery(DatabaseManager.java:88)
+	at CRUD.Report.generateCitationSummary(Report.java:132)
+	at databaseManagement.Test_Database.main(Test_Database.java:43)
+2024-04-04 00:13:33.559620-04:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Column "UNPAID" not found; SQL statement:
+SELECT * FROM TCRS.VEHICLECITATIONSMUNICIPLE WHERE  ISSUEINGOFFICERIDM=10002 AND  PARSEDATETIME(CITATIONDATE, 'yyyy-MM-dd') <= PARSEDATETIME('2018-01-01', 'yyyy-MM-dd') AND PAYMENTSTATUS=Unpaid [42122-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:514)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.expression.ExpressionColumn.getColumnException(ExpressionColumn.java:244)
+	at org.h2.expression.ExpressionColumn.optimizeOther(ExpressionColumn.java:226)
+	at org.h2.expression.ExpressionColumn.optimize(ExpressionColumn.java:213)
+	at org.h2.expression.condition.Comparison.optimize(Comparison.java:148)
+	at org.h2.expression.condition.ConditionAndOr.optimize(ConditionAndOr.java:137)
+	at org.h2.expression.Expression.optimizeCondition(Expression.java:148)
+	at org.h2.command.query.Select.prepareExpressions(Select.java:1177)
+	at org.h2.command.query.Query.prepare(Query.java:218)
+	at org.h2.command.Parser.prepareCommand(Parser.java:489)
+	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:639)
+	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:559)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1166)
+	at org.h2.jdbc.JdbcStatement.executeQuery(JdbcStatement.java:94)
+	at databaseManagement.DatabaseManager.executeQuery(DatabaseManager.java:88)
+	at CRUD.Report.generateCitationSummary(Report.java:133)
+	at databaseManagement.Test_Database.main(Test_Database.java:43)

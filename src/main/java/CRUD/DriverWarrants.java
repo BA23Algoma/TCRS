@@ -237,8 +237,16 @@ public class DriverWarrants {
             while (result.next()) {
                 driverWarrant.licenseNumber = result.getString("DRIVERIDWARRANTM");
                 driverWarrant.dateIssued = result.getString("WARRANTDATE");
-                driverWarrant.warrantReason = result.getString("REASON");
-                driverWarrant.outstanding = result.getBoolean("OUTSTANDING");
+                driverWarrant.warrantReason = result.getString("REASON");                
+                String outstanding = result.getString("OUTSTANDING");
+                
+                // convert payment status to boolean
+   				if(outstanding.equalsIgnoreCase("Yes")) {
+   					driverWarrant.outstanding = true;
+   				}
+   				else {
+   					driverWarrant.outstanding = false;
+   				}
 
                 return driverWarrant;
             }

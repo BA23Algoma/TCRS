@@ -48,8 +48,8 @@ public class Report {
         
         ResultSet result = databaseManager.executeQuery(sqlQuery);
         if (nullCheck(result)) {
-            System.out.println("No driving records found for the given period!");
-            return null;
+            System.out.println("No citation records found for the given period!");
+            return generateDriverReport(license);
         }
         return generateDriverReport(license) + "\nCitation History\n\n" + logData(result, fields);
     }
@@ -73,23 +73,26 @@ public class Report {
 
         // Issuing officer present
         if (tfIssuingOff.isPresent()) {
-        	sqlQueryDriver += "ISSUEINGOFFICERIDM='" + tfIssuingOff.get();
-        	sqlQueryVehicle += "ISSUEINGOFFICERIDM='" + tfIssuingOff.get();
-        	initial = false;
+        	sqlQueryDriver = initialCondition(sqlQueryDriver, initial);
+    		sqlQueryVehicle = initialCondition(sqlQueryVehicle, initial);
+    		initial = false;
+        	
+        	sqlQueryDriver += " ISSUEINGOFFICERIDM=" + tfIssuingOff.get();
+        	sqlQueryVehicle += " ISSUEINGOFFICERIDM=" + tfIssuingOff.get();
         }
         
         // Date present
         if (tfStartDate.isPresent() && tfEndDate.isPresent()) { // Start and end date
-        	sqlQueryDriver += initialCondition(sqlQueryDriver, initial);
-    		sqlQueryVehicle += initialCondition(sqlQueryVehicle, initial);
+        	sqlQueryDriver = initialCondition(sqlQueryDriver, initial);
+    		sqlQueryVehicle = initialCondition(sqlQueryVehicle, initial);
     		initial = false;
     		
         	sqlQueryDriver += String.format(" PARSEDATETIME(CITATIONDATE, 'yyyy-MM-dd') BETWEEN PARSEDATETIME('%s', 'yyyy-MM-dd') AND PARSEDATETIME('%s', 'yyyy-MM-dd')", tfStartDate.get(), tfEndDate.get());
         	sqlQueryVehicle += String.format(" PARSEDATETIME(CITATIONDATE, 'yyyy-MM-dd') BETWEEN PARSEDATETIME('%s', 'yyyy-MM-dd') AND PARSEDATETIME('%s', 'yyyy-MM-dd')", tfStartDate.get(), tfEndDate.get());
         }
         else if (tfStartDate.isPresent()) { // Only start date
-        		sqlQueryDriver += initialCondition(sqlQueryDriver, initial);
-        		sqlQueryVehicle += initialCondition(sqlQueryVehicle, initial);
+        		sqlQueryDriver = initialCondition(sqlQueryDriver, initial);
+        		sqlQueryVehicle = initialCondition(sqlQueryVehicle, initial);
         		initial = false;
      
          	sqlQueryDriver += String.format(" PARSEDATETIME(CITATIONDATE, 'yyyy-MM-dd') >= PARSEDATETIME('%s', 'yyyy-MM-dd')", tfStartDate.get());
@@ -97,8 +100,8 @@ public class Report {
        
         }
         else if (tfEndDate.isPresent()) { // Only end date
-        	sqlQueryDriver += initialCondition(sqlQueryDriver, initial);
-    		sqlQueryVehicle += initialCondition(sqlQueryVehicle, initial);
+        	sqlQueryDriver = initialCondition(sqlQueryDriver, initial);
+    		sqlQueryVehicle = initialCondition(sqlQueryVehicle, initial);
     		initial = false;
     		
          	sqlQueryDriver += String.format(" PARSEDATETIME(CITATIONDATE, 'yyyy-MM-dd') <= PARSEDATETIME('%s', 'yyyy-MM-dd')", tfEndDate.get());
@@ -107,21 +110,21 @@ public class Report {
         }
         
         if (cbReasonDrivVeh.isPresent()) { // Reason given
-        	sqlQueryDriver += initialCondition(sqlQueryDriver, initial);
-    		sqlQueryVehicle += initialCondition(sqlQueryVehicle, initial);
+        	sqlQueryDriver = initialCondition(sqlQueryDriver, initial);
+    		sqlQueryVehicle = initialCondition(sqlQueryVehicle, initial);
     		initial = false;
     		
-        	sqlQueryDriver += "CITATIONREASON='" + cbReasonDrivVeh.get();
-        	sqlQueryVehicle += "CITATIONREASON='" + cbReasonDrivVeh.get();
+        	sqlQueryDriver += String.format("CITATIONREASON= '%s'", cbReasonDrivVeh.get());
+        	sqlQueryVehicle += String.format("CITATIONREASON= '%s'", cbReasonDrivVeh.get());
 
         }
         if (cbPaid.isPresent()) { // Payment status given
-        	sqlQueryDriver += initialCondition(sqlQueryDriver, initial);
-    		sqlQueryVehicle += initialCondition(sqlQueryVehicle, initial);
+        	sqlQueryDriver = initialCondition(sqlQueryDriver, initial);
+    		sqlQueryVehicle = initialCondition(sqlQueryVehicle, initial);
     		initial = false;
     		
-        	sqlQueryDriver += "PAYMENTSTATUS='" + cbPaid.get();
-        	sqlQueryVehicle += "PAYMENTSTATUS='" + cbPaid.get();
+        	sqlQueryDriver += String.format("PAYMENTSTATUS= '%s'", cbPaid.get());
+        	sqlQueryVehicle += String.format("PAYMENTSTATUS= '%s'", cbPaid.get());
 
         }
 

@@ -1,6 +1,7 @@
 package databaseManagement;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import CRUD.*;
 
@@ -28,8 +29,27 @@ public class Test_Database {
 		
 		Report report = new Report(connection);
 		
-		String warrantcheck = report.generateCitationSummary(java.util.Optional.empty(), java.util.Optional.empty(), java.util.Optional.empty(), java.util.Optional.empty(), java.util.Optional.empty());
-		System.out.println(warrantcheck);
+		// String warrantcheck = report.generateCitationSummary(java.util.Optional.empty(), java.util.Optional.empty(), java.util.Optional.empty(), java.util.Optional.empty(), java.util.Optional.empty());
+		
+		
+		Optional<String> badge = Optional.of("10002");
+		Optional<String> startDate = Optional.of("2015-01-01");
+		Optional<String> endDate = Optional.of("2018-01-01");
+		Optional<String> reason = Optional.of("Fix-It Ticket");
+		Optional<String> paid = Optional.of("Unpaid");
+
+
+		
+		//String citationSummary = report.generateCitationSummary(badge, startDate, endDate, java.util.Optional.empty(), paid);
+
+		
+		//String warrantcheck = report.generateOutstandingWarrants();
+		
+		String startDateDriving = ("2015-01-01");
+		String endDateDriving = ("2018-01-01");
+		
+		String dirverRecord = report.generateDrivingRecord("A12345678912345", startDateDriving, endDateDriving);
+		System.out.println(dirverRecord);
 		
         connection.disconnectFromDatabase();
            

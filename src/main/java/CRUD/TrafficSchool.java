@@ -118,7 +118,7 @@ public class TrafficSchool {
        
 
         String sql = String.format(
-                "INSERT INTO TCRS.TRAFFICSCHOOL (CITATIONID, SESSION1DATE, SESSION2DATE, SESSION3DATE, SESSION4DATE, SESSION1ATTENDANCE, SESSION2ATTENDANCE, SESSION3ATTENDANCE, SESSION4ATTENDANCE) "
+                "INSERT INTO TCRS.TRAFFICSCHOOL (CITATIONIDTS, SESSION1DATE, SESSION2DATE, SESSION3DATE, SESSION4DATE, SESSION1ATTENDANCE, SESSION2ATTENDANCE, SESSION3ATTENDANCE, SESSION4ATTENDANCE) "
                         + "VALUES ('%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
                 trafficSchool.citationID, trafficSchool.session1Date, trafficSchool.session2Date,
                 trafficSchool.session3Date, trafficSchool.session4Date, trafficSchool.session1Attendance,
@@ -138,7 +138,7 @@ public class TrafficSchool {
 
         String sqlQuery = String.format(
                 "UPDATE TCRS.TRAFFICSCHOOL SET SESSION1DATE = '%s', SESSION2DATE = '%s', SESSION3DATE = '%s', SESSION4DATE = '%s', SESSION1ATTENDANCE = '%s', SESSION2ATTENDANCE = '%s', SESSION3ATTENDANCE = '%s', SESSION4ATTENDANCE = '%s'"
-                        + " WHERE CITATIONID = '%d'",
+                        + " WHERE CITATIONIDTS = '%d'",
                 newTrafficSchool.session1Date, newTrafficSchool.session2Date, newTrafficSchool.session3Date,
                 newTrafficSchool.session4Date, newTrafficSchool.session1Attendance, newTrafficSchool.session2Attendance,
                 newTrafficSchool.session3Attendance, newTrafficSchool.session4Attendance, trafficSchool.citationID);
@@ -155,7 +155,7 @@ public class TrafficSchool {
             return;
         }
 
-        String sqlDelete = String.format("DELETE FROM TCRS.TRAFFICSCHOOL WHERE CITATIONID= '%d'", citationID);
+        String sqlDelete = String.format("DELETE FROM TCRS.TRAFFICSCHOOL WHERE CITATIONIDTS= '%d'", citationID);
 
         databaseManager.executeUpdate(sqlDelete);
 
@@ -165,7 +165,7 @@ public class TrafficSchool {
     public TrafficSchool findEnrollment(int citationID) {
         TrafficSchool trafficSchool = new TrafficSchool(this.databaseManager);
 
-        String sqlQuery = String.format("SELECT * FROM TCRS.TRAFFICSCHOOL WHERE CITATIONID='%d'", citationID);
+        String sqlQuery = String.format("SELECT * FROM TCRS.TRAFFICSCHOOL WHERE CITATIONIDTS='%d'", citationID);
 
         ResultSet result = databaseManager.executeQuery(sqlQuery);
 

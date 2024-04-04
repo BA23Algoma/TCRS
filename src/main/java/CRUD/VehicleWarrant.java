@@ -100,7 +100,7 @@ public class VehicleWarrant {
 
      
         String sql = String.format(
-                "INSERT INTO VEHICLE_WARRANTS (VIN, DATE_ISSUED, WARRANT_REASON, OUTSTANDING) VALUES ('%s', '%s', '%s', %b)",
+                "INSERT INTO TCRS.VEHICLEWARRANTSMUNICIPLE (VINWARRANTM, WARRANTDATE, REASON, OUTSTANDING) VALUES ('%s', '%s', '%s', '%s')",
                 vin, dateIssued, warrantReason, outstanding);
 
         databaseManager.executeUpdate(sql);
@@ -127,7 +127,7 @@ public class VehicleWarrant {
 	
 
         String sqlQuery = String.format(
-                "UPDATE VEHICLE_WARRANTS SET VIN = '%s', DATE_ISSUED = '%s', WARRANT_REASON = '%s', OUTSTANDING = %b WHERE WARRANT_ID = %d",
+                "UPDATE TCRS.VEHICLEWARRANTSMUNICIPLE SET VINWARRANTM = '%s', WARRANTDATE = '%s', REASON = '%s', OUTSTANDING = %b WHERE WARRANTIDVM = %d",
                 vin, dateIssued, warrantReason,outstanding, Integer.valueOf(warrantID));
 
         databaseManager.executeUpdate(sqlQuery);
@@ -143,7 +143,7 @@ public class VehicleWarrant {
             return;
         }
 
-        String sqlDelete = String.format("DELETE FROM VEHICLE_WARRANTS WHERE WARRANT_ID = %d", warrantID);
+        String sqlDelete = String.format("DELETE FROM TCRS.VEHICLEWARRANTSMUNICIPLE WHERE WARRANTIDVM = %d", warrantID);
 
         databaseManager.executeUpdate(sqlDelete);
 
@@ -154,7 +154,7 @@ public class VehicleWarrant {
     	
         VehicleWarrant vehicleWarrant = new VehicleWarrant(this.databaseManager);
 
-        String sqlQuery = String.format("SELECT * FROM VEHICLE_WARRANTS WHERE WARRANT_ID = %d", warrantID);
+        String sqlQuery = String.format("SELECT * FROM TCRS.VEHICLEWARRANTSMUNICIPLE WHERE WARRANTIDVM = %d", warrantID);
 
         ResultSet result = databaseManager.executeQuery(sqlQuery);
 
@@ -179,10 +179,18 @@ public class VehicleWarrant {
     private VehicleWarrant logData(ResultSet result, VehicleWarrant vehicleWarrant) {
         try {
             while (result.next()) {
-                vehicleWarrant.vin = result.getString("VIN");
-                vehicleWarrant.dateIssued = result.getString("DATE_ISSUED");
-                vehicleWarrant.warrantReason = result.getString("WARRANT_REASON");
-                vehicleWarrant.outstanding = result.getBoolean("OUTSTANDING");
+                vehicleWarrant.vin = result.getString("WARRANTIDVM");
+                vehicleWarrant.dateIssued = result.getString("WARRANTDATE");
+                vehicleWarrant.warrantReason = result.getString("REASON");
+                String outstanding = result.getString("OUTSTANDING");
+                
+             // convert payment status to boolean
+				if(outstanding.equalsIgnoreCase("Yes")) {
+					vehicleWarrant.outstanding = true;
+				}
+				else {
+					vehicleWarrant.outstanding = false;
+				}
 
                 return vehicleWarrant;
             }
