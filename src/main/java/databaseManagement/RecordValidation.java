@@ -58,7 +58,7 @@ public class RecordValidation {
 		
 		String type = "CITATIONID";
 		
-		String vehMun = "VEHICLECITATIONSMUN";
+		String vehMun = "VEHICLECITATIONSMUNICIPLE";
 		String vehProv = "VEHICLECITATIONSPROV";
 				
 		// Check if value is in municipal or provincial records
@@ -69,7 +69,7 @@ public class RecordValidation {
 		
 		String type = "CITATIONID";
 		
-		String drivMun = "DRIVINGCITATIONSMUN";
+		String drivMun = "DRIVINGCITATIONSMUNICIPLE";
 		String drivProv = "DRIVINGCITATIONSPROV";
 		
 		// Check if value is in municipal or provincial records

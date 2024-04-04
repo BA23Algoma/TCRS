@@ -316,9 +316,7 @@ public class InputValidation extends SceneNavigation {
 		int day = Integer.valueOf(dayString);
 		int year = Integer.valueOf(yearString);
 		int numDays = 31;  
-				
-		int firstYear = 2024;
-		
+						
 		String invalid = "Invalid date input";
 		
 		if (month < 1 || month > 12) {
@@ -328,7 +326,7 @@ public class InputValidation extends SceneNavigation {
 		
 		numDays = numOfDays(month, year);
 		
-		if (day < 1 || numDays < day || year < firstYear) {
+		if (day < 1 || numDays < day || year > Year.now().getValue()) {
 			System.out.println(invalid);
 			return false;
 		}

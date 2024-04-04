@@ -406,10 +406,8 @@ public class DriverCitation {
 			return null;
 		}
 		
-		int citationID = Integer.valueOf(citID);
-		
 		// Run private helper method
-		return findCitation(citationID);
+		return findCitation(Integer.valueOf(citID));
     	
 	}
 	

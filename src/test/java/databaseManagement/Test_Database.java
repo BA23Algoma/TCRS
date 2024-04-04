@@ -14,24 +14,32 @@ public class Test_Database {
 	    
         // Connect to the database
             
-		//DatabaseManager connection = new DatabaseManager();
-		//RecordValidation valid = new RecordValidation(connection);
+		DatabaseManager connection = new DatabaseManager();
+		RecordValidation valid = new RecordValidation(connection);
 		//InputValidation test = new InputValidation();
 		
-		Boolean check = validateDate("2024-04-31");
+		Boolean check = validateDate("2025-01-01");
 		
-		/*try {
+		System.out.print(check);
+		try {
 			connection.connectToDatabase();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		//Account driver = new Account(connection);
+		VehicleCitation citation = new VehicleCitation(connection);
 
 		valid.checkLoginInfo("gamjoun", "239349660", "Administration");
 		
+		if(valid.checkVehCitRecordExistence("1"))
+			System.out.print("Citation is in the system!");
 		
+		citation = citation.findCitation("1");
+				
+		//System.out.println("\n" + citation.toString());
+		
+		//citation.toString();
 		
 		//int latest = driver.insertAccount("Admin", "Banki", "Adewale", "algomaStudent", "ThunderBird");
 		
@@ -61,7 +69,7 @@ public class Test_Database {
 		
 		System.out.println(citationSummary);
 		
-        connection.disconnectFromDatabase();*/
+        connection.disconnectFromDatabase();
            
 	}
 	
@@ -94,15 +102,11 @@ private static boolean dateFormat(String date) {
 		String yearString = date.substring(0,4);
 		String monthString = date.substring(5,7);
 		String dayString = date.substring(8);
-
-		System.out.print("yaer: "+ yearString + " month: " + monthString + " day: " + dayString );
 		
 		int month = Integer.valueOf(monthString);
 		int day = Integer.valueOf(dayString);
-		int year = Integer.valueOf(yearString);
-		int numDays = 31;  
-				
-		int firstYear = 2024;
+		int year = Integer.valueOf(yearString);  
+		System.out.println("year: "+ year + " month: " + month + " day: " + day);		
 		
 		String invalid = "Invalid date input";
 		
@@ -111,23 +115,24 @@ private static boolean dateFormat(String date) {
 			return false;
 		}
 		
-		numDays = numOfDays(month, year);
+		int numDays = numOfDays(month, year);
 		
-		if (day < 1 || numDays < day || year < firstYear) {
+		if (day < 1 || numDays < day || year > Year.now().getValue()) {
 			System.out.println(invalid);
 			return false;
 		}
 	
+		
 		return Character.isDigit(date.charAt(0)) &&
-        Character.isDigit(date.charAt(1)) &&
-        Character.isDigit(date.charAt(2)) &&
-        Character.isDigit(date.charAt(3)) &&
-        Objects.equals(date.charAt(4), seperator) &&
-        Character.isDigit(date.charAt(5)) &&
-        Character.isDigit(date.charAt(6)) &&
-        Objects.equals(date.charAt(7), seperator) &&
-        Character.isDigit(date.charAt(8)) &&
-        Character.isDigit(date.charAt(9));
+		        Character.isDigit(date.charAt(1)) &&
+		        Character.isDigit(date.charAt(2)) &&
+		        Character.isDigit(date.charAt(3)) &&
+		        Objects.equals(date.charAt(4), seperator) &&
+		        Character.isDigit(date.charAt(5)) &&
+		        Character.isDigit(date.charAt(6)) &&
+		        Objects.equals(date.charAt(7), seperator) &&
+		        Character.isDigit(date.charAt(8)) &&
+		        Character.isDigit(date.charAt(9));
 		
 	}
 	

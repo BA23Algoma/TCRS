@@ -187,7 +187,7 @@ public class VehicleCitation {
 		}
 		
 		// First confirm account exist, and if so return account information
-		VehicleCitation citation = findCitation(Integer.valueOf(citID));
+		VehicleCitation citation = findCitation(citID);
 		
 		// Check to see if the account is in the system
 		if (!inSystem(citation)) {
@@ -223,11 +223,9 @@ public class VehicleCitation {
 			System.out.println("Invaild vehicle citation, unable to delete account!");
 			return;
 		}
-		
-		int citationID = Integer.valueOf(citID);
 
 		// First confirm account exist, and if so return account information
-		VehicleCitation citation = findCitation(citationID);
+		VehicleCitation citation = findCitation(citID);
 		
 		// Check to see if the account is in the system
 		if (!inSystem(citation)) {
@@ -235,12 +233,12 @@ public class VehicleCitation {
 		}
 				
 		// Create query to delete account
-		String sqlDelete = String.format("DELETE FROM TCRS.VEHICLECITATIONSMUNICIPLE WHERE CITATIONID= %d", citationID);
+		String sqlDelete = String.format("DELETE FROM TCRS.VEHICLECITATIONSMUNICIPLE WHERE CITATIONID= %d", Integer.valueOf(citID));
 		
 		// Execute deleting of account
 		databaseManager.executeUpdate(sqlDelete);
 		
-		System.out.println("Citation " + citationID + " removed from system!");
+		System.out.println("Citation " + citID + " removed from system!");
 
 	}
 
@@ -255,13 +253,13 @@ public class VehicleCitation {
 	}
 	
 	// Find account using account user name
-	public VehicleCitation findCitation (int citationID) {
+	public VehicleCitation findCitation (String citationID) {
 		
 		// Create account to hold new found account information
 		VehicleCitation findCitation = new VehicleCitation(this.databaseManager);
 		
 		// Build SQL query using static method
-		String sqlQuery = String.format("SELECT * FROM TCRS.VEHICLECITATIONSMUNICIPLE WHERE CITATIONID='%d'", citationID);
+		String sqlQuery = String.format("SELECT * FROM TCRS.VEHICLECITATIONSMUNICIPLE WHERE CITATIONID= %d", Integer.valueOf(citationID));
 
 		// Execute finding account SELECT query
 		ResultSet result = databaseManager.executeQuery(sqlQuery);
@@ -277,7 +275,7 @@ public class VehicleCitation {
 	}
 	
 	// Find account using account user name
-	public VehicleCitation findCitation (String vin) {
+	public VehicleCitation findCitationVin (String vin) {
 		
 		// Create account to hold new found account information
 		VehicleCitation findCitation = new VehicleCitation(this.databaseManager);
@@ -321,7 +319,7 @@ public class VehicleCitation {
 			     //Retrieve data by column index or name
 				citation.citationId = result.getInt("CITATIONID");
 				citation.vin = result.getString("VINCITATIONM");
-				citation.issuingOfficerBadgeNumber = result.getInt("ISSUINGOFFICERIDM");
+				citation.issuingOfficerBadgeNumber = result.getInt("ISSUEINGOFFICERIDM");
 				citation.dateIssued = result.getString("CITATIONDATE");
 				citation.reason = result.getString("CITATIONREASON");
 				String fine = result.getString("FINEAMOUNT");
