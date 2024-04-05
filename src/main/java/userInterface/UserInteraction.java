@@ -2,15 +2,18 @@ package userInterface;
 import databaseManagement.DatabaseManager;
 import databaseManagement.RecordValidation;
 import javafx.application.Platform;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import CRUD.*;
 
@@ -20,7 +23,7 @@ public class UserInteraction extends SceneNavigation {
 	
 	 private  Stage primaryStage;
 	 private  DatabaseManager databaseManager;
-	    
+		    
 	    private  InputValidation dataValidator;
 	    private  RecordValidation recordValidator;
 	    private  Vehicle vehicle;
@@ -35,9 +38,16 @@ public class UserInteraction extends SceneNavigation {
 	    private  Report report;
 
 	    public UserInteraction(Stage primaryStage) {
-	        this.primaryStage = primaryStage;
-	        this.databaseManager = new DatabaseManager();
 	        
+	    	this.primaryStage = primaryStage;
+	        primaryStage.setTitle("TrafficWatch");	
+			Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();	    
+	        primaryStage.setWidth(screenBounds.getWidth());
+	        primaryStage.setHeight(screenBounds.getHeight());
+	        primaryStage.setMaximized(true);
+	        
+	        this.databaseManager = new DatabaseManager();
+	      
 	        this.dataValidator = new InputValidation();
 	        this.recordValidator = new RecordValidation(databaseManager); 
 	        this.vehicle = new Vehicle(databaseManager);
@@ -49,6 +59,7 @@ public class UserInteraction extends SceneNavigation {
 	        this.driverWarrant = new DriverWarrants(databaseManager);
 	        this.vehicleWarrant = new VehicleWarrant(databaseManager);
 	        this.trafficSchool = new TrafficSchool(databaseManager);
+	        this.report = new Report (databaseManager);
 	        
 	        try {
 	            databaseManager.connectToDatabase();
@@ -89,7 +100,7 @@ public class UserInteraction extends SceneNavigation {
 		 btEnterVehCitRecord.setOnAction(event -> primaryStage.setScene(createDataScene("Enter", "Vehicle Citation Info")));
 		 btEnterDriWarRecord.setOnAction(event -> primaryStage.setScene(createDataScene("Enter", "Driver Warrant Info")));
 		 btEnterVehWarRecord.setOnAction(event -> primaryStage.setScene(createDataScene("Enter", "Vehicle Warrant Info")));
-		 btEnterTrafficSchoolRecord.setOnAction(event -> primaryStage.setScene(createDataScene("Enter", "Traffic School")));
+		 btEnterTrafficSchoolRecord.setOnAction(event -> primaryStage.setScene(createDataScene("Enter", "Traffic School Info")));
 		 
 		 //Buttons to make a search page for viewing/editing records
 		 
@@ -144,7 +155,7 @@ public class UserInteraction extends SceneNavigation {
 		 btVehicleInfo.setOnAction(event -> primaryStage.setScene(createSearchScene("Enter VIN Vehicle Report", "Report")));
 		 btDriverInfo.setOnAction(event -> primaryStage.setScene(createSearchScene("Enter License Driver Report", "Report")));
 		 btDrivingRecord.setOnAction(event -> primaryStage.setScene(createSearchScene("Enter Driving Record", "Report")));
-
+		 btOutstandingWarrants.setOnAction(event-> generateOutstandingWarrants());
 	
 		
 		 //Delete button
@@ -184,6 +195,7 @@ public class UserInteraction extends SceneNavigation {
 			    } 
 			    
 			    reverseAutofill();
+			    
 			});
 
 		//Search button to edit record
@@ -338,14 +350,16 @@ public class UserInteraction extends SceneNavigation {
 			                submitEditTrafficSchool();
 			                break;
 			        }
-			    } 
+			    } else if (currentScene.parameter1.equals("Filter")) {
+			    	generateCitationSummaryReport();
+			    }
 			});
 
 	
 	}
-//***Inserting records into the database***	
+//***Deleting records from the database***	
 		 
-//Function on the submit button to enter new vehicle record	
+//Functions on the delete button
 	
 	public void deleteVehicle() {
 		BorderPane currentPane = (BorderPane) primaryStage.getScene().getRoot();
@@ -357,7 +371,12 @@ public class UserInteraction extends SceneNavigation {
             if (node instanceof TextField) {
                 TextField textField = (TextField) node;
                 if (textField == tfVin) {
-                   vehicle.deleteVehicle(textField.getText());
+                	if (!textField.getText().isEmpty());{
+                		vehicle.deleteVehicle(textField.getText());
+                		showSuccessMessage();               		
+                
+                	}
+                   
                 }
             }
         }
@@ -373,7 +392,12 @@ public class UserInteraction extends SceneNavigation {
             if (node instanceof TextField) {
                 TextField textField = (TextField) node;
                 if (textField == tfLic) {
-                   driver.deleteDriver(textField.getText());
+                	if (!textField.getText().isEmpty());{
+                		 driver.deleteDriver(textField.getText());
+                		showSuccessMessage();               		
+                
+                }
+                  
                 }
             }
         }
@@ -389,7 +413,12 @@ public class UserInteraction extends SceneNavigation {
             if (node instanceof TextField) {
                 TextField textField = (TextField) node;
                 if (textField == tfBadge) {
-                   officer.deleteOfficer(textField.getText());
+                	if (!textField.getText().isEmpty());{
+                		officer.deleteOfficer(textField.getText());
+                		showSuccessMessage();               		
+                
+                }
+                	
                 }
             }
         }
@@ -405,7 +434,12 @@ public class UserInteraction extends SceneNavigation {
             if (node instanceof TextField) {
                 TextField textField = (TextField) node;
                 if (textField == tfAccID) {
-                   account.deleteAccount(textField.getText());
+                	if (!textField.getText().isEmpty());{
+                		account.deleteAccount(textField.getText());
+                		showSuccessMessage();               		
+                
+                }
+                	
                 }
             }
         }
@@ -421,12 +455,15 @@ public class UserInteraction extends SceneNavigation {
             if (node instanceof TextField) {
                 TextField textField = (TextField) node;
                 if (textField == tfCitID) {
-                   vehicleCitation.deleteVehicleCitation(textField.getText());
+                	if (!textField.getText().isEmpty());{
+                		vehicleCitation.deleteVehicleCitation(textField.getText());
+                		showSuccessMessage();               		
+                
                 }
-            }
+           }
         }
 	}
-
+	}
 	public void deleteDriverCitation() {
 		BorderPane currentPane = (BorderPane) primaryStage.getScene().getRoot();
 
@@ -437,7 +474,12 @@ public class UserInteraction extends SceneNavigation {
             if (node instanceof TextField) {
                 TextField textField = (TextField) node;
                 if (textField == tfCitID) {
-                   driverCitation.deleteDriverCitation(textField.getText());
+                	if (!textField.getText().isEmpty());{
+                		driverCitation.deleteDriverCitation(textField.getText());
+                		showSuccessMessage();               		
+                
+                }
+                	
                 }
             }
         }
@@ -453,7 +495,12 @@ public class UserInteraction extends SceneNavigation {
             if (node instanceof TextField) {
                 TextField textField = (TextField) node;
                 if (textField == tfWarID) {
-                  vehicleWarrant.deleteVehicleWarrant(textField.getText());
+                	if (!textField.getText().isEmpty());{
+                		vehicleWarrant.deleteVehicleWarrant(textField.getText());
+                		showSuccessMessage();               		
+                
+                }
+                  
                 }
             }
         }
@@ -469,7 +516,12 @@ public class UserInteraction extends SceneNavigation {
             if (node instanceof TextField) {
                 TextField textField = (TextField) node;
                 if (textField == tfWarID) {
-                  driverWarrant.deleteDriverWarrant(textField.getText());
+                	if (!textField.getText().isEmpty());{
+                		driverWarrant.deleteDriverWarrant(textField.getText());
+                		showSuccessMessage();               		
+                
+                }
+                  
                 }
             }
         }
@@ -484,15 +536,20 @@ public class UserInteraction extends SceneNavigation {
         for (Node node : FieldsVBox.getChildren()) {
             if (node instanceof TextField) {
                 TextField textField = (TextField) node;
-                if (textField == tfCitID) {
-                  trafficSchool.deleteEnrollment(Integer.parseInt(textField.getText()));
+                if (textField == tfEnterCitID) {
+                	if (!textField.getText().isEmpty());{
+                		trafficSchool.deleteEnrollment(textField.getText());
+                		showSuccessMessage();               		
+                
+                }
+                  
                 }
             }
         }
 	}
 	
 
-public void submitEditVehicle() {
+	public void submitEditVehicle() {
 			
 	BorderPane currentPane = (BorderPane) primaryStage.getScene().getRoot();
 
@@ -504,7 +561,7 @@ public void submitEditVehicle() {
 		    String regStat=null;
 
 		    if (dataValidator.emptyFieldsTest(currentPane)) {
-		        if (dataValidator.fieldFormatTest(currentPane)) {
+		        if (fieldFormatTest(currentPane)) {
 		            HBox LabelsAndFieldsHBox = (HBox) currentPane.getRight();
 		            VBox FieldsVBox = (VBox) LabelsAndFieldsHBox.getChildren().get(1);
 
@@ -545,7 +602,7 @@ public void submitEditVehicle() {
 		    }
 		}
 	
-public void submitEditDriver() {
+	public void submitEditDriver() {
 	BorderPane currentPane = (BorderPane) primaryStage.getScene().getRoot();
     String license=null;
     String plate = null;
@@ -555,7 +612,7 @@ public void submitEditDriver() {
     String demerit=null;
 
     if (dataValidator.emptyFieldsTest(currentPane)) {
-        if (dataValidator.fieldFormatTest(currentPane)) {
+        if (fieldFormatTest(currentPane)) {
             HBox LabelsAndFieldsHBox = (HBox) currentPane.getRight();
             VBox FieldsVBox = (VBox) LabelsAndFieldsHBox.getChildren().get(1);
 
@@ -593,8 +650,8 @@ public void submitEditDriver() {
         System.out.println("Empty fields test failed");
         showEmptyFieldsMessage();
     }		 
-		 }
-public void submitEditOfficer() {
+}
+	public void submitEditOfficer() {
 
     
     BorderPane currentPane = (BorderPane) primaryStage.getScene().getRoot();
@@ -604,7 +661,7 @@ public void submitEditOfficer() {
     String badge=null;
 
     if (dataValidator.emptyFieldsTest(currentPane)) {
-        if (dataValidator.fieldFormatTest(currentPane)) {
+        if (fieldFormatTest(currentPane)) {
             HBox LabelsAndFieldsHBox = (HBox) currentPane.getRight();
             VBox FieldsVBox = (VBox) LabelsAndFieldsHBox.getChildren().get(1);
 
@@ -635,7 +692,7 @@ public void submitEditOfficer() {
     }
 }		
 		
-		public void submitEditAccount() {
+	public void submitEditAccount() {
 			BorderPane currentPane = (BorderPane) primaryStage.getScene().getRoot();
 
 		    String first=null;
@@ -647,7 +704,7 @@ public void submitEditOfficer() {
 		  
 
 		    if (dataValidator.emptyFieldsTest(currentPane)) {
-		        if (dataValidator.fieldFormatTest(currentPane)) {
+		        if (fieldFormatTest(currentPane)) {
 		            HBox LabelsAndFieldsHBox = (HBox) currentPane.getRight();
 		            VBox FieldsVBox = (VBox) LabelsAndFieldsHBox.getChildren().get(1);
 
@@ -687,7 +744,7 @@ public void submitEditOfficer() {
 			
 			
 		}
-		public void submitEditVehicleCitation() {
+	public void submitEditVehicleCitation() {
 			BorderPane currentPane = (BorderPane) primaryStage.getScene().getRoot();
 		String citID=null;
 		    String vin=null;
@@ -698,7 +755,7 @@ public void submitEditOfficer() {
 		    String paid=null;
 
 		    if (dataValidator.emptyFieldsTest(currentPane)) {
-		        if (dataValidator.fieldFormatTest(currentPane)) {
+		        if (fieldFormatTest(currentPane)) {
 		            HBox LabelsAndFieldsHBox = (HBox) currentPane.getRight();
 		            VBox FieldsVBox = (VBox) LabelsAndFieldsHBox.getChildren().get(1);
 
@@ -707,7 +764,7 @@ public void submitEditOfficer() {
 		                    TextField textField = (TextField) node;
 		                    if (textField == tfVin) {
 		                        vin = textField.getText();
-		                    } else if (textField == tfBadge) {
+		                    } else if (textField == tfIssuingOff) {
 		                        badge = textField.getText();
 		                 
 		                    } else if (textField == tfDate) {
@@ -741,7 +798,7 @@ public void submitEditOfficer() {
 		        showEmptyFieldsMessage();
 		    }
 		}
-		public void submitEditDriverCitation() {
+	public void submitEditDriverCitation() {
 			BorderPane currentPane = (BorderPane) primaryStage.getScene().getRoot();
 
 		    String license=null;
@@ -753,7 +810,7 @@ public void submitEditOfficer() {
 		    String reportable = null;
 		    String citID=null;
 		    if (dataValidator.emptyFieldsTest(currentPane)) {
-		        if (dataValidator.fieldFormatTest(currentPane)) {
+		        if (fieldFormatTest(currentPane)) {
 		            HBox LabelsAndFieldsHBox = (HBox) currentPane.getRight();
 		            VBox FieldsVBox = (VBox) LabelsAndFieldsHBox.getChildren().get(1);
 
@@ -762,7 +819,7 @@ public void submitEditOfficer() {
 		                    TextField textField = (TextField) node;
 		                    if (textField == tfLic) {
 		                        license = textField.getText();
-		                    } else if (textField == tfBadge) {
+		                    } else if (textField == tfIssuingOff) {
 		                        badge = textField.getText();
 		                        
 		                    } else if (textField == tfDate) {
@@ -798,7 +855,7 @@ public void submitEditOfficer() {
 		    }
 		    
 		}
-		public void submitEditVehicleWarrant() {
+	public void submitEditVehicleWarrant() {
 		    BorderPane currentPane = (BorderPane) primaryStage.getScene().getRoot();
 
 		    String vin=null;
@@ -808,7 +865,7 @@ public void submitEditOfficer() {
 		    String warID=null;
 
 		    if (dataValidator.emptyFieldsTest(currentPane)) {
-		        if (dataValidator.fieldFormatTest(currentPane)) {
+		        if (fieldFormatTest(currentPane)) {
 		            HBox LabelsAndFieldsHBox = (HBox) currentPane.getRight();
 		            VBox FieldsVBox = (VBox) LabelsAndFieldsHBox.getChildren().get(1);
 
@@ -844,7 +901,7 @@ public void submitEditOfficer() {
 		        showEmptyFieldsMessage();
 		    }
 		}
-		public void submitEditDriverWarrant() {
+	public void submitEditDriverWarrant() {
 			BorderPane currentPane = (BorderPane) primaryStage.getScene().getRoot();
 
 		    String license=null;
@@ -855,7 +912,7 @@ public void submitEditOfficer() {
 		   
 
 		    if (dataValidator.emptyFieldsTest(currentPane)) {
-		        if (dataValidator.fieldFormatTest(currentPane)) {
+		        if (fieldFormatTest(currentPane)) {
 		            HBox LabelsAndFieldsHBox = (HBox) currentPane.getRight();
 		            VBox FieldsVBox = (VBox) LabelsAndFieldsHBox.getChildren().get(1);
 
@@ -891,10 +948,10 @@ public void submitEditOfficer() {
 		        showEmptyFieldsMessage();
 		    }
 		}
-		public void submitEditTrafficSchool() {
+	public void submitEditTrafficSchool() {
 			 BorderPane currentPane = (BorderPane) primaryStage.getScene().getRoot();
 
-			    int citationID=0;
+			    String citationID=null;
 			    String session1Date=null;
 			    String session2Date=null;
 			    String session3Date=null;
@@ -906,16 +963,15 @@ public void submitEditOfficer() {
 
 
 			    if (dataValidator.emptyFieldsTest(currentPane)) {
-			        if (dataValidator.fieldFormatTest(currentPane)) {
+			        if (fieldFormatTest(currentPane)) {
 			            HBox LabelsAndFieldsHBox = (HBox) currentPane.getRight();
 			            VBox FieldsVBox = (VBox) LabelsAndFieldsHBox.getChildren().get(1);
 
 			            for (Node node : FieldsVBox.getChildren()) {
 			                if (node instanceof TextField) {
 			                    TextField textField = (TextField) node;
-			                    if (textField == tfEnterCitID) {
-			                        String citationIDString = textField.getText();
-			                        citationID = Integer.parseInt(citationIDString);
+			                    if (textField == tfEnterCitID) {		                       
+			                        citationID = textField.getText();
 			                    } else if (textField == tfSess1) {
 			                        session1Date = textField.getText();
 			                    } else if (textField == tfSess2) {
@@ -962,7 +1018,7 @@ public void submitEditOfficer() {
 		}
 		
 		
-public void submitEnterVehicle() {
+	public void submitEnterVehicle() {
 		
 	    
 	    BorderPane currentPane = (BorderPane) primaryStage.getScene().getRoot();
@@ -973,9 +1029,13 @@ public void submitEnterVehicle() {
 	    String model=null;
 	    String year=null;
 	    String regStat=null;
+	    
+	
 
 	    if (dataValidator.emptyFieldsTest(currentPane)) {
-	        if (dataValidator.fieldFormatTest(currentPane)) {
+	    
+	        if (fieldFormatTest(currentPane)) {
+	        
 	            HBox LabelsAndFieldsHBox = (HBox) currentPane.getRight();
 	            VBox FieldsVBox = (VBox) LabelsAndFieldsHBox.getChildren().get(1);
 
@@ -985,7 +1045,7 @@ public void submitEnterVehicle() {
 	                    if (textField == tfVin) {
 	                        vin = textField.getText();
 	                    } else if (textField == tfPlate) {
-	                        plate = textField.getText();
+	                    	plate = textField.getText();	                 
 	                    } else if (textField == tfMake) {
 	                        make = textField.getText();
 	                    } else if (textField == tfModel) {
@@ -1016,7 +1076,7 @@ public void submitEnterVehicle() {
 	}
 	
 //Function on the submit button to enter new driver record
-public void submitEnterDriver() {
+	public void submitEnterDriver() {
 	    
 		BorderPane currentPane = (BorderPane) primaryStage.getScene().getRoot();
 	    String license=null;
@@ -1027,7 +1087,7 @@ public void submitEnterDriver() {
 	    String demerit=null;
 
 	    if (dataValidator.emptyFieldsTest(currentPane)) {
-	        if (dataValidator.fieldFormatTest(currentPane)) {
+	        if (fieldFormatTest(currentPane)) {
 	            HBox LabelsAndFieldsHBox = (HBox) currentPane.getRight();
 	            VBox FieldsVBox = (VBox) LabelsAndFieldsHBox.getChildren().get(1);
 
@@ -1065,9 +1125,12 @@ public void submitEnterDriver() {
 	        System.out.println("Empty fields test failed");
 	        showEmptyFieldsMessage();
 	    }
+	    
+	    System.out.println(fieldFormatTest(currentPane)+plate);
+	 
 	}
 //Function on the submit button to enter new officer record
-public void submitEnterOfficer() {
+	public void submitEnterOfficer() {
 	
 
     
@@ -1078,7 +1141,7 @@ public void submitEnterOfficer() {
     String badge=null;
 
     if (dataValidator.emptyFieldsTest(currentPane)) {
-        if (dataValidator.fieldFormatTest(currentPane)) {
+        if (fieldFormatTest(currentPane)) {
             HBox LabelsAndFieldsHBox = (HBox) currentPane.getRight();
             VBox FieldsVBox = (VBox) LabelsAndFieldsHBox.getChildren().get(1);
 
@@ -1109,7 +1172,7 @@ public void submitEnterOfficer() {
     }
 }
 //Function on the submit button to enter new account	
-public void submitEnterAccount() {
+	public void submitEnterAccount() {
 		
 		
 	    
@@ -1123,7 +1186,7 @@ public void submitEnterAccount() {
 	  
 
 	    if (dataValidator.emptyFieldsTest(currentPane)) {
-	        if (dataValidator.fieldFormatTest(currentPane)) {
+	        if (fieldFormatTest(currentPane)) {
 	            HBox LabelsAndFieldsHBox = (HBox) currentPane.getRight();
 	            VBox FieldsVBox = (VBox) LabelsAndFieldsHBox.getChildren().get(1);
 
@@ -1147,9 +1210,11 @@ public void submitEnterAccount() {
 	                }
 	            }
 	            // Call the method to insert the vehicle
-	            account.insertAccount(agency, first, last, username, password);
+	            int generatedID = account.insertAccount(agency, first, last, username, password);	            
 	            clearFields(currentPane);
+	            tfAccID.setText("Auto-generated ID: "+Integer.toString(generatedID));
 	            showSuccessMessage();
+	            
 	        } else {
 	            System.out.println("Field format test failed");
 	            showWrongFormatMessage();
@@ -1173,18 +1238,18 @@ public void submitEnterAccount() {
 	    String paid=null;
 
 	    if (dataValidator.emptyFieldsTest(currentPane)) {
-	        if (dataValidator.fieldFormatTest(currentPane)) {
+	        if (fieldFormatTest(currentPane)) {
 	            HBox LabelsAndFieldsHBox = (HBox) currentPane.getRight();
 	            VBox FieldsVBox = (VBox) LabelsAndFieldsHBox.getChildren().get(1);
 
 	            for (Node node : FieldsVBox.getChildren()) {
+	            	
 	                if (node instanceof TextField) {
 	                    TextField textField = (TextField) node;
 	                    if (textField == tfVin) {
 	                        vin = textField.getText();
-	                    } else if (textField == tfBadge) {
-	                        badge = textField.getText();
-	                 
+	                    } else if (textField == tfIssuingOff) {
+	                        badge = textField.getText();                     
 	                    } else if (textField == tfDate) {
 	                        dateIssued = textField.getText();
 	                    } else if (textField == tfFine) {
@@ -1200,10 +1265,17 @@ public void submitEnterAccount() {
 	                    }
 	                }
 	            }
-	            // Call the method to insert the vehicle
-	            vehicleCitation.insertVehicleCitation (vin, badge, dateIssued, reason, fine, paid);
+	            // Call the method to insert the vehicle	            
+	            int generatedID= vehicleCitation.insertVehicleCitation (vin, badge, dateIssued, reason, fine, paid);
+	            
+	            if (generatedID==-1) {
+	            	lbForeignKeyError.setText("Issuing officer and/or VIN not found in the system.");
+	            	showForeignKeyErrorMessage();
+	            } else {
 	            clearFields(currentPane);
+	            tfCitID.setText("Auto-generated ID: "+Integer.toString(generatedID));
 	            showSuccessMessage();
+	            }
 	        } else {
 	            System.out.println("Field format test failed");
 	            showWrongFormatMessage();
@@ -1223,12 +1295,12 @@ public void submitEnterAccount() {
 	    String badge=null;
 	    String dateIssued=null;
 	    String reason=null;
-	    String  fine=null;
+	    String fine=null;
 	    String paid=null;
 	    String reportable = null;
 
 	    if (dataValidator.emptyFieldsTest(currentPane)) {
-	        if (dataValidator.fieldFormatTest(currentPane)) {
+	        if (fieldFormatTest(currentPane)) {
 	            HBox LabelsAndFieldsHBox = (HBox) currentPane.getRight();
 	            VBox FieldsVBox = (VBox) LabelsAndFieldsHBox.getChildren().get(1);
 
@@ -1237,7 +1309,7 @@ public void submitEnterAccount() {
 	                    TextField textField = (TextField) node;
 	                    if (textField == tfLic) {
 	                        license = textField.getText();
-	                    } else if (textField == tfBadge) {
+	                    } else if (textField == tfIssuingOff) {
 	                        badge = textField.getText();
 	                        
 	                    } else if (textField == tfDate) {
@@ -1258,9 +1330,19 @@ public void submitEnterAccount() {
 	                }
 	            }
 	            // Call the method to insert the vehicle
-	            driverCitation.insertDriverCitation (license, badge, dateIssued, reason, fine, paid, reportable);
-	            clearFields(currentPane);
-	            showSuccessMessage();
+	            
+	            int generatedID= driverCitation.insertDriverCitation (license, badge, dateIssued, reason, fine, paid, reportable);
+	            
+	            if (generatedID==-1) {
+	            	lbForeignKeyError.setText("Issuing officer and/or license number not found in the system.");
+	            	showForeignKeyErrorMessage();
+	            } else {
+		            clearFields(currentPane);
+		            tfCitID.setText("Auto-generated ID: "+Integer.toString(generatedID));
+		            showSuccessMessage();
+	            }
+	            
+	          
 	        } else {
 	            System.out.println("Field format test failed");
 	            showWrongFormatMessage();
@@ -1283,7 +1365,7 @@ public void submitEnterAccount() {
 	   
 
 	    if (dataValidator.emptyFieldsTest(currentPane)) {
-	        if (dataValidator.fieldFormatTest(currentPane)) {
+	        if (fieldFormatTest(currentPane)) {
 	            HBox LabelsAndFieldsHBox = (HBox) currentPane.getRight();
 	            VBox FieldsVBox = (VBox) LabelsAndFieldsHBox.getChildren().get(1);
 
@@ -1305,9 +1387,15 @@ public void submitEnterAccount() {
 	                }
 	            }
 	            // Call the method to insert the vehicle
-	            driverWarrant.insertDriverWarrant(license, dateIssued,reason,outstanding);
+	            int generatedID = driverWarrant.insertDriverWarrant(license, dateIssued,reason,outstanding);
+	            if (generatedID==-1) {
+	            	lbForeignKeyError.setText("License number not found in the system.");
+	            	showForeignKeyErrorMessage();
+	            } else {
+	            tfWarID.setText("Auto-generated ID: "+Integer.toString(generatedID));
 	            clearFields(currentPane);
 	            showSuccessMessage();
+	            }
 	        } else {
 	            System.out.println("Field format test failed");
 	            showWrongFormatMessage();
@@ -1330,7 +1418,7 @@ public void submitEnterVehicleWarrant() {
 	   
 
 	    if (dataValidator.emptyFieldsTest(currentPane)) {
-	        if (dataValidator.fieldFormatTest(currentPane)) {
+	        if (fieldFormatTest(currentPane)) {
 	            HBox LabelsAndFieldsHBox = (HBox) currentPane.getRight();
 	            VBox FieldsVBox = (VBox) LabelsAndFieldsHBox.getChildren().get(1);
 
@@ -1352,9 +1440,15 @@ public void submitEnterVehicleWarrant() {
 	                }
 	            }
 	            // Call the method to insert the vehicle
-	            vehicleWarrant.insertVehicleWarrant(vin, dateIssued, reason, outstanding);
-	            clearFields(currentPane);
-	            showSuccessMessage();
+	            int generatedID = vehicleWarrant.insertVehicleWarrant(vin, dateIssued, reason, outstanding);	            
+	            if (generatedID==-1) {
+	            	lbForeignKeyError.setText("VIN not found in the system.");
+	            	showForeignKeyErrorMessage();
+	            } else {
+	             clearFields(currentPane);
+	             tfWarID.setText("Auto-generated ID: "+Integer.toString(generatedID));	            
+	             showSuccessMessage();	
+	            }
 	        } else {
 	            System.out.println("Field format test failed");
 	            showWrongFormatMessage();
@@ -1369,7 +1463,7 @@ public void submitEnterVehicleWarrant() {
 		   
 	    BorderPane currentPane = (BorderPane) primaryStage.getScene().getRoot();
 
-	    int citationID=0;
+	    String citationID=null;
 	    String session1Date=null;
 	    String session2Date=null;
 	    String session3Date=null;
@@ -1381,7 +1475,7 @@ public void submitEnterVehicleWarrant() {
 
 
 	    if (dataValidator.emptyFieldsTest(currentPane)) {
-	        if (dataValidator.fieldFormatTest(currentPane)) {
+	        if (fieldFormatTest(currentPane)) {
 	            HBox LabelsAndFieldsHBox = (HBox) currentPane.getRight();
 	            VBox FieldsVBox = (VBox) LabelsAndFieldsHBox.getChildren().get(1);
 
@@ -1390,7 +1484,7 @@ public void submitEnterVehicleWarrant() {
 	                    TextField textField = (TextField) node;
 	                    if (textField == tfEnterCitID) {
 	                        String citationIDString = textField.getText();
-	                        citationID = Integer.parseInt(citationIDString);
+	                        citationID = textField.getText();
 	                    } else if (textField == tfSess1) {
 	                        session1Date = textField.getText();
 	                    } else if (textField == tfSess2) {
@@ -1414,10 +1508,16 @@ public void submitEnterVehicleWarrant() {
 	                }
 	            }
 	            // Call the method to insert the vehicle
-	            trafficSchool.insertEnrollment (citationID, session1Date, session2Date, session3Date, session4Date, 
+	            int result = trafficSchool.insertEnrollment (citationID, session1Date, session2Date, session3Date, session4Date, 
 	            session1Attendance, session2Attendance, session3Attendance, session4Attendance);
+	            
+	            if (result ==-1) {
+	            	lbForeignKeyError.setText("Citation ID not found in the system.");
+	            	showForeignKeyErrorMessage();
+	            } else {
 	            clearFields(currentPane);
 	            showSuccessMessage();
+	            }
 	            
 	        } else {
 	            System.out.println("Field format test failed");
@@ -1438,7 +1538,7 @@ public void submitEnterVehicleWarrant() {
 		String license = null;
 
 		if (dataValidator.emptyFieldsTest(currentPane)) {
-		    if (dataValidator.fieldFormatTest(currentPane)) {
+		    if (fieldFormatTest(currentPane)) {
 		        
 		    	VBox centerContentVBox = (VBox) currentPane.getCenter();		        
 		        for (Node node : centerContentVBox.getChildren()) {
@@ -1450,11 +1550,10 @@ public void submitEnterVehicleWarrant() {
 		            }
 		        }
 		        
-		        if (recordValidator.checkVehicleRecordExistence(license)) {		    	
-		        	
+		        if (recordValidator.checkDriverRecordExistence(license)) {		    		
 		        	primaryStage.setScene(createReportScene());
-		        	//taReport.setText(report.generateDriverReport({}, {license,}, license));
-		        	//handle
+		        	taReport.setText(report.generateDriverReport(license));
+		        	
 		        } else {
 		        	System.out.println("No record found");
 		        	showNoRecordMessage();
@@ -1473,14 +1572,128 @@ public void submitEnterVehicleWarrant() {
  
 
    public void searchVinReport() {
-	   
+	   BorderPane currentPane = (BorderPane) primaryStage.getScene().getRoot();
+		String vin = null;
+
+		if (dataValidator.emptyFieldsTest(currentPane)) {
+		    if (fieldFormatTest(currentPane)) {
+		        
+		    	VBox centerContentVBox = (VBox) currentPane.getCenter();		        
+		        for (Node node : centerContentVBox.getChildren()) {
+		            if (node instanceof TextField) {
+		                TextField textField = (TextField) node;
+		                if (textField == tfVin) {
+		                    vin = textField.getText();
+		                }
+		            }
+		        }
+		        
+		        if (recordValidator.checkVehicleRecordExistence(vin)) {		    		
+		        	primaryStage.setScene(createReportScene());
+		        	taReport.setText(report.generateVehicleReport(vin));
+		        	
+		        } else {
+		        	System.out.println("No record found");
+		        	showNoRecordMessage();
+		        }
+		        
+		    } else {
+		        System.out.println("Field format test failed");
+		        showWrongFormatMessage();
+		    }
+		    
+		} else {
+		    System.out.println("Empty fields test failed");
+		    showEmptyFieldsMessage();
+		}
    }
     	         
-
-    public void searchDrivingRecordReport() {
-    	
-    }
    
+    public void searchDrivingRecordReport() {
+    	BorderPane currentPane = (BorderPane) primaryStage.getScene().getRoot();
+   		String license = null;
+   		String startDate = null;
+   		String endDate = null;
+
+   		if (dataValidator.emptyFieldsTest(currentPane)) {
+   		    if (fieldFormatTest(currentPane)) {
+   		        
+   		    	VBox centerContentVBox = (VBox) currentPane.getCenter();		        
+   		        for (Node node : centerContentVBox.getChildren()) {
+   		            if (node instanceof TextField) {
+   		                TextField textField = (TextField) node;
+   		                if (textField == tfLic) {
+   		                    license = textField.getText();
+   		                }
+   		                else if (textField == tfStartDate){
+   		                	startDate = textField.getText();
+   		                }
+   		                else if (textField == tfEndDate) {
+   		                	endDate = textField.getText();
+   		                }
+   		            }
+   		        }
+   		        
+   		        if (recordValidator.checkDriverRecordExistence(license)) {		    		
+   		        	primaryStage.setScene(createReportScene());
+   		        	taReport.setText(report.generateDrivingRecord(license, startDate, endDate));
+   		        	
+   		        } else {
+   		        	System.out.println("No record found");
+   		        	showNoRecordMessage();
+   		        }
+   		        
+   		    } else {
+   		        System.out.println("Field format test failed");
+   		        showWrongFormatMessage();
+   		    }
+   		    
+   		} else {
+   		    System.out.println("Empty fields test failed");
+   		    showEmptyFieldsMessage();
+   		}
+    }
+    
+    
+   public void generateOutstandingWarrants() {
+	   primaryStage.setScene(createReportScene());
+	   taReport.setText(report.generateOutstandingWarrants());
+   }
+   
+   public void generateCitationSummaryReport() {
+	    BorderPane currentPane = (BorderPane) primaryStage.getScene().getRoot();
+
+	    Optional<String> issuingOfficer = Optional.empty();
+	    Optional<String> startDate = Optional.empty();
+	    Optional<String> endDate = Optional.empty();
+	    Optional<String> reason = Optional.empty();
+	    Optional<String> paid = Optional.empty();
+
+	    if (fieldFormatTest(currentPane)) {
+
+	        if (!tfIssuingOff.getText().trim().isEmpty()) {
+	            issuingOfficer = Optional.of(tfIssuingOff.getText());
+	        }
+
+	        if (!tfStartDate.getText().trim().isEmpty()) {
+	            startDate = Optional.of(tfStartDate.getText());
+	        }
+	        if (!tfEndDate.getText().trim().isEmpty()) {
+	            endDate = Optional.of(tfEndDate.getText());
+	        }
+	        if (cbReasonDrivVeh.getValue() != null) {
+	            reason = Optional.of(cbReasonDrivVeh.getValue());
+	        }
+	        if (cbPaid.getValue() != null) {
+	            paid = Optional.of(cbPaid.getValue());
+	        }
+	        primaryStage.setScene(createReportScene());
+	        taReport.setText(report.generateCitationSummary(issuingOfficer, startDate, endDate, reason, paid));
+	    } else {
+	        System.out.println("Field format test failed");
+	        showWrongFormatMessage();
+	    }
+	}
 	//***Searching records in the database for Viewing/Editing***	
 
 public void searchLicenseDriverEdit() {
@@ -1489,7 +1702,7 @@ public void searchLicenseDriverEdit() {
 		String license = null;
 
 		if (dataValidator.emptyFieldsTest(currentPane)) {
-		    if (dataValidator.fieldFormatTest(currentPane)) {
+		    if (fieldFormatTest(currentPane)) {
 		        
 		    	VBox centerContentVBox = (VBox) currentPane.getCenter();		        
 		        for (Node node : centerContentVBox.getChildren()) {
@@ -1525,7 +1738,7 @@ public void searchVinVehicleEdit() {
 	String vin = null;
 
 	if (dataValidator.emptyFieldsTest(currentPane)) {
-	    if (dataValidator.fieldFormatTest(currentPane)) {
+	    if (fieldFormatTest(currentPane)) {
 	        
 	    	VBox centerContentVBox = (VBox) currentPane.getCenter();		        
 	        for (Node node : centerContentVBox.getChildren()) {
@@ -1561,7 +1774,7 @@ public void searchBadgeOfficerEdit() {
 	String badge = null;
 
 	if (dataValidator.emptyFieldsTest(currentPane)) {
-	    if (dataValidator.fieldFormatTest(currentPane)) {
+	    if (fieldFormatTest(currentPane)) {
 	        
 	    	VBox centerContentVBox = (VBox) currentPane.getCenter();		        
 	        for (Node node : centerContentVBox.getChildren()) {
@@ -1597,7 +1810,7 @@ public void searchAccountIDAccountEdit() {
 	String accountID = null;
 
 	if (dataValidator.emptyFieldsTest(currentPane)) {
-	    if (dataValidator.fieldFormatTest(currentPane)) {
+	    if (fieldFormatTest(currentPane)) {
 	        
 	    	VBox centerContentVBox = (VBox) currentPane.getCenter();		        
 	        for (Node node : centerContentVBox.getChildren()) {
@@ -1633,24 +1846,29 @@ public void searchAccountIDAccountEdit() {
 	}
 }
 public void searchCitIDDriverCitationEdit() {
+	
 	BorderPane currentPane = (BorderPane) primaryStage.getScene().getRoot();
 	String citationID = null;
-
+	
 	if (dataValidator.emptyFieldsTest(currentPane)) {
-	    if (dataValidator.fieldFormatTest(currentPane)) {
-	        
-	    	VBox centerContentVBox = (VBox) currentPane.getCenter();		        
+	    if (fieldFormatTest(currentPane)) {
+	       
+	    	VBox centerContentVBox = (VBox) currentPane.getCenter();		
+	    	
 	        for (Node node : centerContentVBox.getChildren()) {
-	            if (node instanceof TextField) {
-	                TextField textField = (TextField) node;
-	                if (textField == tfEnterCitID) {	                    
+	        
+	            if (node instanceof TextField) {	            	
+	                TextField textField = (TextField) node;	            	
+	                if (textField == tfEnterCitID) {	               	
 	                    citationID = textField.getText();
+	                    
 	                }
 	            }
 	        }
-	        
-	        if (recordValidator.checkDriCitRecordExistence(citationID)){
-	        	primaryStage.setScene(createDataScene("View/Edit","Driver Citation Info"));
+	        System.out.println(citationID+1);
+	        if (recordValidator.checkDriCitRecordExistence(citationID)){	        
+	        	primaryStage.setScene(createDataScene("View/Edit","Driver Citation Info"));	 
+	        	tfLic.setEditable(true);
 	        	driverCitation = driverCitation.findCitation(citationID);
 	        	autoFillDriverCitation(driverCitation);
 	        } else {
@@ -1671,12 +1889,15 @@ public void searchCitIDDriverCitationEdit() {
 public void searchCitIDVehicleCitationEdit() {
 	BorderPane currentPane = (BorderPane) primaryStage.getScene().getRoot();
 	String citationID = null;
-
+	
 	if (dataValidator.emptyFieldsTest(currentPane)) {
-	    if (dataValidator.fieldFormatTest(currentPane)) {
+	
+	    if (fieldFormatTest(currentPane)) {	    	
 	        
-	    	VBox centerContentVBox = (VBox) currentPane.getCenter();		        
+	    	VBox centerContentVBox = (VBox) currentPane.getCenter();	
+	    	
 	        for (Node node : centerContentVBox.getChildren()) {
+	        	
 	            if (node instanceof TextField) {
 	                TextField textField = (TextField) node;
 	                if (textField == tfEnterCitID) {	                    
@@ -1685,9 +1906,10 @@ public void searchCitIDVehicleCitationEdit() {
 	            }
 	        }
 	        
-	        if (recordValidator.checkVehCitRecordExistence(citationID)){
+	        if (recordValidator.checkVehCitRecordExistence(citationID)){	        	
 	        	primaryStage.setScene(createDataScene("View/Edit","Vehicle Citation Info"));
-	        	vehicleCitation = vehicleCitation.findCitation(citationID);
+	        	tfVin.setEditable(true);
+	        	vehicleCitation = vehicleCitation.findCitation(Integer.parseInt(citationID));	        	
 	        	autoFillVehicleCitation(vehicleCitation);
 	        } else {
 	        	System.out.println("No record found");
@@ -1709,7 +1931,7 @@ public void searchWarIDVehicleWarrantEdit() {
 	String warrantID = null;
 
 	if (dataValidator.emptyFieldsTest(currentPane)) {
-	    if (dataValidator.fieldFormatTest(currentPane)) {
+	    if (fieldFormatTest(currentPane)) {
 	        
 	    	VBox centerContentVBox = (VBox) currentPane.getCenter();		        
 	        for (Node node : centerContentVBox.getChildren()) {
@@ -1745,7 +1967,7 @@ public void searchWarIDDriverWarrantEdit() {
 	String warrantID = null;
 
 	if (dataValidator.emptyFieldsTest(currentPane)) {
-	    if (dataValidator.fieldFormatTest(currentPane)) {
+	    if (fieldFormatTest(currentPane)) {
 	        
 	    	VBox centerContentVBox = (VBox) currentPane.getCenter();		        
 	        for (Node node : centerContentVBox.getChildren()) {
@@ -1783,7 +2005,7 @@ public void searchCitIDTrafficSchoolEdit() {
 	int citationID = 0;
 
 	if (dataValidator.emptyFieldsTest(currentPane)) {
-	    if (dataValidator.fieldFormatTest(currentPane)) {
+	    if (fieldFormatTest(currentPane)) {
 	        
 	    	VBox centerContentVBox = (VBox) currentPane.getCenter();		        
 	        for (Node node : centerContentVBox.getChildren()) {
@@ -1825,7 +2047,7 @@ public void searchLicenseDriverDelete() {
 	String license = null;
 
 	if (dataValidator.emptyFieldsTest(currentPane)) {
-	    if (dataValidator.fieldFormatTest(currentPane)) {
+	    if (fieldFormatTest(currentPane)) {
 	        
 	    	VBox centerContentVBox = (VBox) currentPane.getCenter();		        
 	        for (Node node : centerContentVBox.getChildren()) {
@@ -1861,7 +2083,7 @@ BorderPane currentPane = (BorderPane) primaryStage.getScene().getRoot();
 String vin = null;
 
 if (dataValidator.emptyFieldsTest(currentPane)) {
-    if (dataValidator.fieldFormatTest(currentPane)) {
+    if (fieldFormatTest(currentPane)) {
         
     	VBox centerContentVBox = (VBox) currentPane.getCenter();		        
         for (Node node : centerContentVBox.getChildren()) {
@@ -1898,7 +2120,7 @@ BorderPane currentPane = (BorderPane) primaryStage.getScene().getRoot();
 String badge = null;
 
 if (dataValidator.emptyFieldsTest(currentPane)) {
-    if (dataValidator.fieldFormatTest(currentPane)) {
+    if (fieldFormatTest(currentPane)) {
         
     	VBox centerContentVBox = (VBox) currentPane.getCenter();		        
         for (Node node : centerContentVBox.getChildren()) {
@@ -1934,7 +2156,7 @@ BorderPane currentPane = (BorderPane) primaryStage.getScene().getRoot();
 String accountID = null;
 
 if (dataValidator.emptyFieldsTest(currentPane)) {
-    if (dataValidator.fieldFormatTest(currentPane)) {
+    if (fieldFormatTest(currentPane)) {
         
     	VBox centerContentVBox = (VBox) currentPane.getCenter();		        
         for (Node node : centerContentVBox.getChildren()) {
@@ -1970,7 +2192,7 @@ BorderPane currentPane = (BorderPane) primaryStage.getScene().getRoot();
 String citationID = null;
 
 if (dataValidator.emptyFieldsTest(currentPane)) {
-    if (dataValidator.fieldFormatTest(currentPane)) {
+    if (fieldFormatTest(currentPane)) {
         
     	VBox centerContentVBox = (VBox) currentPane.getCenter();		        
         for (Node node : centerContentVBox.getChildren()) {
@@ -2006,7 +2228,7 @@ BorderPane currentPane = (BorderPane) primaryStage.getScene().getRoot();
 String citationID = null;
 
 if (dataValidator.emptyFieldsTest(currentPane)) {
-    if (dataValidator.fieldFormatTest(currentPane)) {
+    if (fieldFormatTest(currentPane)) {
         
     	VBox centerContentVBox = (VBox) currentPane.getCenter();		        
         for (Node node : centerContentVBox.getChildren()) {
@@ -2020,7 +2242,7 @@ if (dataValidator.emptyFieldsTest(currentPane)) {
         
         if (recordValidator.checkVehCitRecordExistence(citationID)){
         	primaryStage.setScene(createDataScene("Delete","Vehicle Citation Info"));
-        	vehicleCitation = vehicleCitation.findCitation(citationID);
+        	vehicleCitation = vehicleCitation.findCitation(Integer.parseInt(citationID));
         	autoFillVehicleCitation(vehicleCitation);
         } else {
         	System.out.println("No record found");
@@ -2042,7 +2264,7 @@ BorderPane currentPane = (BorderPane) primaryStage.getScene().getRoot();
 String warrantID = null;
 
 if (dataValidator.emptyFieldsTest(currentPane)) {
-    if (dataValidator.fieldFormatTest(currentPane)) {
+    if (fieldFormatTest(currentPane)) {
         
     	VBox centerContentVBox = (VBox) currentPane.getCenter();		        
         for (Node node : centerContentVBox.getChildren()) {
@@ -2078,7 +2300,7 @@ BorderPane currentPane = (BorderPane) primaryStage.getScene().getRoot();
 String warrantID = null;
 
 if (dataValidator.emptyFieldsTest(currentPane)) {
-    if (dataValidator.fieldFormatTest(currentPane)) {
+    if (fieldFormatTest(currentPane)) {
         
     	VBox centerContentVBox = (VBox) currentPane.getCenter();		        
         for (Node node : centerContentVBox.getChildren()) {
@@ -2115,7 +2337,7 @@ public void searchCitIDTrafficSchoolDelete() {
 	int citationID = 0;
 
 	if (dataValidator.emptyFieldsTest(currentPane)) {
-	    if (dataValidator.fieldFormatTest(currentPane)) {
+	    if (fieldFormatTest(currentPane)) {
 	        
 	    	VBox centerContentVBox = (VBox) currentPane.getCenter();		        
 	        for (Node node : centerContentVBox.getChildren()) {
@@ -2148,23 +2370,7 @@ public void searchCitIDTrafficSchoolDelete() {
 	
 }
 
-//Search button for generating report
 
-public void searchLicenseDriverReport() {
-	
-}
-
-public void searchVinVehicleReport() {
-	
-}
-
-public void searchLicenseDatesDrivingRecord() {
-	
-}
-//Generate outstanding warrants reports
-public void generateOutstandingWarrantsReport() {
-	
-}
 
 //***AutoFilling data fields for viewing/editing/deleting
 
@@ -2279,15 +2485,20 @@ public void autoFillAccount(Account account) {
 public void autoFillVehicleCitation(VehicleCitation vehicleCitation) {
 	
 	BorderPane currentPane = (BorderPane) primaryStage.getScene().getRoot();
+	
             HBox LabelsAndFieldsHBox = (HBox) currentPane.getRight();
+        	
             VBox FieldsVBox = (VBox) LabelsAndFieldsHBox.getChildren().get(1);
+     
 
             for (Node node : FieldsVBox.getChildren()) {
+            	
                 if (node instanceof TextField) {
                     TextField textField = (TextField) node;
-                    if (textField == tfVin) {
+                	
+                    if (textField == tfVin) {                   	
                        	textField.setText(vehicleCitation.getVin());
-                    } else if (textField == tfBadge) {
+                    } else if (textField == tfIssuingOff) {
                     	textField.setText(vehicleCitation.getIssuingOfficerBadgeNumber());                  
                     } else if (textField == tfDate) {
                     	textField.setText(vehicleCitation.getdateIssued());
@@ -2318,7 +2529,7 @@ public void autoFillDriverCitation(DriverCitation DriverCitation) {
                     TextField textField = (TextField) node;
                     if (textField == tfLic) {
                        	textField.setText(driverCitation.getLicense());
-                    } else if (textField == tfBadge) {
+                    } else if (textField == tfIssuingOff) {
                     	textField.setText(driverCitation.getIssuingOfficerBadgeNumber());                  
                     } else if (textField == tfDate) {
                     	textField.setText(driverCitation.getdateIssued());
@@ -2402,7 +2613,7 @@ public void autoFillTrafficSchool(TrafficSchool trafficSchool) {
                 if (node instanceof TextField) {
                     TextField textField = (TextField) node;
                     if (textField == tfEnterCitID) {
-                        textField.setText(Integer.toString(trafficSchool.getCitationID()));
+                        textField.setText(trafficSchool.getCitationID());
                     } else if (textField == tfSess1) {
                     	textField.setText(trafficSchool.getSession1Date());
                     } else if (textField == tfSess2) {
@@ -2484,11 +2695,9 @@ public void clearFields (Node rootNode) {
             
 
     public void login() {
-       
-              
-            RecordValidation validator = new RecordValidation(databaseManager);
+      
 
-            boolean validLogin = validator.checkLoginInfo(tfUsernameLogin.getText(), pfPassword.getText(),cbAgencyLogin.getValue());
+            boolean validLogin = recordValidator.checkLoginInfo(tfUsernameLogin.getText(), pfPassword.getText(),cbAgencyLogin.getValue());
            
             if (validLogin && "Provincial".equals(cbAgencyLogin.getValue()))
                 primaryStage.setScene(createOptionScene("Manage/Report Provincial"));
@@ -2498,8 +2707,195 @@ public void clearFields (Node rootNode) {
                 primaryStage.setScene(createOptionScene("Enter/Edit/Delete Account"));
             else
                 lbLoginError.setVisible(true);
-       
+     
     }
+    
+    public Boolean fieldFormatTest(Node rootNode) {
+    	
+    	boolean formatTestPassed=true;
+    		
+    	
+    	BorderPane currentPane = (BorderPane) rootNode;
+    	
+    	
+    	//Data Scene
+    	if (currentPane.getCenter()==null) {
+    		
+    	HBox LabelsAndFieldsHBox = (HBox) currentPane.getRight();
+    	VBox FieldsVBox = (VBox) LabelsAndFieldsHBox.getChildren().get(1);
+    	
+        for (Node node : FieldsVBox.getChildren()) {
+            if (node instanceof TextField ) {
+            	TextField textField = (TextField) node;
+            	
+            	 if (textField==tfVin && !textField.getText().trim().isEmpty() && !dataValidator.validateVIN(textField.getText().trim())) {	        		
+            		textField.setStyle("-fx-border-color:#FA3E3E;");
+            		
+            		formatTestPassed=false;
+            	 }
+            	 if (textField==tfPlate && !textField.getText().trim().isEmpty() && !dataValidator.validateLicensePlate(textField.getText().trim())) {	        		
+    	        	textField.setStyle("-fx-border-color:#FA3E3E;");
+    	        	
+    	        	formatTestPassed=false;
+            	 }
+            	 if (textField==tfMake && !textField.getText().trim().isEmpty() && !dataValidator.validateMake(textField.getText().trim())) {	        		
+    		        	textField.setStyle("-fx-border-color:#FA3E3E;");		        	
+    		        	formatTestPassed=false;
+    	        	 }
+            	 if (textField==tfModel && !textField.getText().trim().isEmpty() && !dataValidator.validateModel(textField.getText().trim())) {	        		
+    		        	textField.setStyle("-fx-border-color:#FA3E3E;");
+    		        
+    		        	formatTestPassed=false;
+    	        	 }
+            	 if (textField==tfFirst && !textField.getText().trim().isEmpty() && !dataValidator.validateFirstName(textField.getText().trim())) {	        		
+    		        	textField.setStyle("-fx-border-color:#FA3E3E;");
+    		        	
+    		        	formatTestPassed=false;
+    	        	 }
+            	 if (textField==tfLast && !textField.getText().trim().isEmpty() && !dataValidator.validateLastName(textField.getText().trim())) {	        		
+    		        	textField.setStyle("-fx-border-color:#FA3E3E;");
+    		        	
+    		        	formatTestPassed=false;
+    	        	 }
+            	 if (textField==tfLic && !textField.getText().trim().isEmpty() && !dataValidator.validateLicenseNumber(textField.getText().trim())) {	        		
+    		        	textField.setStyle("-fx-border-color:#FA3E3E;");
+    		        	
+    		        	formatTestPassed=false;
+    	        	 }
+            	 if (textField == tfStartDate && !textField.getText().trim().isEmpty() && !dataValidator.validateDate(textField.getText().trim())) {
+            		    textField.setStyle("-fx-border-color:#FA3E3E;");
+            		    formatTestPassed = false;
+            		}
+
+            	if (textField == tfEndDate && !textField.getText().trim().isEmpty() && !dataValidator.validateDate(textField.getText().trim())) {
+            		    textField.setStyle("-fx-border-color:#FA3E3E;");
+            		    formatTestPassed = false;
+            		}
+
+            	if (textField == tfSess1 && !textField.getText().trim().isEmpty() && !dataValidator.validateDate(textField.getText().trim())) {
+            		    textField.setStyle("-fx-border-color:#FA3E3E;");
+            		    formatTestPassed = false;
+            		}
+
+            	if (textField == tfSess2 && !textField.getText().trim().isEmpty() && !dataValidator.validateDate(textField.getText().trim())) {
+            		    textField.setStyle("-fx-border-color:#FA3E3E;");
+            		    formatTestPassed = false;
+            		}
+
+            	if (textField == tfSess3 && !textField.getText().trim().isEmpty() && !dataValidator.validateDate(textField.getText().trim())) {
+            		    textField.setStyle("-fx-border-color:#FA3E3E;");
+            		    formatTestPassed = false;
+            		}
+
+            	if (textField == tfSess4 && !textField.getText().trim().isEmpty() && !dataValidator.validateDate(textField.getText().trim())) {
+            		    textField.setStyle("-fx-border-color:#FA3E3E;");
+            		    formatTestPassed = false;
+            		}
+            	 if (textField==tfYear && !textField.getText().trim().isEmpty() && !dataValidator.validateYear(textField.getText().trim())) {	        		
+    		        	textField.setStyle("-fx-border-color:#FA3E3E;");
+    		        	
+    		        	formatTestPassed=false;
+    	        	 }
+            	 if (textField==tfPoints && !textField.getText().trim().isEmpty() && !dataValidator.validateDemeritPoints(textField.getText().trim())) {	        		
+    		        	textField.setStyle("-fx-border-color:#FA3E3E;");
+    		        	
+    		        	formatTestPassed=false;
+    	        	 }
+            	 if (textField==tfBadge && !textField.getText().trim().isEmpty() && !dataValidator.validateBadgeNumber(textField.getText().trim())) {	        		
+    		        	textField.setStyle("-fx-border-color:#FA3E3E;");
+    		        	
+    		        	
+    		        	formatTestPassed=false;
+    	        	 }
+            	 if (textField==tfIssuingOff && !textField.getText().trim().isEmpty() && !dataValidator.validateBadgeNumber(textField.getText().trim())) {	        		
+ 		        	textField.setStyle("-fx-border-color:#FA3E3E;");
+ 		        	
+ 		        	
+ 		        	formatTestPassed=false;
+ 	        	 }
+            	 if (textField==tfEnterCitID && !textField.getText().trim().isEmpty() && !dataValidator.validateCitationID(textField.getText().trim())) {	        		
+    		        	textField.setStyle("-fx-border-color:#FA3E3E;");
+    		        	
+    		        	formatTestPassed=false;
+    	        	 }
+            	 if (textField==tfEnterWarID && !textField.getText().trim().isEmpty() && !dataValidator.validateWarrantID(textField.getText().trim())) {	        		
+    		        	textField.setStyle("-fx-border-color:#FA3E3E;");
+    		        	
+    		        	formatTestPassed=false;
+    	        	 }
+            	 if (textField==tfFine && !textField.getText().trim().isEmpty() && !dataValidator.validateFineAmount(textField.getText().trim())) {	        		
+    		        	textField.setStyle("-fx-border-color:#FA3E3E;");
+    		        
+    		        	formatTestPassed=false;
+    	        	 }
+            	 if (textField==tfEnterAcc && !textField.getText().trim().isEmpty() && !dataValidator.validateAccountID(textField.getText().trim())) {	        		
+    		        	textField.setStyle("-fx-border-color:#FA3E3E;");
+    		        	
+    		        	formatTestPassed=false;
+           }
+            	 if (textField==tfDate && !textField.getText().trim().isEmpty() && !dataValidator.validateDate(textField.getText().trim())) {	        		
+ 		        	textField.setStyle("-fx-border-color:#FA3E3E;");
+ 		        	
+ 		        	formatTestPassed=false;
+        }
+           
+           }
+        }
+       
+        //Search Scene 
+    	} else {
+    		
+    	VBox centerContentVBox = (VBox) currentPane.getCenter();
+    	
+    	for (Node node : centerContentVBox.getChildren()) {
+            if (node instanceof TextField ) {
+            	TextField textField = (TextField) node;
+            	if (textField==tfLic && !textField.getText().trim().isEmpty() && !dataValidator.validateLicenseNumber(textField.getText().trim())) {	        		
+    	        	textField.setStyle("-fx-border-color:#FA3E3E;");
+    	      
+    	        	formatTestPassed=false;
+            	 }
+            	 if (textField==tfVin && !textField.getText().trim().isEmpty() && !dataValidator.validateVIN(textField.getText().trim())) {	        		
+    	        		textField.setStyle("-fx-border-color:#FA3E3E;");
+    	        		
+    	        		formatTestPassed=false;
+            	 }
+            	 if (textField == tfStartDate && !textField.getText().trim().isEmpty() && !dataValidator.validateDate(textField.getText().trim())) {
+            		    textField.setStyle("-fx-border-color:#FA3E3E;");
+            		    formatTestPassed = false;
+            		}
+
+            	if (textField == tfEndDate && !textField.getText().trim().isEmpty() && !dataValidator.validateDate(textField.getText().trim())) {
+            		    textField.setStyle("-fx-border-color:#FA3E3E;");
+            		    formatTestPassed = false;
+            	}
+            	 if (textField==tfBadge && !textField.getText().trim().isEmpty() && !dataValidator.validateBadgeNumber(textField.getText().trim())) {	        		
+    		        	textField.setStyle("-fx-border-color:#FA3E3E;");
+    		        	
+    		        	formatTestPassed=false;
+    	        	 }	
+            	 if (textField==tfCitID && !textField.getText().trim().isEmpty() && !dataValidator.validateCitationID(textField.getText().trim())) {	        		
+    		        	textField.setStyle("-fx-border-color:#FA3E3E;");
+    		        	
+    		        	formatTestPassed=false;
+    	        	 }
+            	 if (textField==tfWarID && !textField.getText().trim().isEmpty() && !dataValidator.validateWarrantID(textField.getText().trim())) {	        		
+    		        	textField.setStyle("-fx-border-color:#FA3E3E;");
+    		        	
+    		        	formatTestPassed=false;
+    	        	 }
+            	 if (textField==tfAccID && !textField.getText().trim().isEmpty() && !dataValidator.validateAccountID(textField.getText().trim())) {	        		
+    		        	textField.setStyle("-fx-border-color:#FA3E3E;");
+    		        	
+    		        	formatTestPassed=false;
+            	 	}
+            	}
+            	
+        	} 
+    	}
+    return formatTestPassed;
+    }
+
    
  //***Helper methods to show feedback messages***//
 
@@ -2519,5 +2915,10 @@ public void clearFields (Node rootNode) {
 		lbLoginError.setVisible(true);
 	}
     
- 
+	public void showForeignKeyErrorMessage() {
+		lbForeignKeyError.setVisible(true);
+	}
+	
  }
+
+
