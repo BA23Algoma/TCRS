@@ -109,7 +109,10 @@ public class DriverWarrants {
     public int insertDriverWarrant(String licenseNumber, String dateIssued, String warrantReason,
             String outstanding) {
 
-       
+    	// check license number in system
+       if (findDriverWarrantLicense(licenseNumber) == null) {
+    	   return -1;
+       }
 
         String sql = String.format(
                 "INSERT INTO TCRS.DRIVERWARRANTSMUNICIPLE (DRIVERIDWARRANTM, WARRANTDATE, REASON, OUTSTANDING) VALUES ('%s', '%s', '%s', %b)",
@@ -208,6 +211,21 @@ public class DriverWarrants {
     		return findDriverWarrant( warrID);
     	
     }
+    
+    public DriverWarrants findDriverWarrantLicense(String License) {
+        DriverWarrants driverWarrant = new DriverWarrants(this.databaseManager);
+
+        String sqlQuery = String.format("SELECT * FROM TCRS.DRIVERWARRANTSMUNICIPLE WHERE DRIVERIDWARRANTM = '%s'", License);
+
+        ResultSet result = databaseManager.executeQuery(sqlQuery);
+
+        if (nullCheck(result))
+            return null;
+
+        return logData(result, driverWarrant);
+    }
+    
+    
 
     public String toString() {
         return "License Number: " + this.licenseNumber + " Date Issued: " + this.dateIssued + " Warrant Reason: "

@@ -28,16 +28,16 @@ public class Test_Database {
 			e.printStackTrace();
 		}
 		
-		VehicleCitation citation = new VehicleCitation(connection);
+		TrafficSchool citation = new TrafficSchool(connection);
 
 		valid.checkLoginInfo("gamjoun", "239349660", "Administration");
 		
 		if(valid.checkVehCitRecordExistence("1"))
 			System.out.print("Citation is in the system!");
 		
-		citation = citation.findCitation("1");
+		citation = citation.findEnrollment("3");
 				
-		//System.out.println("\n" + citation.toString());
+		System.out.println("\n" + citation.toString());
 		
 		//citation.toString();
 		

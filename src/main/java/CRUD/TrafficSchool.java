@@ -22,8 +22,8 @@ public class TrafficSchool {
         this.databaseManager = databaseManager;
     }
     
-    public int getCitationID() {
-        return citationID;
+    public String getCitationID() {
+        return String.valueOf(citationID);
     }
 
     public String getSession1Date() {
@@ -90,30 +90,36 @@ public class TrafficSchool {
         this.session4Attendance =  session4Attendance;
     }
 
-    public void insertEnrollment(TrafficSchool trafficSchool) {
-        insertEnrollment(String.valueOf(trafficSchool.citationID), trafficSchool.session1Date, trafficSchool.session2Date,
+    public int insertEnrollment(TrafficSchool trafficSchool) {
+         return insertEnrollment(String.valueOf(trafficSchool.citationID), trafficSchool.session1Date, trafficSchool.session2Date,
                 trafficSchool.session3Date, trafficSchool.session4Date, trafficSchool.session1Attendance,
                 trafficSchool.session2Attendance, trafficSchool.session3Attendance, trafficSchool.session4Attendance);
     }
 
-    public void insertEnrollment(String citationID, String session1Date, String session2Date, String session3Date,
+    public int insertEnrollment(String citationID, String session1Date, String session2Date, String session3Date,
             String session4Date, String session1Attendance, String session2Attendance, String session3Attendance,
             String session4Attendance) {
+    	
+    	if (findEnrollment(Integer.valueOf(citationID)) == null) {
+    		return -1;
+    	}
        
         String sql = String.format(
                 "INSERT INTO TCRS.TRAFFICSCHOOL (CITATIONIDTS, SESSION1DATE, SESSION2DATE, SESSION3DATE, SESSION4DATE, SESSION1ATTENDANCE, SESSION2ATTENDANCE, SESSION3ATTENDANCE, SESSION4ATTENDANCE) "
-                        + "VALUES ('%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+                        + "VALUES (%d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
                 Integer.valueOf(citationID), session1Date, session2Date,
                 session3Date, session4Date, session1Attendance,
                 session2Attendance, session3Attendance, session4Attendance);
 
-        databaseManager.executeUpdate(sql);
+	    int generatedId = databaseManager.executeInsertReturnId(sql);
 
         System.out.println("Enrollment added to the database!");
+        
+        return generatedId;
     }
 
-    public void editEnrollment(int citationID, TrafficSchool newTrafficSchool) {
-        TrafficSchool trafficSchool = findEnrollment(citationID);
+    public void editEnrollment(String citationID, TrafficSchool newTrafficSchool) {
+        TrafficSchool trafficSchool = findEnrollment(Integer.valueOf(citationID));
 
         if (!inSystem(trafficSchool)) {
             return;
@@ -121,7 +127,7 @@ public class TrafficSchool {
 
         String sqlQuery = String.format(
                 "UPDATE TCRS.TRAFFICSCHOOL SET SESSION1DATE = '%s', SESSION2DATE = '%s', SESSION3DATE = '%s', SESSION4DATE = '%s', SESSION1ATTENDANCE = '%s', SESSION2ATTENDANCE = '%s', SESSION3ATTENDANCE = '%s', SESSION4ATTENDANCE = '%s'"
-                        + " WHERE CITATIONIDTS = '%d'",
+                        + " WHERE CITATIONIDTS = %d",
                 newTrafficSchool.session1Date, newTrafficSchool.session2Date, newTrafficSchool.session3Date,
                 newTrafficSchool.session4Date, newTrafficSchool.session1Attendance, newTrafficSchool.session2Attendance,
                 newTrafficSchool.session3Attendance, newTrafficSchool.session4Attendance, trafficSchool.citationID);
@@ -131,24 +137,29 @@ public class TrafficSchool {
         System.out.println("Enrollment edited");
     }
 
-    public void deleteEnrollment(int citationID) {
-        TrafficSchool trafficSchool = findEnrollment(citationID);
+    public void deleteEnrollment(String citationID) {
+        TrafficSchool trafficSchool = findEnrollment(Integer.valueOf(citationID));
 
         if (!inSystem(trafficSchool)) {
             return;
         }
 
-        String sqlDelete = String.format("DELETE FROM TCRS.TRAFFICSCHOOL WHERE CITATIONIDTS= '%d'", citationID);
+        String sqlDelete = String.format("DELETE FROM TCRS.TRAFFICSCHOOL WHERE CITATIONIDTS= %d", citationID);
 
         databaseManager.executeUpdate(sqlDelete);
 
         System.out.println("Enrollment " + citationID + " removed from system");
     }
+    
+    public TrafficSchool findEnrollment(String citationID) {
+  
+    	return findEnrollment(Integer.valueOf(citationID));
+    }
 
     public TrafficSchool findEnrollment(int citationID) {
         TrafficSchool trafficSchool = new TrafficSchool(this.databaseManager);
 
-        String sqlQuery = String.format("SELECT * FROM TCRS.TRAFFICSCHOOL WHERE CITATIONIDTS='%d'", citationID);
+        String sqlQuery = String.format("SELECT * FROM TCRS.TRAFFICSCHOOL WHERE CITATIONIDTS=%d", citationID);
 
         ResultSet result = databaseManager.executeQuery(sqlQuery);
 

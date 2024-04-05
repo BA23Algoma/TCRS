@@ -98,7 +98,10 @@ public class VehicleWarrant {
 
     public int insertVehicleWarrant(String vin, String dateIssued, String warrantReason, String outstanding) {
 
-     
+     if(findVehicle(vin) == null) {
+    	 return -1;
+     }
+    	
         String sql = String.format(
                 "INSERT INTO TCRS.VEHICLEWARRANTSMUNICIPLE (VINWARRANTM, WARRANTDATE, REASON, OUTSTANDING) VALUES ('%s', '%s', '%s', '%s')",
                 vin, dateIssued, warrantReason, outstanding);
@@ -168,9 +171,23 @@ public class VehicleWarrant {
     	
         return (findVehicleWarrant(Integer.valueOf(warrantID)));
     }
+    
+ public VehicleWarrant findVehicle(String vin) {
+    	
+        VehicleWarrant vehicleWarrant = new VehicleWarrant(this.databaseManager);
+
+        String sqlQuery = String.format("SELECT * FROM TCRS.VEHICLEWARRANTSMUNICIPLE WHERE VINWARRANTM = '%s'", vin);
+
+        ResultSet result = databaseManager.executeQuery(sqlQuery);
+
+        if (nullCheck(result))
+            return null;
+
+        return logData(result, vehicleWarrant);
+    }
 
     public String toString() {
-        return "VIN: " + this.vin + " Date Issued: " + this.dateIssued + " Warrant Reason: " + this.warrantReason
+        return "Warrant ID: " + warrantID + " VIN: " + this.vin + " Date Issued: " + this.dateIssued + " Warrant Reason: " + this.warrantReason
                 + " Outstanding: " + this.outstanding;
     }
     
@@ -179,7 +196,8 @@ public class VehicleWarrant {
     private VehicleWarrant logData(ResultSet result, VehicleWarrant vehicleWarrant) {
         try {
             while (result.next()) {
-                vehicleWarrant.vin = result.getString("WARRANTIDVM");
+                vehicleWarrant.warrantID = Integer.valueOf(result.getString("WARRANTIDVM"));
+                vehicleWarrant.vin = result.getString("VINWARRANTM");
                 vehicleWarrant.dateIssued = result.getString("WARRANTDATE");
                 vehicleWarrant.warrantReason = result.getString("REASON");
                 String outstanding = result.getString("OUTSTANDING");
