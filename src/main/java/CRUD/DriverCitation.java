@@ -14,7 +14,7 @@ public class DriverCitation {
 
 	public int citationId;
 	public String license;
-	public int ISSUEINGOFFICERIDP;
+	public int ISSUINGOFFICERIDP;
 	public String dateIssued;
 	public String reason;
 	public Double fineAmount;
@@ -34,17 +34,17 @@ public class DriverCitation {
 			
 		}
 	
-	public void setISSUEINGOFFICERIDP(String ISSUEINGOFFICERIDP) {
+	public void setISSUINGOFFICERIDP(String ISSUINGOFFICERIDP) {
 		
 		
-		if(!isNumber(ISSUEINGOFFICERIDP)) {
+		if(!isNumber(ISSUINGOFFICERIDP)) {
 			System.out.println("Invaild badge number account!");
 			return;
 		}
 		
-		int badge = Integer.valueOf(ISSUEINGOFFICERIDP);
+		int badge = Integer.valueOf(ISSUINGOFFICERIDP);
 		
-		this.ISSUEINGOFFICERIDP = badge;
+		this.ISSUINGOFFICERIDP = badge;
 		
 	}
 	
@@ -112,7 +112,7 @@ public class DriverCitation {
 		
 	}
 	
-	public String getISSUEINGOFFICERBadgeNumber() {
+	public String getISSUINGOFFICERBadgeNumber() {
 			
 		String badge = String.valueOf(fineAmount);
 
@@ -134,7 +134,7 @@ public class DriverCitation {
 	
 	public String getFineAmount() {
 		
-		String fine = String.valueOf(ISSUEINGOFFICERIDP);
+		String fine = String.valueOf(ISSUINGOFFICERIDP);
 
 		return fine;
 			
@@ -196,7 +196,7 @@ public class DriverCitation {
 		 }
 		 
 		// Create SQL query string
-	    String sql = String.format("INSERT INTO TCRS.DRIVINGCITATIONSMUNICIPLE (ISSUEINGOFFICERIDM , DRIVERIDCITATIONM , "
+	    String sql = String.format("INSERT INTO TCRS.DRIVINGCITATIONSMUNICIPLE (ISSUINGOFFICERIDM , DRIVERIDCITATIONM , "
 	    		+ "CITATIONREASON ,  CITATIONDATE , FINEAMOUNT, PAYMENTSTATUS, REPORTABLE )"
 	    		+ "VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s' )", officer, license, 
 				reason, dateIssued, fine, Paid, reportable);
@@ -227,7 +227,7 @@ public class DriverCitation {
 	// Insert driver using driver citation object
 	public int insertDriverCitation (DriverCitation citation) {
 		
-		String badgeNumber = String.valueOf(citation.ISSUEINGOFFICERIDP);
+		String badgeNumber = String.valueOf(citation.ISSUINGOFFICERIDP);
 		String fine = String.valueOf(citation.fineAmount);
 
 		
@@ -238,7 +238,7 @@ public class DriverCitation {
 	}
 	
 	
-	public int editDriverCitation (String citID, String license, String ISSUEINGOFFICERIDP, String dateIssued, String reason, String fineAmount, String Paid, String Reportable) {
+	public int editDriverCitation (String citID, String license, String ISSUINGOFFICERIDP, String dateIssued, String reason, String fineAmount, String Paid, String Reportable) {
 		
 		if(!isNumber(citID)) {
 			System.out.println("Invaild citation ID, unable to edit account!");
@@ -256,7 +256,7 @@ public class DriverCitation {
 		}
 		
 		// Validate correct formats of input data
-		 if (!validBadgeNumber(ISSUEINGOFFICERIDP)) {
+		 if (!validBadgeNumber(ISSUINGOFFICERIDP)) {
 			 System.out.println("Officer badge number not in the system!");
 			 return -1;
 		 }
@@ -269,9 +269,9 @@ public class DriverCitation {
 		 
 		
 		// Build edit query in system based on citation ID
-		String sqlQuery = String.format("UPDATE TCRS.DRIVINGCITATIONSMUNICIPLE SET ISSUEINGOFFICERIDM = '%s', DRIVERIDCITATIONM = '%s', CITATIONREASON = '%s', "
+		String sqlQuery = String.format("UPDATE TCRS.DRIVINGCITATIONSMUNICIPLE SET ISSUINGOFFICERIDM = '%s', DRIVERIDCITATIONM = '%s', CITATIONREASON = '%s', "
 				+ "CITATIONDATE = '%s', FINEAMOUNT = '%s', PAYMENTSTATUS = '%s', REPORTABLE = '%s' WHERE CITATIONID = %d", 
-				ISSUEINGOFFICERIDP, license, reason, dateIssued, fineAmount, Paid, citID, Reportable);
+				ISSUINGOFFICERIDP, license, reason, dateIssued, fineAmount, Paid, citID, Reportable);
 		
 		// Execute query
 		databaseManager.executeUpdate(sqlQuery);
@@ -282,9 +282,9 @@ public class DriverCitation {
 		if (Reportable.equalsIgnoreCase("Yes")) {
 	    	
 	    	// Create query
-			String sqlQueryProv = String.format("UPDATE TCRS.DRIVINGCITATIONSPROV SET ISSUEINGOFFICERIDP = '%s', DRIVERIDCITATIONP = '%s', CITATIONREASON = '%s', "
+			String sqlQueryProv = String.format("UPDATE TCRS.DRIVINGCITATIONSPROV SET ISSUINGOFFICERIDP = '%s', DRIVERIDCITATIONP = '%s', CITATIONREASON = '%s', "
 					+ "CITATIONDATE = '%s', FINEAMOUNT = '%s', PAYMENTSTATUS = '%s' WHERE CITATIONID = %d", 
-					ISSUEINGOFFICERIDP, license, reason, dateIssued, fineAmount, Paid, citID);
+					ISSUINGOFFICERIDP, license, reason, dateIssued, fineAmount, Paid, citID);
 	    	
 	    	// Insert into provincial database
 			databaseManager.executeUpdate(sqlQueryProv);
@@ -299,7 +299,7 @@ public class DriverCitation {
 	// Edit driver citation using driver citation object for input
 	public int editDriverCitation (String citID, DriverCitation citationNew) {
 		
-		String badge = String.valueOf(citationNew.ISSUEINGOFFICERIDP);
+		String badge = String.valueOf(citationNew.ISSUINGOFFICERIDP);
 		String fine = String.valueOf(citationNew.fineAmount);
 		String report;
 		if (citationNew.Reportable) {
@@ -358,7 +358,7 @@ public class DriverCitation {
 	
 	public String toString() {
 		
-		return "License Number " + this.license + " Officer Badge Number: " + this.ISSUEINGOFFICERIDP + " Date Issued: " + this.dateIssued
+		return "License Number " + this.license + " Officer Badge Number: " + this.ISSUINGOFFICERIDP + " Date Issued: " + this.dateIssued
 				+ " Reason:" + this.reason + " Fine Amount: $" + this.fineAmount + " Paid: " + this.Paid + " Reportable " + this.Reportable;
 	}
 	
@@ -375,7 +375,7 @@ public class DriverCitation {
 			}
 			
 			// Convert all values into strings
-			String badge = String.valueOf(citation.ISSUEINGOFFICERIDP);
+			String badge = String.valueOf(citation.ISSUINGOFFICERIDP);
 			String fine = String.valueOf(citation.fineAmount);
 			String report;
 			if (citation.Reportable) {
@@ -389,7 +389,7 @@ public class DriverCitation {
 			// Build autoFill using array of strings
 			String autoFill[][] = {
 					{ "license", citation.license},
-					{ "ISSUEINGOFFICERIDP", badge},
+					{ "ISSUINGOFFICERIDP", badge},
 					{ "dateIssued", citation.dateIssued},
 					{ "reason", citation.reason},
 					{ "fineAmount", fine},
@@ -446,7 +446,7 @@ public class DriverCitation {
 			     //Retrieve data by column index or name
 				citation.citationId = result.getInt("CITATIONID");
 				citation.license = result.getString("DRIVERIDCITATIONM");
-				citation.ISSUEINGOFFICERIDP = result.getInt("ISSUEINGOFFICERIDM");
+				citation.ISSUINGOFFICERIDP = result.getInt("ISSUINGOFFICERIDM");
 				citation.dateIssued = result.getString("CITATIONDATE");
 				citation.reason = result.getString("CITATIONREASON");
 				String fine = result.getString("FINEAMOUNT");

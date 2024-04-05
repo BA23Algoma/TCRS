@@ -13,7 +13,7 @@ public class VehicleCitation {
 
 	public int citationId;
 	public String vin;
-	public int ISSUEINGOFFICERBadgeNumber;
+	public int ISSUINGOFFICERBadgeNumber;
 	public String dateIssued;
 	public String reason;
 	public Double fineAmount;
@@ -32,16 +32,16 @@ public class VehicleCitation {
 				
 			}
 		
-		public void setISSUEINGOFFICERBadgeNumber(String ISSUEINGOFFICERBadgeNumber) {
+		public void setISSUINGOFFICERBadgeNumber(String ISSUINGOFFICERBadgeNumber) {
 			
-			if(!isNumber(ISSUEINGOFFICERBadgeNumber)) {
+			if(!isNumber(ISSUINGOFFICERBadgeNumber)) {
 				System.out.println("Invaild badge number!");
 				return;
 			}
 						
-			int badge = Integer.valueOf(ISSUEINGOFFICERBadgeNumber);
+			int badge = Integer.valueOf(ISSUINGOFFICERBadgeNumber);
 			
-			this.ISSUEINGOFFICERBadgeNumber = badge;
+			this.ISSUINGOFFICERBadgeNumber = badge;
 			
 		}
 		
@@ -99,9 +99,9 @@ public class VehicleCitation {
 			
 		}
 		
-		public String getISSUEINGOFFICERBadgeNumber() {
+		public String getISSUINGOFFICERBadgeNumber() {
 				
-			String badge = String.valueOf(ISSUEINGOFFICERBadgeNumber);
+			String badge = String.valueOf(ISSUINGOFFICERBadgeNumber);
 
 			return badge;
 				
@@ -165,7 +165,7 @@ public class VehicleCitation {
 		 }
 		 
 		// Create SQL query string
-	    String sql = String.format("INSERT INTO TCRS.VEHICLECITATIONSMUNICIPLE (ISSUEINGOFFICERIDM , VINCITATIONM , "
+	    String sql = String.format("INSERT INTO TCRS.VEHICLECITATIONSMUNICIPLE (ISSUINGOFFICERIDM , VINCITATIONM , "
 	    		+ "CITATIONREASON ,  CITATIONDATE , FINEAMOUNT, PAYMENTSTATUS )"
 	    		+ "VALUES ('%s', '%s', '%s', '%s', '%s', '%s')", officer, vin, 
 				reason, dateIssued, fine, Paid);
@@ -207,7 +207,7 @@ public class VehicleCitation {
 		 }
 		
 		// Build edit query in system based on citation ID
-		String sqlQuery = String.format("UPDATE TCRS.VEHICLECITATIONSMUNICIPLE SET ISSUEINGOFFICERIDM = '%s', VINCITATIONM = '%s', CITATIONREASON = '%s', "
+		String sqlQuery = String.format("UPDATE TCRS.VEHICLECITATIONSMUNICIPLE SET ISSUINGOFFICERIDM = '%s', VINCITATIONM = '%s', CITATIONREASON = '%s', "
 				+ "CITATIONDATE = '%s', FINEAMOUNT = '%s', PAYMENTSTATUS = '%s' WHERE CITATIONID = %d", 
 				officer, vin, reason, dateIssued, fine, Paid, Integer.valueOf(citID));
 
@@ -250,7 +250,7 @@ public class VehicleCitation {
 	
 	public String toString() {
 		
-		return "VIN Number " + this.vin + " Officer Badge Number: " + this.ISSUEINGOFFICERBadgeNumber + " Date Issued: " + this.dateIssued
+		return "VIN Number " + this.vin + " Officer Badge Number: " + this.ISSUINGOFFICERBadgeNumber + " Date Issued: " + this.dateIssued
 				+ " Reason:" + this.reason + " Fine Amount: $" + this.fineAmount + " Paid: " + this.Paid;
 	}
 	
@@ -301,14 +301,14 @@ public class VehicleCitation {
 	
 	public int insertVehicleCitation (VehicleCitation citation) {
 		
-		return insertVehicleCitation(citation.getVin(), citation.getISSUEINGOFFICERBadgeNumber(), citation.getdateIssued(),
+		return insertVehicleCitation(citation.getVin(), citation.getISSUINGOFFICERBadgeNumber(), citation.getdateIssued(),
 				citation.getReason(), citation.getFineAmount(), citation.getPaid());
 		
 	}
 	
 	public int editVehicleCitation (String citID, VehicleCitation citationNew) {
 		
-		return editVehicleCitation ( citID,  citationNew.getVin(),  citationNew.getISSUEINGOFFICERBadgeNumber(),  citationNew.getdateIssued(),  citationNew.getReason(),   citationNew.getFineAmount(),  citationNew.getPaid());
+		return editVehicleCitation ( citID,  citationNew.getVin(),  citationNew.getISSUINGOFFICERBadgeNumber(),  citationNew.getdateIssued(),  citationNew.getReason(),   citationNew.getFineAmount(),  citationNew.getPaid());
 
 		
 	}
@@ -321,7 +321,7 @@ public class VehicleCitation {
 			     //Retrieve data by column index or name
 				citation.citationId = result.getInt("CITATIONID");
 				citation.vin = result.getString("VINCITATIONM");
-				citation.ISSUEINGOFFICERBadgeNumber = result.getInt("ISSUEINGOFFICERIDM");
+				citation.ISSUINGOFFICERBadgeNumber = result.getInt("ISSUINGOFFICERIDM");
 				citation.dateIssued = result.getString("CITATIONDATE");
 				citation.reason = result.getString("CITATIONREASON");
 				String fine = result.getString("FINEAMOUNT");

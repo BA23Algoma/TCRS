@@ -39,7 +39,7 @@ public class Report {
 
     public String generateDrivingRecord(String license, String startDate, String endDate) {
     	
-    	String[] fields = {"CITATIONID", "ISSUEINGOFFICERIDM", "DRIVERIDCITATIONM", "CITATIONREASON", 
+    	String[] fields = {"CITATIONID", "ISSUINGOFFICERIDM", "DRIVERIDCITATIONM", "CITATIONREASON", 
     			"CITATIONDATE", "FINEAMOUNT", "PAYMENTSTATUS"};
         
         String sqlQuery = String.format("SELECT * FROM TCRS.DRIVINGCITATIONSMUNICIPLE WHERE DRIVERIDCITATIONM='%s' AND REPORTABLE='Yes' "
@@ -61,9 +61,9 @@ public class Report {
             Optional<String> cbReasonDrivVeh,
             Optional<String> cbPaid) {
     	
-    	String[] fieldDriver= {"CITATIONID", "ISSUEINGOFFICERIDM", "DRIVERIDCITATIONM", "CITATIONREASON",
+    	String[] fieldDriver= {"CITATIONID", "ISSUINGOFFICERIDM", "DRIVERIDCITATIONM", "CITATIONREASON",
     	        "CITATIONDATE", "FINEAMOUNT", "PAYMENTSTATUS", "REPORTABLE"};
-    	String[] fieldVehicle= {"CITATIONID", "ISSUEINGOFFICERIDM", "VINCITATIONM", "CITATIONREASON",
+    	String[] fieldVehicle= {"CITATIONID", "ISSUINGOFFICERIDM", "VINCITATIONM", "CITATIONREASON",
     		    "CITATIONDATE", "FINEAMOUNT", "PAYMENTSTATUS"};
     	
         String sqlQueryDriver = String.format("SELECT * FROM TCRS.DRIVINGCITATIONSMUNICIPLE");
@@ -77,8 +77,8 @@ public class Report {
     		sqlQueryVehicle = initialCondition(sqlQueryVehicle, initial);
     		initial = false;
         	
-        	sqlQueryDriver += " ISSUEINGOFFICERIDM=" + tfIssuingOff.get();
-        	sqlQueryVehicle += " ISSUEINGOFFICERIDM=" + tfIssuingOff.get();
+        	sqlQueryDriver += " ISSUINGOFFICERIDM=" + tfIssuingOff.get();
+        	sqlQueryVehicle += " ISSUINGOFFICERIDM=" + tfIssuingOff.get();
         }
         
         // Date present
@@ -160,7 +160,7 @@ public class Report {
     	 Map<String, String> columnDisplayNames = new HashMap<>();
     	 	
     	 	columnDisplayNames.put("CITATIONID", "Citation ID");
-    	    columnDisplayNames.put("ISSUEINGOFFICERIDM", "Issuing Officer ID");
+    	    columnDisplayNames.put("ISSUINGOFFICERIDM", "Issuing Officer ID");
     	    columnDisplayNames.put("DRIVERIDCITATIONM", "License Number");
     	    columnDisplayNames.put("CITATIONREASON", "Citation Reason");
     	    columnDisplayNames.put("CITATIONDATE", "Citation Date");
