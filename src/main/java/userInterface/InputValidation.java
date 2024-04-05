@@ -175,11 +175,11 @@ public class InputValidation extends SceneNavigation {
 	}
 	public boolean validateFineAmount(String fine) {
 		
-		if(!isNumber(fine)) {
+		if(!isDollar(fine)) {
 			return false;
 		}
 		
-		Double fineAmount = Double.valueOf(fine);
+		Double fineAmount = Double.parseDouble(fine);
 		
 		if (negativeNum(fineAmount)) {
 			return false;
@@ -456,6 +456,19 @@ public Boolean emptyFieldsTest(Node rootNode) {
 	}
 return emptyTestPassed;
 }
+
+private boolean isDollar(String strNum) {
+    if (strNum == null) {
+        return false;
+    }
+    try {
+        double d = Double.parseDouble(strNum);
+    } catch (NumberFormatException nfe) {
+        return false;
+    }
+    return true;
+}
+
 
 
 
