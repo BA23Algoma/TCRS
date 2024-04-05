@@ -112,7 +112,7 @@ public class DriverCitation {
 		
 	}
 	
-	public String getISSUINGOFFICERBadgeNumber() {
+	public String getIssuingOfficerBadgeNumber() {
 			
 		String badge = String.valueOf(fineAmount);
 
