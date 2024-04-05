@@ -99,7 +99,7 @@ public class VehicleCitation {
 			
 		}
 		
-		public String getISSUINGOFFICERBadgeNumber() {
+		public String getIssuingOfficerBadgeNumber() {
 				
 			String badge = String.valueOf(ISSUINGOFFICERBadgeNumber);
 
@@ -301,14 +301,14 @@ public class VehicleCitation {
 	
 	public int insertVehicleCitation (VehicleCitation citation) {
 		
-		return insertVehicleCitation(citation.getVin(), citation.getISSUINGOFFICERBadgeNumber(), citation.getdateIssued(),
+		return insertVehicleCitation(citation.getVin(), citation.getIssuingOfficerBadgeNumber(), citation.getdateIssued(),
 				citation.getReason(), citation.getFineAmount(), citation.getPaid());
 		
 	}
 	
 	public int editVehicleCitation (String citID, VehicleCitation citationNew) {
 		
-		return editVehicleCitation ( citID,  citationNew.getVin(),  citationNew.getISSUINGOFFICERBadgeNumber(),  citationNew.getdateIssued(),  citationNew.getReason(),   citationNew.getFineAmount(),  citationNew.getPaid());
+		return editVehicleCitation ( citID,  citationNew.getVin(),  citationNew.getIssuingOfficerBadgeNumber(),  citationNew.getdateIssued(),  citationNew.getReason(),   citationNew.getFineAmount(),  citationNew.getPaid());
 
 		
 	}

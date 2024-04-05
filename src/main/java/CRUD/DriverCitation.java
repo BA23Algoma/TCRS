@@ -112,7 +112,7 @@ public class DriverCitation {
 		
 	}
 	
-	public String getISSUINGOFFICERBadgeNumber() {
+	public String getIssuingOfficerBadgeNumber() {
 			
 		String badge = String.valueOf(fineAmount);
 
@@ -577,7 +577,7 @@ public class DriverCitation {
 			RecordValidation records = new RecordValidation(this.databaseManager);
 		    
 			// Check if already in the system
-			if(records.checkOfficerRecordExistence(license)) {
+			if(records.checkDriverRecordExistence(license)) {
 			        return true;
 			}
 
