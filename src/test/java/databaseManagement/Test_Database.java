@@ -35,9 +35,11 @@ public class Test_Database {
 		if(valid.checkVehCitRecordExistence("1"))
 			System.out.print("Citation is in the system!");
 		
-		citation = citation.findCitation("3");
+		citation.setfine("25.00");;
 				
 		System.out.println("\n" + citation.toString());
+		System.out.println(citation.getFineAmount());
+
 		
 		//citation.toString();
 		

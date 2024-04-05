@@ -60,12 +60,12 @@ public class VehicleCitation {
 		public void setfine(String fine) {
 			
 			// Check if account Id is an number
-			if(!isNumber(fine)) {
-				System.out.println("Unable set demerit points! Demerit points number!");
+			if(!isDollar(fine)) {
+				System.out.println("Unable set fine amount! Check if number!");
 				return;
 			}
 			
-			double citFine = Double.valueOf(fine);
+			double citFine = Double.parseDouble(fine);
 		 		
 		 		this.fineAmount = citFine;
 			
@@ -251,7 +251,7 @@ public class VehicleCitation {
 	public String toString() {
 		
 		return "VIN Number " + this.vin + " Officer Badge Number: " + this.ISSUINGOFFICERBadgeNumber + " Date Issued: " + this.dateIssued
-				+ " Reason:" + this.reason + " Fine Amount: $" + this.fineAmount + " Paid: " + this.Paid;
+				+ " Reason:" + this.reason + " Fine Amount: " + this.fineAmount + " Paid: " + this.Paid;
 	}
 	
 	// Find account using account user name
@@ -328,7 +328,7 @@ public class VehicleCitation {
 				String paid = result.getString("PAYMENTSTATUS");
 				
 				//covert fine amount to double
-				citation.fineAmount = Double.valueOf(fine.substring(1));
+				citation.fineAmount = Double.parseDouble(fine.substring(1));
 				
 				// convert payment status to boolean
 				if(paid.equalsIgnoreCase("Yes")) {
@@ -432,6 +432,18 @@ public class VehicleCitation {
 	        }
 	    }
 
+	    return true;
+	}
+	
+	private boolean isDollar(String strNum) {
+	    if (strNum == null) {
+	        return false;
+	    }
+	    try {
+	        double d = Double.parseDouble(strNum);
+	    } catch (NumberFormatException nfe) {
+	        return false;
+	    }
 	    return true;
 	}
 	

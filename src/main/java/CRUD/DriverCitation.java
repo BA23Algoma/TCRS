@@ -62,12 +62,12 @@ public class DriverCitation {
 	
 	public void setFineAmount(String fineAmount) {
 		
-		if(!isNumber(fineAmount)) {
+		if(!isDollar(fineAmount)) {
 			System.out.println("Invaild badge number account!");
 			return;
 		}
 		
-		double fine = Double.valueOf(fineAmount);
+		double fine = Double.parseDouble(fineAmount);
 		
 		this.fineAmount = fine;
 		
@@ -454,7 +454,7 @@ public class DriverCitation {
 				String report = result.getString("PAYMENTSTATUS");
 				
 				//covert fine amount to double
-				citation.fineAmount = Double.valueOf(fine.substring(1));
+				citation.fineAmount = Double.parseDouble(fine.substring(1));
 				
 				// convert payment status to boolean
 				if(report.equalsIgnoreCase("Yes")) {
@@ -612,6 +612,18 @@ public class DriverCitation {
 	        }
 	    }
 
+	    return true;
+	}
+	
+	private boolean isDollar(String strNum) {
+	    if (strNum == null) {
+	        return false;
+	    }
+	    try {
+	        double d = Double.parseDouble(strNum);
+	    } catch (NumberFormatException nfe) {
+	        return false;
+	    }
 	    return true;
 	}
 	
