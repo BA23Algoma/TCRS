@@ -28,14 +28,14 @@ public class Test_Database {
 			e.printStackTrace();
 		}
 		
-		TrafficSchool citation = new TrafficSchool(connection);
+		VehicleCitation citation = new VehicleCitation(connection);
 
 		valid.checkLoginInfo("gamjoun", "239349660", "Administration");
 		
 		if(valid.checkVehCitRecordExistence("1"))
 			System.out.print("Citation is in the system!");
 		
-		citation = citation.findEnrollment("3");
+		citation = citation.findCitation("3");
 				
 		System.out.println("\n" + citation.toString());
 		

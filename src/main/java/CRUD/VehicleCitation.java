@@ -13,7 +13,7 @@ public class VehicleCitation {
 
 	public int citationId;
 	public String vin;
-	public int issuingOfficerBadgeNumber;
+	public int ISSUEINGOFFICERBadgeNumber;
 	public String dateIssued;
 	public String reason;
 	public Double fineAmount;
@@ -32,16 +32,16 @@ public class VehicleCitation {
 				
 			}
 		
-		public void setIssuingOfficerBadgeNumber(String issuingOfficerBadgeNumber) {
+		public void setISSUEINGOFFICERBadgeNumber(String ISSUEINGOFFICERBadgeNumber) {
 			
-			if(!isNumber(issuingOfficerBadgeNumber)) {
+			if(!isNumber(ISSUEINGOFFICERBadgeNumber)) {
 				System.out.println("Invaild badge number!");
 				return;
 			}
 						
-			int badge = Integer.valueOf(issuingOfficerBadgeNumber);
+			int badge = Integer.valueOf(ISSUEINGOFFICERBadgeNumber);
 			
-			this.issuingOfficerBadgeNumber = badge;
+			this.ISSUEINGOFFICERBadgeNumber = badge;
 			
 		}
 		
@@ -99,9 +99,9 @@ public class VehicleCitation {
 			
 		}
 		
-		public String getIssuingOfficerBadgeNumber() {
+		public String getISSUEINGOFFICERBadgeNumber() {
 				
-			String badge = String.valueOf(issuingOfficerBadgeNumber);
+			String badge = String.valueOf(ISSUEINGOFFICERBadgeNumber);
 
 			return badge;
 				
@@ -165,7 +165,7 @@ public class VehicleCitation {
 		 }
 		 
 		// Create SQL query string
-	    String sql = String.format("INSERT INTO TCRS.VEHICLECITATIONSMUNICIPLE (ISSUINGOFFICERIDM , VINCITATIONM , "
+	    String sql = String.format("INSERT INTO TCRS.VEHICLECITATIONSMUNICIPLE (ISSUEINGOFFICERIDM , VINCITATIONM , "
 	    		+ "CITATIONREASON ,  CITATIONDATE , FINEAMOUNT, PAYMENTSTATUS )"
 	    		+ "VALUES ('%s', '%s', '%s', '%s', '%s', '%s')", officer, vin, 
 				reason, dateIssued, fine, Paid);
@@ -179,11 +179,11 @@ public class VehicleCitation {
 		
 	}
 	
-	public void editVehicleCitation (String citID, String vin, String officer, String dateIssued, String reason,  String fine, String Paid) {
+	public int editVehicleCitation (String citID, String vin, String officer, String dateIssued, String reason,  String fine, String Paid) {
 		
 		if(!isNumber(citID)) {
 			System.out.println("Invaild vehicle citation, unable to edit account!");
-			return;
+			return -1;
 		}
 		
 		// First confirm account exist, and if so return account information
@@ -191,23 +191,23 @@ public class VehicleCitation {
 		
 		// Check to see if the account is in the system
 		if (!inSystem(citation)) {
-			return;
+			return -1;
 		}
 		
 		// Validate format and if officer is in the system
 		 if (!validBadgeNumber(officer)) {
 			 System.out.println("Officer badge number not in the system!");
-			 return;
+			 return -1;
 		 }
 		 
 		// Validate VIN number
 		 if (!valiadteVin(vin)) {
 			 System.out.println("Vin not in the system!");
-			 return;
+			 return -1;
 		 }
 		
 		// Build edit query in system based on citation ID
-		String sqlQuery = String.format("UPDATE TCRS.VEHICLECITATIONSMUNICIPLE SET ISSUINGOFFICERIDM = '%s', VINCITATIONM = '%s', CITATIONREASON = '%s', "
+		String sqlQuery = String.format("UPDATE TCRS.VEHICLECITATIONSMUNICIPLE SET ISSUEINGOFFICERIDM = '%s', VINCITATIONM = '%s', CITATIONREASON = '%s', "
 				+ "CITATIONDATE = '%s', FINEAMOUNT = '%s', PAYMENTSTATUS = '%s' WHERE CITATIONID = %d", 
 				officer, vin, reason, dateIssued, fine, Paid, Integer.valueOf(citID));
 
@@ -215,6 +215,8 @@ public class VehicleCitation {
 		databaseManager.executeUpdate(sqlQuery);
 		
 		System.out.println("Account edited");
+		
+		return 0;
 	}
 	
 	public void deleteVehicleCitation (String citID) {
@@ -248,7 +250,7 @@ public class VehicleCitation {
 	
 	public String toString() {
 		
-		return "VIN Number " + this.vin + " Officer Badge Number: " + this.issuingOfficerBadgeNumber + " Date Issued: " + this.dateIssued
+		return "VIN Number " + this.vin + " Officer Badge Number: " + this.ISSUEINGOFFICERBadgeNumber + " Date Issued: " + this.dateIssued
 				+ " Reason:" + this.reason + " Fine Amount: $" + this.fineAmount + " Paid: " + this.Paid;
 	}
 	
@@ -297,16 +299,16 @@ public class VehicleCitation {
 	}
 	//********* Object Methods ******
 	
-	public void insertVehicleCitation (VehicleCitation citation) {
+	public int insertVehicleCitation (VehicleCitation citation) {
 		
-		insertVehicleCitation(citation.getVin(), citation.getIssuingOfficerBadgeNumber(), citation.getdateIssued(),
+		return insertVehicleCitation(citation.getVin(), citation.getISSUEINGOFFICERBadgeNumber(), citation.getdateIssued(),
 				citation.getReason(), citation.getFineAmount(), citation.getPaid());
 		
 	}
 	
-	public void editVehicleCitation (String citID, VehicleCitation citationNew) {
+	public int editVehicleCitation (String citID, VehicleCitation citationNew) {
 		
-		editVehicleCitation ( citID,  citationNew.getVin(),  citationNew.getIssuingOfficerBadgeNumber(),  citationNew.getdateIssued(),  citationNew.getReason(),   citationNew.getFineAmount(),  citationNew.getPaid());
+		return editVehicleCitation ( citID,  citationNew.getVin(),  citationNew.getISSUEINGOFFICERBadgeNumber(),  citationNew.getdateIssued(),  citationNew.getReason(),   citationNew.getFineAmount(),  citationNew.getPaid());
 
 		
 	}
@@ -319,7 +321,7 @@ public class VehicleCitation {
 			     //Retrieve data by column index or name
 				citation.citationId = result.getInt("CITATIONID");
 				citation.vin = result.getString("VINCITATIONM");
-				citation.issuingOfficerBadgeNumber = result.getInt("ISSUEINGOFFICERIDM");
+				citation.ISSUEINGOFFICERBadgeNumber = result.getInt("ISSUEINGOFFICERIDM");
 				citation.dateIssued = result.getString("CITATIONDATE");
 				citation.reason = result.getString("CITATIONREASON");
 				String fine = result.getString("FINEAMOUNT");

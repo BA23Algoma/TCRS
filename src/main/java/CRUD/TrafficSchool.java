@@ -90,11 +90,6 @@ public class TrafficSchool {
         this.session4Attendance =  session4Attendance;
     }
 
-    public int insertEnrollment(TrafficSchool trafficSchool) {
-         return insertEnrollment(String.valueOf(trafficSchool.citationID), trafficSchool.session1Date, trafficSchool.session2Date,
-                trafficSchool.session3Date, trafficSchool.session4Date, trafficSchool.session1Attendance,
-                trafficSchool.session2Attendance, trafficSchool.session3Attendance, trafficSchool.session4Attendance);
-    }
 
     public int insertEnrollment(String citationID, String session1Date, String session2Date, String session3Date,
             String session4Date, String session1Attendance, String session2Attendance, String session3Attendance,
@@ -111,15 +106,18 @@ public class TrafficSchool {
                 session3Date, session4Date, session1Attendance,
                 session2Attendance, session3Attendance, session4Attendance);
 
-	    int generatedId = databaseManager.executeInsertReturnId(sql);
+	    databaseManager.executeUpdate(sql);
 
         System.out.println("Enrollment added to the database!");
         
-        return generatedId;
+        return 0;
     }
 
-    public void editEnrollment(String citationID, TrafficSchool newTrafficSchool) {
-        TrafficSchool trafficSchool = findEnrollment(Integer.valueOf(citationID));
+
+    public void editEnrollment(String citationID, String session1Date, String session2Date, String session3Date, String session4Date,
+    		String session1Attendance, String session2Attendance, String session3Attendance, String session4Attendance) {
+        
+    	TrafficSchool trafficSchool = findEnrollment(Integer.valueOf(citationID));
 
         if (!inSystem(trafficSchool)) {
             return;
@@ -128,9 +126,8 @@ public class TrafficSchool {
         String sqlQuery = String.format(
                 "UPDATE TCRS.TRAFFICSCHOOL SET SESSION1DATE = '%s', SESSION2DATE = '%s', SESSION3DATE = '%s', SESSION4DATE = '%s', SESSION1ATTENDANCE = '%s', SESSION2ATTENDANCE = '%s', SESSION3ATTENDANCE = '%s', SESSION4ATTENDANCE = '%s'"
                         + " WHERE CITATIONIDTS = %d",
-                newTrafficSchool.session1Date, newTrafficSchool.session2Date, newTrafficSchool.session3Date,
-                newTrafficSchool.session4Date, newTrafficSchool.session1Attendance, newTrafficSchool.session2Attendance,
-                newTrafficSchool.session3Attendance, newTrafficSchool.session4Attendance, trafficSchool.citationID);
+                session1Date, session2Date, session3Date, session4Date, 
+                session1Attendance, session2Attendance, session3Attendance, session4Attendance, citationID);
 
         databaseManager.executeUpdate(sqlQuery);
 
@@ -151,10 +148,6 @@ public class TrafficSchool {
         System.out.println("Enrollment " + citationID + " removed from system");
     }
     
-    public TrafficSchool findEnrollment(String citationID) {
-  
-    	return findEnrollment(Integer.valueOf(citationID));
-    }
 
     public TrafficSchool findEnrollment(int citationID) {
         TrafficSchool trafficSchool = new TrafficSchool(this.databaseManager);
@@ -167,6 +160,25 @@ public class TrafficSchool {
             return null;
 
         return logData(result, trafficSchool);
+    }
+    
+    // Object methods
+    public TrafficSchool findEnrollment(String citationID) {
+    	  
+    	return findEnrollment(Integer.valueOf(citationID));
+    }
+    
+    public int insertEnrollment(TrafficSchool trafficSchool) {
+        return insertEnrollment(String.valueOf(trafficSchool.citationID), trafficSchool.session1Date, trafficSchool.session2Date,
+               trafficSchool.session3Date, trafficSchool.session4Date, trafficSchool.session1Attendance,
+               trafficSchool.session2Attendance, trafficSchool.session3Attendance, trafficSchool.session4Attendance);
+   }
+    
+    public void editEnrollment(String citationID, TrafficSchool trafficSchool) {
+    	
+    	editEnrollment(citationID, trafficSchool.session1Date, trafficSchool.session2Date,
+                trafficSchool.session3Date, trafficSchool.session4Date, trafficSchool.session1Attendance,
+                trafficSchool.session2Attendance, trafficSchool.session3Attendance, trafficSchool.session4Attendance);
     }
 
     public String toString() {

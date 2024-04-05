@@ -129,13 +129,13 @@ public class DriverWarrants {
     
     
 
-    public void editDriverWarrant(String warrantID, String licenseNumber, String dateIssued, String warrantReason,
+    public int editDriverWarrant(String warrantID, String licenseNumber, String dateIssued, String warrantReason,
             String outstanding) {
     	
     	// Check if account Id is an number
     	if(!isNumber(warrantID)) {
     		System.out.println("Unable edit warrant! Check Id  number!");
-    		return;
+    		return -1;
     	}
     	
     	int warrID = Integer.valueOf(warrantID);
@@ -143,13 +143,13 @@ public class DriverWarrants {
         DriverWarrants driverWarrant = findDriverWarrant(warrID);
 
         if (!inSystem(driverWarrant)) {
-            return;
+            return -1;
         }
      		
 		// Validate if license is in system
 		 if (!validLicenseNumber(licenseNumber)) {
 			 System.out.println("Licenser not in the system!");
-			 return;
+			 return -1;
 		 }
 
         String sqlQuery = String.format(
@@ -159,6 +159,8 @@ public class DriverWarrants {
         databaseManager.executeUpdate(sqlQuery);
 
         System.out.println("Driver warrant edited");
+        
+        return 0;
     }
    
 

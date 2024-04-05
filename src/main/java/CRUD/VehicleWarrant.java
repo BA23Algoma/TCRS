@@ -118,16 +118,18 @@ public class VehicleWarrant {
         
     }
 
-    public void editVehicleWarrant(String warrantID, String vin, String dateIssued, String warrantReason, String outstanding) {
+    public int editVehicleWarrant(String warrantID, String vin, String dateIssued, String warrantReason, String outstanding) {
         
     	VehicleWarrant vehicleWarrant = findVehicleWarrant(Integer.valueOf(warrantID));
 
         if (!inSystem(vehicleWarrant)) {
-            return;
+            return -1;
         }
         	 
-	// Validate VIN number
-	
+        // Validate VIN number
+        if(findVehicle(vin) == null) {
+       	 return -1;
+        }
 
         String sqlQuery = String.format(
                 "UPDATE TCRS.VEHICLEWARRANTSMUNICIPLE SET VINWARRANTM = '%s', WARRANTDATE = '%s', REASON = '%s', OUTSTANDING = %b WHERE WARRANTIDVM = %d",
@@ -136,6 +138,8 @@ public class VehicleWarrant {
         databaseManager.executeUpdate(sqlQuery);
 
         System.out.println("Vehicle warrant edited");
+        
+        return 0;
     }
 
     public void deleteVehicleWarrant(String warrantID) {
