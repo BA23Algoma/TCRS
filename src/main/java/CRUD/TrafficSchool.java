@@ -91,7 +91,7 @@ public class TrafficSchool {
     }
 
     public int insertEnrollment(TrafficSchool trafficSchool) {
-         return insertEnrollment(String.valueOf(trafficSchool.citationID), trafficSchool.session1Date, trafficSchool.session2Date,
+          return insertEnrollment(String.valueOf(trafficSchool.citationID), trafficSchool.session1Date, trafficSchool.session2Date,
                 trafficSchool.session3Date, trafficSchool.session4Date, trafficSchool.session1Attendance,
                 trafficSchool.session2Attendance, trafficSchool.session3Attendance, trafficSchool.session4Attendance);
     }
@@ -100,9 +100,11 @@ public class TrafficSchool {
             String session4Date, String session1Attendance, String session2Attendance, String session3Attendance,
             String session4Attendance) {
     	
-    	/*if (findEnrollment(Integer.valueOf(citationID)) == null) {
+		RecordValidation valid = new RecordValidation(databaseManager);
+
+    	if (!valid.checkDriCitRecordExistence(citationID)) {
     		return -1;
-    	}*/
+    	}
        
         String sql = String.format(
                 "INSERT INTO TCRS.TRAFFICSCHOOL (CITATIONIDTS, SESSION1DATE, SESSION2DATE, SESSION3DATE, SESSION4DATE, SESSION1ATTENDANCE, SESSION2ATTENDANCE, SESSION3ATTENDANCE, SESSION4ATTENDANCE) "
@@ -111,14 +113,15 @@ public class TrafficSchool {
                 session3Date, session4Date, session1Attendance,
                 session2Attendance, session3Attendance, session4Attendance);
 
-	    int generatedId = databaseManager.executeInsertReturnId(sql);
+        databaseManager.executeUpdate(sql);
 
         System.out.println("Enrollment added to the database!");
         
-        return generatedId;
+        return 0;
     }
 
     public void editEnrollment(String citationID, TrafficSchool newTrafficSchool) {
+    	
         TrafficSchool trafficSchool = findEnrollment(Integer.valueOf(citationID));
 
         if (!inSystem(trafficSchool)) {

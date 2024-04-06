@@ -132,7 +132,7 @@ public class VehicleWarrant {
         }
 
         String sqlQuery = String.format(
-                "UPDATE TCRS.VEHICLEWARRANTSMUNICIPLE SET VINWARRANTM = '%s', WARRANTDATE = '%s', REASON = '%s', OUTSTANDING = %b WHERE WARRANTIDVM = %d",
+                "UPDATE TCRS.VEHICLEWARRANTSMUNICIPLE SET VINWARRANTM = '%s', WARRANTDATE = '%s', REASON = '%s', OUTSTANDING = %b WHERE warrantidv = %d",
                 vin, dateIssued, warrantReason,outstanding, Integer.valueOf(warrantID));
 
         databaseManager.executeUpdate(sqlQuery);
@@ -150,7 +150,7 @@ public class VehicleWarrant {
             return;
         }
         
-        String sqlDelete = String.format ("DELETE FROM TCRS.VEHICLEWARRANTSMUNICIPLE WHERE WARRANTIDVM = %d", Integer.parseInt(warrantID));
+        String sqlDelete = String.format ("DELETE FROM TCRS.VEHICLEWARRANTSMUNICIPLE WHERE warrantidv = %d", Integer.parseInt(warrantID));
 
         databaseManager.executeUpdate(sqlDelete);
 
@@ -161,7 +161,7 @@ public class VehicleWarrant {
     	
         VehicleWarrant vehicleWarrant = new VehicleWarrant(this.databaseManager);
 
-        String sqlQuery = String.format("SELECT * FROM TCRS.VEHICLEWARRANTSMUNICIPLE WHERE WARRANTIDVM = %d", warrantID);
+        String sqlQuery = String.format("SELECT * FROM TCRS.VEHICLEWARRANTSMUNICIPLE WHERE warrantidv = %d", warrantID);
 
         ResultSet result = databaseManager.executeQuery(sqlQuery);
 
@@ -200,7 +200,7 @@ public class VehicleWarrant {
     private VehicleWarrant logData(ResultSet result, VehicleWarrant vehicleWarrant) {
         try {
             while (result.next()) {
-                vehicleWarrant.warrantID = Integer.valueOf(result.getString("WARRANTIDVM"));
+                vehicleWarrant.warrantID = Integer.valueOf(result.getString("warrantidv"));
                 vehicleWarrant.vin = result.getString("VINWARRANTM");
                 vehicleWarrant.dateIssued = result.getString("WARRANTDATE");
                 vehicleWarrant.warrantReason = result.getString("REASON");

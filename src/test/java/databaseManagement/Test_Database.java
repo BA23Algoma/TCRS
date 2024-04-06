@@ -18,9 +18,10 @@ public class Test_Database {
 		RecordValidation valid = new RecordValidation(connection);
 		//InputValidation test = new InputValidation();
 		
-		Boolean check = validateDate("2025-01-01");
+		Boolean check = validateDate("2024-01-01");
+
 		
-		System.out.print(check);
+		System.out.print(check + "\n");
 		try {
 			connection.connectToDatabase();
 		} catch (IOException e) {
@@ -28,17 +29,19 @@ public class Test_Database {
 			e.printStackTrace();
 		}
 		
-		VehicleCitation citation = new VehicleCitation(connection);
+		VehicleWarrant citation = new VehicleWarrant(connection);
 
 		valid.checkLoginInfo("gamjoun", "239349660", "Administration");
 		
 		if(valid.checkVehCitRecordExistence("1"))
-			System.out.print("Citation is in the system!");
+			System.out.println("Citation is in the system!");
 		
-		citation.setfine("25.00");;
-				
-		System.out.println("\n" + citation.toString());
-		System.out.println(citation.getFineAmount());
+		if (valid.checkVehWarrRecordExistence("1")) {
+			System.out.println("Waarnat ID is valid and is in the system!");
+		}
+		citation = citation.findVehicleWarrant("1");
+		System.out.println(citation.toString());
+		//System.out.println(citation.getFineAmount());
 
 		
 		//citation.toString();

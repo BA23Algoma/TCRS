@@ -33,7 +33,7 @@ public class RecordValidation {
 	}
 	public boolean checkVehWarrRecordExistence(String vehicleWarrantID) {
 		
-		String type = "WARRANTIDVM";
+		String type = "WARRANTIDV";
 		
 		String vehMun = "VEHICLEWARRANTSMUNICIPLE";
 		String vehProv = "VEHICLEWARRANTSPROV";

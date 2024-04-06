@@ -138,7 +138,7 @@ public class Report {
     public String generateOutstandingWarrants() {
     	
     	String[] fieldDriver= {"WARRANTID", "DRIVERIDWARRANTM", "REASON", "WARRANTDATE"};
-    	String[] fieldVehicle= {"WARRANTIDVM", "VINWARRANTM", "REASON", "WARRANTDATE"};
+    	String[] fieldVehicle= {"WARRANTIDV", "VINWARRANTM", "REASON", "WARRANTDATE"};
     	
         String sqlQueryDriver = String.format("SELECT * FROM TCRS.DRIVERWARRANTSMUNICIPLE WHERE OUTSTANDING='Yes'");
         String sqlQueryVehicle = String.format("SELECT * FROM TCRS.VEHICLEWARRANTSMUNICIPLE WHERE OUTSTANDING='Yes'");
