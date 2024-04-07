@@ -22,7 +22,7 @@ public class Main extends Application {
 		
 		
 		
-		primaryStage.setScene(userInteraction.createOptionScene("Citations/Warrants/Officers/Traffic School"));
+		primaryStage.setScene(userInteraction.createLoginScene());
 		
 		
 		primaryStage.show();	
